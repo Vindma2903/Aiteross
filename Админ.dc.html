@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+    body { margin: 0; }
+  </style>
+</helmet>
+
+<div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14161A; background: #F7F8FA; min-height: 100vh; width: 100%; display: flex;">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside style="width: 260px; flex: none; background: #0B2545; min-height: 100vh; padding: 24px 18px; box-sizing: border-box;">
+    <div style="font-size: 19px; font-weight: 700; color: #fff; letter-spacing: 0.3px; margin-bottom: 6px; padding: 0 8px;">АЙТЕРОСС</div>
+    <div style="font-size: 12.5px; color: rgba(255,255,255,0.45); margin-bottom: 28px; padding: 0 8px;">Панель администратора</div>
+
+    <nav style="display: flex; flex-direction: column; gap: 4px;">
+      <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 9px; text-decoration: none; background: rgba(255,255,255,0.1); color: #fff; font-size: 14.5px; font-weight: 600;">Заявки</a>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 9px; text-decoration: none; color: rgba(255,255,255,0.7); font-size: 14.5px; font-weight: 500;" style-hover="background: rgba(255,255,255,0.08);">Товары каталога</a>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 9px; text-decoration: none; color: rgba(255,255,255,0.7); font-size: 14.5px; font-weight: 500;" style-hover="background: rgba(255,255,255,0.08);">Клиенты</a>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 9px; text-decoration: none; color: rgba(255,255,255,0.7); font-size: 14.5px; font-weight: 500;" style-hover="background: rgba(255,255,255,0.08);">Настройки сайта</a>
+      <a href="./Вход администратора.dc.html" style="display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 9px; text-decoration: none; color: rgba(255,255,255,0.55); font-size: 14.5px; font-weight: 500; margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 20px;" style-hover="background: rgba(255,255,255,0.08);">Выйти</a>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div style="flex: 1; padding: 32px 40px; min-width: 0;">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px;">
+      <h1 style="font-size: 26px; font-weight: 700; color: #14161A; margin: 0;">Заявки</h1>
+      <div style="font-size: 14px; color: #8891A0;">Администратор: <span style="color: #14161A; font-weight: 600;">admin@iteross.ru</span></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 28px;">
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 12px; padding: 20px;">
+        <div style="font-size: 13px; color: #8891A0; margin-bottom: 8px;">Новых заявок</div>
+        <div style="font-size: 26px; font-weight: 700; color: #14161A;">7</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 12px; padding: 20px;">
+        <div style="font-size: 13px; color: #8891A0; margin-bottom: 8px;">В обработке</div>
+        <div style="font-size: 26px; font-weight: 700; color: #14161A;">12</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 12px; padding: 20px;">
+        <div style="font-size: 13px; color: #8891A0; margin-bottom: 8px;">КП отправлено</div>
+        <div style="font-size: 26px; font-weight: 700; color: #14161A;">21</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 12px; padding: 20px;">
+        <div style="font-size: 13px; color: #8891A0; margin-bottom: 8px;">Клиентов всего</div>
+        <div style="font-size: 26px; font-weight: 700; color: #14161A;">143</div>
+      </div>
+    </div>
+
+    <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; overflow: hidden;">
+      <div style="display: grid; grid-template-columns: 100px 1.4fr 1.2fr 1fr 140px; padding: 14px 20px; border-bottom: 1px solid #E3E6EA; background: #F7F8FA;">
+        <span style="font-size: 12.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">№</span>
+        <span style="font-size: 12.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">КЛИЕНТ</span>
+        <span style="font-size: 12.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">ПОЗИЦИЯ</span>
+        <span style="font-size: 12.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">ДАТА</span>
+        <span style="font-size: 12.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">СТАТУС</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 100px 1.4fr 1.2fr 1fr 140px; padding: 16px 20px; border-bottom: 1px solid #EDEFF2; align-items: center;">
+        <span style="font-size: 14.5px; color: #14161A; font-weight: 600;">1042</span>
+        <span style="font-size: 14.5px; color: #14161A;">ООО «Компания»</span>
+        <span style="font-size: 14.5px; color: #6B7480;">CNMG120408-GM, 50 шт.</span>
+        <span style="font-size: 14.5px; color: #6B7480;">12.07.2026</span>
+        <span style="background: #EAF6EC; color: #2E7D32; font-size: 12.5px; font-weight: 700; padding: 5px 12px; border-radius: 100px; width: fit-content;">КП отправлено</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 100px 1.4fr 1.2fr 1fr 140px; padding: 16px 20px; border-bottom: 1px solid #EDEFF2; align-items: center;">
+        <span style="font-size: 14.5px; color: #14161A; font-weight: 600;">1041</span>
+        <span style="font-size: 14.5px; color: #14161A;">ООО «Стан-Пром»</span>
+        <span style="font-size: 14.5px; color: #6B7480;">APMT1604PDER-M2, 20 шт.</span>
+        <span style="font-size: 14.5px; color: #6B7480;">11.07.2026</span>
+        <span style="background: #FDF3E3; color: #B8791E; font-size: 12.5px; font-weight: 700; padding: 5px 12px; border-radius: 100px; width: fit-content;">В обработке</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 100px 1.4fr 1.2fr 1fr 140px; padding: 16px 20px; border-bottom: 1px solid #EDEFF2; align-items: center;">
+        <span style="font-size: 14.5px; color: #14161A; font-weight: 600;">1040</span>
+        <span style="font-size: 14.5px; color: #14161A;">ИП Петров</span>
+        <span style="font-size: 14.5px; color: #6B7480;">16ER-AG60-GM, 15 шт.</span>
+        <span style="font-size: 14.5px; color: #6B7480;">10.07.2026</span>
+        <span style="background: #FBEAEA; color: #C43D3D; font-size: 12.5px; font-weight: 700; padding: 5px 12px; border-radius: 100px; width: fit-content;">Новая</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 100px 1.4fr 1.2fr 1fr 140px; padding: 16px 20px; align-items: center;">
+        <span style="font-size: 14.5px; color: #14161A; font-weight: 600;">1039</span>
+        <span style="font-size: 14.5px; color: #14161A;">ООО «Металлобработка+»</span>
+        <span style="font-size: 14.5px; color: #6B7480;">MGMN300-M-GM, 30 шт.</span>
+        <span style="font-size: 14.5px; color: #6B7480;">09.07.2026</span>
+        <span style="background: #EAF1FB; color: #1657C4; font-size: 12.5px; font-weight: 700; padding: 5px 12px; border-radius: 100px; width: fit-content;">Доставлено</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+</x-dc>
+</body>
+</html>

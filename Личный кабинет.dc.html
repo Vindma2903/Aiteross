@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+    body { margin: 0; }
+  </style>
+</helmet>
+
+<div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14161A; background: #F7F8FA; min-height: 100vh; width: 100%;">
+
+  <!-- ============ HEADER ============ -->
+  <header style="background: #FFFFFF; border-bottom: 1px solid #E3E6EA;">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 16px 20px; display: flex; align-items: center; gap: 20px;">
+      <a href="./Главная АЙТЕРОСС.dc.html" style="text-decoration: none;">
+        <div style="font-size: 22px; font-weight: 700; color: #0B2545; letter-spacing: 0.3px;">АЙТЕРОСС</div>
+      </a>
+      <div style="flex: 1;"></div>
+      <a href="./Каталог.dc.html" style="text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500;" style-hover="color: #1657C4;">Каталог</a>
+      <a href="./Главная АЙТЕРОСС.dc.html" style="text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500;" style-hover="color: #1657C4;">На главную</a>
+    </div>
+  </header>
+
+  <div style="max-width: 1360px; margin: 0 auto; padding: 40px 32px; display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start;">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 24px; position: sticky; top: 24px;">
+      <div style="width: 52px; height: 52px; border-radius: 50%; background: #EAF1FB; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </div>
+      <div style="font-size: 16px; font-weight: 700; color: #14161A; margin-bottom: 2px;">Иван Иванов</div>
+      <div style="font-size: 13.5px; color: #8891A0; margin-bottom: 20px;">ООО «Компания»</div>
+
+      <nav style="display: flex; flex-direction: column; gap: 4px;">
+        <button onClick="{{ showOrders }}" style="{{ ordersTabStyle }}">Мои заявки</button>
+        <button onClick="{{ showFavorites }}" style="{{ favoritesTabStyle }}">Избранное</button>
+        <button onClick="{{ showProfile }}" style="{{ profileTabStyle }}">Данные профиля</button>
+        <a href="./Главная АЙТЕРОСС.dc.html" style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 9px; text-decoration: none; color: #C43D3D; font-size: 14.5px; font-weight: 500; margin-top: 10px; border-top: 1px solid #E3E6EA; padding-top: 16px;" style-hover="background: #FBEAEA;">Выйти</a>
+      </nav>
+    </aside>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <div>
+
+      <!-- ---- ORDERS TAB (list) ---- -->
+      <sc-if value="{{ isOrdersList }}" hint-placeholder-val="{{ true }}">
+        <h1 style="font-size: 28px; font-weight: 700; color: #14161A; margin: 0 0 24px;">Мои заявки</h1>
+
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; overflow: hidden;">
+          <sc-for list="{{ orders }}" as="o" hint-placeholder-count="3">
+            <button onClick="{{ o.open }}" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid #EDEFF2; padding: 20px 24px; cursor: pointer; font-family: inherit;" style-hover="background: #F7F8FA;">
+              <div>
+                <div style="font-size: 15.5px; font-weight: 700; color: #14161A; margin-bottom: 4px;">Заявка № {{ o.number }}</div>
+                <div style="font-size: 13.5px; color: #8891A0;">{{ o.item }}, {{ o.qty }} шт. · {{ o.date }}</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 16px; flex: none;">
+                <span style="background: {{ o.statusBg }}; color: {{ o.statusColor }}; font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 100px; white-space: nowrap;">{{ o.statusLabel }}</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#8891A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ---- ORDER DETAIL ---- -->
+      <sc-if value="{{ isOrderDetail }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ backToOrders }}" style="display: flex; align-items: center; gap: 8px; background: none; border: none; padding: 0; margin-bottom: 20px; cursor: pointer; font-family: inherit; color: #1657C4; font-size: 14.5px; font-weight: 600;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1657C4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          К списку заявок
+        </button>
+
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 32px; max-width: 720px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px;">
+            <h1 style="font-size: 24px; font-weight: 700; color: #14161A; margin: 0;">Заявка № {{ selectedOrder.number }}</h1>
+            <span style="background: {{ selectedOrder.statusBg }}; color: {{ selectedOrder.statusColor }}; font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 100px;">{{ selectedOrder.statusLabel }}</span>
+          </div>
+
+          <!-- status tracker -->
+          <div style="display: flex; align-items: center; gap: 0; margin-bottom: 28px;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1;">
+              <div style="width: 12px; height: 12px; border-radius: 50%; background: {{ selectedOrder.step1Color }};"></div>
+              <span style="font-size: 12px; color: {{ selectedOrder.step1Color }}; font-weight: 600;">Формируем заказ</span>
+            </div>
+            <div style="height: 2px; background: {{ selectedOrder.line1Color }}; flex: 1; margin-bottom: 20px;"></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1;">
+              <div style="width: 12px; height: 12px; border-radius: 50%; background: {{ selectedOrder.step2Color }};"></div>
+              <span style="font-size: 12px; color: {{ selectedOrder.step2Color }}; font-weight: 600;">В доставке</span>
+            </div>
+            <div style="height: 2px; background: {{ selectedOrder.line2Color }}; flex: 1; margin-bottom: 20px;"></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1;">
+              <div style="width: 12px; height: 12px; border-radius: 50%; background: {{ selectedOrder.step3Color }};"></div>
+              <span style="font-size: 12px; color: {{ selectedOrder.step3Color }}; font-weight: 600;">Доставлено</span>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 20px; padding: 20px; background: #F7F8FA; border-radius: 12px; margin-bottom: 24px;">
+            <div style="width: 88px; height: 88px; background: #fff; border-radius: 10px; flex: none; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+              <img src="./assets/carbide-insert.jpg" alt="{{ selectedOrder.item }}" style="width: 100%; height: 100%; object-fit: contain;"/>
+            </div>
+            <div>
+              <div style="font-size: 16px; font-weight: 700; color: #14161A; margin-bottom: 6px;">{{ selectedOrder.item }}</div>
+              <div style="font-size: 14.5px; color: #6B7480;">{{ selectedOrder.qty }} шт. · дата заявки {{ selectedOrder.date }}</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+              <div style="font-size: 12.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 6px;">СУММА ЗАКАЗА</div>
+              <div style="font-size: 15.5px; color: #14161A; font-weight: 600;">{{ selectedOrder.total }}</div>
+            </div>
+            <div>
+              <div style="font-size: 12.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 6px;">АДРЕС ДОСТАВКИ</div>
+              <div style="font-size: 15.5px; color: #14161A; font-weight: 600;">{{ selectedOrder.address }}</div>
+            </div>
+            <div>
+              <div style="font-size: 12.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 6px;">МЕНЕДЖЕР</div>
+              <div style="font-size: 15.5px; color: #14161A; font-weight: 600;">{{ selectedOrder.manager }}</div>
+            </div>
+            <div>
+              <div style="font-size: 12.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 6px;">ТРЕК-НОМЕР</div>
+              <div style="font-size: 15.5px; color: #14161A; font-weight: 600;">{{ selectedOrder.tracking }}</div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ---- FAVORITES TAB ---- -->
+      <sc-if value="{{ isFavorites }}" hint-placeholder-val="{{ false }}">
+        <h1 style="font-size: 28px; font-weight: 700; color: #14161A; margin: 0 0 24px;">Избранное</h1>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+          <sc-for list="{{ favorites }}" as="f" hint-placeholder-count="2">
+            <div style="position: relative; background: #fff; border: 1px solid #E3E6EA; border-radius: 12px; overflow: hidden;">
+              <button onClick="{{ f.remove }}" aria-label="Убрать из избранного" style="position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; border-radius: 50%; border: none; background: #fff; box-shadow: 0 2px 8px rgba(11,37,69,0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="#1657C4"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>
+              </button>
+              <div style="aspect-ratio: 1/1; background: #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 24px;">
+                <img src="./assets/carbide-insert.jpg" alt="{{ f.name }}" style="width: 100%; height: 100%; object-fit: contain;"/>
+              </div>
+              <div style="padding: 16px 18px 20px;">
+                <div style="font-size: 15px; font-weight: 700; color: #14161A; margin-bottom: 6px;">{{ f.name }}</div>
+                <div style="font-size: 15px; color: #14161A; font-weight: 600; margin-bottom: 14px;">{{ f.price }}</div>
+                <a href="./Товар.dc.html" style="display: block; text-align: center; background: #fff; color: #1657C4; border: 1.5px solid #1657C4; padding: 10px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none;" style-hover="background: #1657C4; color: #fff;">Подробнее</a>
+              </div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ noFavorites }}" hint-placeholder-val="{{ false }}">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 48px 0; color: #8891A0; font-size: 15px;">Список избранного пуст.</div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ---- PROFILE TAB ---- -->
+      <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+        <h1 style="font-size: 28px; font-weight: 700; color: #14161A; margin: 0 0 24px;">Данные профиля</h1>
+
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 32px; max-width: 560px; margin-bottom: 24px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Личные данные</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div>
+              <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ИМЯ</label>
+              <input value="{{ firstName }}" onChange="{{ onFirstNameChange }}" style="width: 100%; height: 48px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+            </div>
+            <div>
+              <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ФАМИЛИЯ</label>
+              <input value="{{ lastName }}" onChange="{{ onLastNameChange }}" style="width: 100%; height: 48px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+            </div>
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ПОЧТА</label>
+            <input type="email" value="{{ email }}" onChange="{{ onEmailChange }}" style="width: 100%; height: 48px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+          </div>
+          <div style="margin-bottom: 24px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ТЕЛЕФОН</label>
+            <input value="{{ phone }}" onChange="{{ onPhoneChange }}" style="width: 100%; height: 48px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+          </div>
+          <button onClick="{{ saveProfile }}" style="background: #1657C4; color: #fff; border: none; padding: 13px 24px; border-radius: 9px; font-size: 15px; font-weight: 700; cursor: pointer;" style-hover="background: #123F94;">Сохранить изменения</button>
+          <sc-if value="{{ profileSaved }}" hint-placeholder-val="{{ false }}">
+            <span style="margin-left: 14px; font-size: 14px; color: #2E7D32; font-weight: 600;">Сохранено</span>
+          </sc-if>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 32px; max-width: 560px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Смена пароля</h2>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ТЕКУЩИЙ ПАРОЛЬ</label>
+            <input type="password" value="{{ currentPassword }}" onChange="{{ onCurrentPasswordChange }}" style="width: 100%; height: 48px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">НОВЫЙ ПАРОЛЬ</label>
+            <input type="password" value="{{ newPassword }}" onChange="{{ onNewPasswordChange }}" style="width: 100%; height: 48px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+          </div>
+          <div style="margin-bottom: 24px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ПОВТОРИТЕ НОВЫЙ ПАРОЛЬ</label>
+            <input type="password" value="{{ confirmPassword }}" onChange="{{ onConfirmPasswordChange }}" style="width: 100%; height: 48px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+          </div>
+          <button onClick="{{ savePassword }}" style="background: #1657C4; color: #fff; border: none; padding: 13px 24px; border-radius: 9px; font-size: 15px; font-weight: 700; cursor: pointer;" style-hover="background: #123F94;">Изменить пароль</button>
+          <sc-if value="{{ passwordSaved }}" hint-placeholder-val="{{ false }}">
+            <span style="margin-left: 14px; font-size: 14px; color: #2E7D32; font-weight: 600;">Пароль изменён</span>
+          </sc-if>
+        </div>
+      </sc-if>
+
+    </div>
+
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const TAB_BASE = 'display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 9px; text-decoration: none; font-size: 14.5px; border: none; cursor: pointer; width: 100%; text-align: left; font-family: inherit;';
+const TAB_ACTIVE = TAB_BASE + ' background: #EAF1FB; color: #1657C4; font-weight: 600;';
+const TAB_INACTIVE = TAB_BASE + ' background: transparent; color: #3A4048; font-weight: 500;';
+
+const ORDERS_STORAGE_KEY = 'iteross_order_statuses';
+
+function readOrderStatuses() {
+  try { return JSON.parse(localStorage.getItem(ORDERS_STORAGE_KEY)) || {}; } catch (e) { return {}; }
+}
+
+const ORDERS_DATA = [
+  { number: '1042', item: 'CNMG120408-GM', qty: 50, date: '12.07.2026', status: 'forming', total: '59 400 ₽', address: 'г. Санкт-Петербург, Промышленная ул., 25', manager: 'Анна Смирнова', tracking: '—' },
+  { number: '1038', item: 'APMT1604PDER-M2', qty: 20, date: '05.07.2026', status: 'shipping', total: '32 800 ₽', address: 'г. Москва, Ленинский пр-т, 15', manager: 'Дмитрий Ковалёв', tracking: 'СДЭК 1234567890' },
+  { number: '1021', item: 'MGMN300-M-GM', qty: 30, date: '28.06.2026', status: 'delivered', total: '29 400 ₽', address: 'г. Казань, ул. Заводская, 8', manager: 'Анна Смирнова', tracking: 'СДЭК 0987654321' },
+];
+
+const STATUS_META = {
+  forming: { label: 'Формируем заказ', bg: '#FDF3E3', color: '#B8791E' },
+  shipping: { label: 'В доставке', bg: '#EAF1FB', color: '#1657C4' },
+  delivered: { label: 'Доставлено', bg: '#EAF6EC', color: '#2E7D32' },
+};
+
+const STEP_ORDER = ['forming', 'shipping', 'delivered'];
+
+const FAVORITES_DATA = [
+  { id: 'cnmg', name: 'CNMG120408-GM', price: '1 190 ₽ / шт.' },
+  { id: '16er', name: '16ER-AG60-GM', price: '1 420 ₽ / шт.' },
+];
+
+class Component extends DCLogic {
+  state = {
+    tab: 'orders',
+    selectedOrderNumber: null,
+    firstName: 'Иван', lastName: 'Иванов', email: 'ivan@company.ru', phone: '+7 (495) 123-45-67',
+    profileSaved: false,
+    currentPassword: '', newPassword: '', confirmPassword: '',
+    passwordSaved: false,
+    favoriteIds: FAVORITES_DATA.map(f => f.id),
+  };
+
+  removeFavorite = (id) => this.setState(s => ({ favoriteIds: s.favoriteIds.filter(x => x !== id) }));
+
+  showOrders = () => this.setState({ tab: 'orders', selectedOrderNumber: null });
+  showFavorites = () => this.setState({ tab: 'favorites', selectedOrderNumber: null });
+  showProfile = () => this.setState({ tab: 'profile', selectedOrderNumber: null });
+  openOrder = (number) => this.setState({ selectedOrderNumber: number });
+  backToOrders = () => this.setState({ selectedOrderNumber: null });
+
+  onFirstNameChange = (e) => this.setState({ firstName: e.target.value });
+  onLastNameChange = (e) => this.setState({ lastName: e.target.value });
+  onEmailChange = (e) => this.setState({ email: e.target.value });
+  onPhoneChange = (e) => this.setState({ phone: e.target.value });
+  onCurrentPasswordChange = (e) => this.setState({ currentPassword: e.target.value });
+  onNewPasswordChange = (e) => this.setState({ newPassword: e.target.value });
+  onConfirmPasswordChange = (e) => this.setState({ confirmPassword: e.target.value });
+
+  saveProfile = () => {
+    this.setState({ profileSaved: true });
+    setTimeout(() => this.setState({ profileSaved: false }), 2500);
+  };
+
+  savePassword = () => {
+    this.setState({ passwordSaved: true, currentPassword: '', newPassword: '', confirmPassword: '' });
+    setTimeout(() => this.setState({ passwordSaved: false }), 2500);
+  };
+
+  renderVals() {
+    const overrides = readOrderStatuses();
+    const orders = ORDERS_DATA.map(o => {
+      const status = overrides[o.number] || o.status;
+      const meta = STATUS_META[status];
+      return { ...o, status, statusLabel: meta.label, statusBg: meta.bg, statusColor: meta.color, open: () => this.openOrder(o.number) };
+    });
+
+    let selectedOrder = null;
+    if (this.state.selectedOrderNumber) {
+      const rawBase = ORDERS_DATA.find(o => o.number === this.state.selectedOrderNumber);
+      const raw = { ...rawBase, status: overrides[rawBase.number] || rawBase.status };
+      const meta = STATUS_META[raw.status];
+      const stepIdx = STEP_ORDER.indexOf(raw.status);
+      const stepColor = (i) => i <= stepIdx ? meta.color : '#D6DAE0';
+      selectedOrder = {
+        ...raw,
+        statusLabel: meta.label, statusBg: meta.bg, statusColor: meta.color,
+        step1Color: stepColor(0), step2Color: stepColor(1), step3Color: stepColor(2),
+        line1Color: stepIdx >= 1 ? meta.color : '#E3E6EA',
+        line2Color: stepIdx >= 2 ? meta.color : '#E3E6EA',
+      };
+    }
+
+    return {
+      isOrdersList: this.state.tab === 'orders' && !this.state.selectedOrderNumber,
+      isOrderDetail: this.state.tab === 'orders' && !!this.state.selectedOrderNumber,
+      isFavorites: this.state.tab === 'favorites',
+      isProfile: this.state.tab === 'profile',
+      orders,
+      selectedOrder: selectedOrder || {},
+      backToOrders: this.backToOrders,
+      favorites: FAVORITES_DATA.filter(f => this.state.favoriteIds.includes(f.id)).map(f => ({ ...f, remove: () => this.removeFavorite(f.id) })),
+      noFavorites: this.state.favoriteIds.length === 0,
+      ordersTabStyle: this.state.tab === 'orders' ? TAB_ACTIVE : TAB_INACTIVE,
+      favoritesTabStyle: this.state.tab === 'favorites' ? TAB_ACTIVE : TAB_INACTIVE,
+      profileTabStyle: this.state.tab === 'profile' ? TAB_ACTIVE : TAB_INACTIVE,
+      showOrders: this.showOrders,
+      showFavorites: this.showFavorites,
+      showProfile: this.showProfile,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      phone: this.state.phone,
+      onFirstNameChange: this.onFirstNameChange,
+      onLastNameChange: this.onLastNameChange,
+      onEmailChange: this.onEmailChange,
+      onPhoneChange: this.onPhoneChange,
+      saveProfile: this.saveProfile,
+      profileSaved: this.state.profileSaved,
+      currentPassword: this.state.currentPassword,
+      newPassword: this.state.newPassword,
+      confirmPassword: this.state.confirmPassword,
+      onCurrentPasswordChange: this.onCurrentPasswordChange,
+      onNewPasswordChange: this.onNewPasswordChange,
+      onConfirmPasswordChange: this.onConfirmPasswordChange,
+      savePassword: this.savePassword,
+      passwordSaved: this.state.passwordSaved,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+    body { margin: 0; }
+  </style>
+</helmet>
+
+<div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14161A; background: #F7F8FA; min-height: 100vh; width: 100%; display: flex; flex-direction: column;">
+
+  <!-- ============ SIMPLE HEADER ============ -->
+  <header style="background: #FFFFFF; border-bottom: 1px solid #E3E6EA;">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 18px 20px;">
+      <a href="./Главная АЙТЕРОСС.dc.html" style="text-decoration: none;">
+        <div style="font-size: 22px; font-weight: 700; color: #0B2545; letter-spacing: 0.3px;">АЙТЕРОСС</div>
+      </a>
+    </div>
+  </header>
+
+  <!-- ============ REGISTER CARD ============ -->
+  <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 20px;">
+    <div style="width: 100%; max-width: 440px; background: #fff; border: 1px solid #E3E6EA; border-radius: 16px; box-shadow: 0 24px 48px -20px rgba(11,37,69,0.15); padding: 40px;">
+      <h1 style="font-size: 26px; font-weight: 700; color: #14161A; margin: 0 0 8px;">Регистрация</h1>
+      <p style="font-size: 15px; color: #6B7480; margin: 0 0 32px; line-height: 1.5;">Создайте личный кабинет — работаем только с юридическими лицами.</p>
+
+      <form onSubmit="{{ submitRegister }}">
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ИМЯ</label>
+          <input required value="{{ firstName }}" onChange="{{ onFirstNameChange }}" placeholder="Иван" style="width: 100%; height: 50px; border: 1.5px solid #D6DAE0; border-radius: 10px; padding: 0 16px; font-size: 15.5px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+        </div>
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ФАМИЛИЯ</label>
+          <input required value="{{ lastName }}" onChange="{{ onLastNameChange }}" placeholder="Иванов" style="width: 100%; height: 50px; border: 1.5px solid #D6DAE0; border-radius: 10px; padding: 0 16px; font-size: 15.5px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+        </div>
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">КОМПАНИЯ</label>
+          <input required value="{{ company }}" onChange="{{ onCompanyChange }}" placeholder="ООО «Компания»" style="width: 100%; height: 50px; border: 1.5px solid #D6DAE0; border-radius: 10px; padding: 0 16px; font-size: 15.5px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+        </div>
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ПОЧТА</label>
+          <input required type="email" value="{{ email }}" onChange="{{ onEmailChange }}" placeholder="you@company.ru" style="width: 100%; height: 50px; border: 1.5px solid #D6DAE0; border-radius: 10px; padding: 0 16px; font-size: 15.5px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+        </div>
+        <div style="margin-bottom: 28px;">
+          <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">НОМЕР ТЕЛЕФОНА</label>
+          <input required value="{{ phone }}" onChange="{{ onPhoneChange }}" placeholder="+7 (___) ___-__-__" style="width: 100%; height: 50px; border: 1.5px solid #D6DAE0; border-radius: 10px; padding: 0 16px; font-size: 15.5px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+        </div>
+
+        <button type="submit" style="width: 100%; background: #1657C4; color: #fff; border: none; padding: 16px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;" style-hover="background: #123F94;">Зарегистрироваться</button>
+      </form>
+
+      <div style="text-align: center; margin-top: 22px;">
+        <a href="./Авторизация.dc.html" style="font-size: 14.5px; color: #1657C4; text-decoration: none; font-weight: 600;" style-hover="text-decoration: underline;">Уже есть аккаунт? Войти</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { firstName: '', lastName: '', company: '', email: '', phone: '' };
+
+  onFirstNameChange = (e) => this.setState({ firstName: e.target.value });
+  onLastNameChange = (e) => this.setState({ lastName: e.target.value });
+  onCompanyChange = (e) => this.setState({ company: e.target.value });
+  onEmailChange = (e) => this.setState({ email: e.target.value });
+  onPhoneChange = (e) => this.setState({ phone: e.target.value });
+
+  submitRegister = (e) => {
+    e.preventDefault();
+    window.location.href = './Личный кабинет.dc.html';
+  };
+
+  renderVals() {
+    return {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      company: this.state.company,
+      email: this.state.email,
+      phone: this.state.phone,
+      onFirstNameChange: this.onFirstNameChange,
+      onLastNameChange: this.onLastNameChange,
+      onCompanyChange: this.onCompanyChange,
+      onEmailChange: this.onEmailChange,
+      onPhoneChange: this.onPhoneChange,
+      submitRegister: this.submitRegister,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

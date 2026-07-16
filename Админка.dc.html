@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+    body { margin: 0; }
+  </style>
+</helmet>
+
+<div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14161A; background: #F7F8FA; min-height: 100vh; width: 100%; display: flex;">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside style="width: 260px; flex: none; background: #FFFFFF; border-right: 1px solid #E3E6EA; min-height: 100vh; padding: 24px 18px; box-sizing: border-box;">
+    <div style="font-size: 19px; font-weight: 700; color: #0B2545; letter-spacing: 0.3px; margin-bottom: 6px; padding: 0 8px;">АЙТЕРОСС</div>
+    <div style="font-size: 12.5px; color: #8891A0; margin-bottom: 28px; padding: 0 8px;">Панель администратора</div>
+
+    <nav style="display: flex; flex-direction: column; gap: 4px;">
+      <button onClick="{{ showPagesPicker }}" style="{{ pagesTabStyle }}">Страницы</button>
+
+      <div style="font-size: 12px; font-weight: 700; color: #8891A0; letter-spacing: 0.5px; padding: 16px 12px 4px; border-top: 1px solid #E3E6EA; margin-top: 8px;">УПРАВЛЕНИЕ</div>
+      <button onClick="{{ showOrders }}" style="{{ ordersTabStyle }}">Заявки</button>
+      <button onClick="{{ showProducts }}" style="{{ productsTabStyle }}">Товары</button>
+      <a href="./Вход администратора.dc.html" style="display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 9px; text-decoration: none; color: #C43D3D; font-size: 14.5px; font-weight: 500; margin-top: 16px; border-top: 1px solid #E3E6EA; padding-top: 20px;" style-hover="background: #FBEAEA;">Выйти</a>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div style="flex: 1; padding: 32px 40px; min-width: 0;">
+
+    <!-- ---- PAGES PICKER ---- -->
+    <sc-if value="{{ isPagesPicker }}" hint-placeholder-val="{{ false }}">
+      <h1 style="font-size: 26px; font-weight: 700; color: #14161A; margin: 0 0 24px;">Страницы сайта</h1>
+      <p style="font-size: 14.5px; color: #8891A0; margin: 0 0 24px;">Выберите страницу, которую хотите отредактировать.</p>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px;">
+        <sc-for list="{{ pages }}" as="p" hint-placeholder-count="4">
+          <button onClick="{{ p.select }}" style="text-align: left; background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 24px; cursor: pointer; font-family: inherit; display: flex; flex-direction: column; gap: 10px;" style-hover="border-color: #1657C4; box-shadow: 0 12px 28px -16px rgba(11,37,69,0.2);">
+            <div style="width: 40px; height: 40px; border-radius: 9px; background: #EAF1FB; display: flex; align-items: center; justify-content: center;">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="#1657C4" stroke-width="1.6"/><path d="M4 9h16M9 9v11" stroke="#1657C4" stroke-width="1.6"/></svg>
+            </div>
+            <div style="font-size: 16px; font-weight: 700; color: #14161A;">{{ p.label }}</div>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- ---- HOME PAGE EDITOR ---- -->
+    <sc-if value="{{ isHomeEditor }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px;">
+        <h1 style="font-size: 26px; font-weight: 700; color: #14161A; margin: 0;">Редактор: Главная страница</h1>
+        <a href="./Главная АЙТЕРОСС.dc.html" target="_blank" style="font-size: 14px; color: #1657C4; text-decoration: none; font-weight: 600;" style-hover="text-decoration: underline;">Открыть страницу →</a>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; max-width: 760px;">
+
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Первый экран (hero)</h2>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ЗАГОЛОВОК</label>
+            <input value="{{ heroTitle }}" onChange="{{ onHeroTitleChange }}" style="width: 100%; height: 48px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ПОДЗАГОЛОВОК</label>
+            <textarea value="{{ heroSubtitle }}" onChange="{{ onHeroSubtitleChange }}" rows="2" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 12px 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+          </div>
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ТЕКСТ КНОПКИ CTA</label>
+            <input value="{{ heroCta }}" onChange="{{ onHeroCtaChange }}" style="width: 100%; height: 48px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Преимущества в hero</h2>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <sc-for list="{{ heroBenefits }}" as="b" hint-placeholder-count="4">
+              <input value="{{ b.value }}" onChange="{{ b.onChange }}" style="width: 100%; height: 46px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 14.5px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- ---- ADVANTAGES (6 cards) ---- -->
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Преимущества (6 карточек)</h2>
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <sc-for list="{{ advantages }}" as="a" hint-placeholder-count="6">
+              <div style="display: flex; gap: 16px; align-items: flex-start; padding-bottom: 18px; border-bottom: 1px solid #EDEFF2;">
+                <label style="width: 56px; height: 56px; border-radius: 10px; background: #F7F8FA; border: 1.5px dashed #D6DAE0; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; overflow: hidden; background-image: {{ a.iconBg }}; background-size: cover; background-position: center;" style-hover="border-color: #1657C4;">
+                  <sc-if value="{{ a.noIconPhoto }}" hint-placeholder-val="{{ true }}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 15V3M7 8l5-5 5 5M5 21h14" stroke="#8891A0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </sc-if>
+                  <input type="file" accept="image/*" onChange="{{ a.onIconChange }}" style="display: none;"/>
+                </label>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+                  <input value="{{ a.title }}" onChange="{{ a.onTitleChange }}" placeholder="Заголовок" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14.5px; font-weight: 600; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+                  <textarea value="{{ a.desc }}" onChange="{{ a.onDescChange }}" placeholder="Описание" rows="2" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- ---- WORK TYPES (6 cards) ---- -->
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Виды производимых работ</h2>
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <sc-for list="{{ workTypes }}" as="w" hint-placeholder-count="6">
+              <div style="display: flex; gap: 16px; align-items: flex-start; padding-bottom: 18px; border-bottom: 1px solid #EDEFF2;">
+                <label style="width: 72px; height: 56px; border-radius: 10px; background-color: #F7F8FA; background-image: {{ w.photoBg }}; background-size: cover; background-position: center; border: 1.5px dashed #D6DAE0; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none;" style-hover="border-color: #1657C4;">
+                  <input type="file" accept="image/*" onChange="{{ w.onPhotoChange }}" style="display: none;"/>
+                </label>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+                  <input value="{{ w.title }}" onChange="{{ w.onTitleChange }}" placeholder="Заголовок" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14.5px; font-weight: 600; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+                  <textarea value="{{ w.desc }}" onChange="{{ w.onDescChange }}" placeholder="Описание" rows="2" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- ---- ABOUT ---- -->
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Блок «О компании»</h2>
+          <div style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 16px;">
+            <label style="width: 130px; height: 96px; border-radius: 10px; background-color: #F7F8FA; background-image: {{ aboutPhotoBg }}; background-size: cover; background-position: center; border: 1.5px dashed #D6DAE0; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none;" style-hover="border-color: #1657C4;">
+              <sc-if value="{{ noAboutPhoto }}" hint-placeholder-val="{{ false }}">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 15V3M7 8l5-5 5 5M5 21h14" stroke="#8891A0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </sc-if>
+              <input type="file" accept="image/*" onChange="{{ onAboutPhotoChange }}" style="display: none;"/>
+            </label>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+              <textarea value="{{ aboutParagraph1 }}" onChange="{{ onAboutParagraph1Change }}" rows="3" placeholder="Первый абзац" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 12px 14px; font-size: 14.5px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+              <textarea value="{{ aboutParagraph2 }}" onChange="{{ onAboutParagraph2Change }}" rows="3" placeholder="Второй абзац" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 12px 14px; font-size: 14.5px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---- FAQ ---- -->
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">FAQ</h2>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <sc-for list="{{ faq }}" as="f" hint-placeholder-count="4">
+              <div style="display: flex; flex-direction: column; gap: 8px; padding-bottom: 16px; border-bottom: 1px solid #EDEFF2;">
+                <input value="{{ f.q }}" onChange="{{ f.onQChange }}" placeholder="Вопрос" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14.5px; font-weight: 600; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+                <textarea value="{{ f.a }}" onChange="{{ f.onAChange }}" placeholder="Ответ" rows="2" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- ---- LEAD FORM LABELS ---- -->
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Подписи полей формы заявки</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">ПОЛЕ «ИМЯ И КОМПАНИЯ»</label>
+              <input value="{{ formLabelName }}" onChange="{{ onFormLabelNameChange }}" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+            </div>
+            <div>
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">ПОЛЕ «ТЕЛЕФОН»</label>
+              <input value="{{ formLabelPhone }}" onChange="{{ onFormLabelPhoneChange }}" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+            </div>
+            <div>
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">ПОЛЕ «EMAIL»</label>
+              <input value="{{ formLabelEmail }}" onChange="{{ onFormLabelEmailChange }}" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+            </div>
+            <div>
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">ПОЛЕ «КОММЕНТАРИЙ»</label>
+              <input value="{{ formLabelComment }}" onChange="{{ onFormLabelCommentChange }}" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+            </div>
+          </div>
+          <div>
+            <label style="display: block; font-size: 12.5px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">ТЕКСТ КНОПКИ ОТПРАВКИ</label>
+            <input value="{{ formSubmitLabel }}" onChange="{{ onFormSubmitLabelChange }}" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+          </div>
+        </div>
+
+        <div>
+          <button onClick="{{ saveHome }}" style="background: #1657C4; color: #fff; border: none; padding: 14px 26px; border-radius: 10px; font-size: 15.5px; font-weight: 700; cursor: pointer;" style-hover="background: #123F94;">Сохранить изменения</button>
+          <sc-if value="{{ homeSaved }}" hint-placeholder-val="{{ false }}">
+            <span style="margin-left: 14px; font-size: 14px; color: #2E7D32; font-weight: 600;">Сохранено — обновите главную страницу, чтобы увидеть изменения</span>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ---- CATALOG PAGE EDITOR ---- -->
+    <sc-if value="{{ isCatalogEditor }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px;">
+        <h1 style="font-size: 26px; font-weight: 700; color: #14161A; margin: 0;">Редактор: Каталог</h1>
+        <a href="./Каталог.dc.html" target="_blank" style="font-size: 14px; color: #1657C4; text-decoration: none; font-weight: 600;" style-hover="text-decoration: underline;">Открыть страницу →</a>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; max-width: 760px;">
+
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Заголовок и подзаголовок</h2>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ЗАГОЛОВОК (когда категория не выбрана)</label>
+            <input value="{{ catPageTitle }}" onChange="{{ onCatPageTitleChange }}" style="width: 100%; height: 48px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+          </div>
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ПОДЗАГОЛОВОК</label>
+            <textarea value="{{ catPageSubtitle }}" onChange="{{ onCatPageSubtitleChange }}" rows="2" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 12px 14px; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Категории</h2>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <sc-for list="{{ catCategories }}" as="c" hint-placeholder-count="6">
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <input value="{{ c.label }}" onChange="{{ c.onChange }}" style="flex: 1; height: 44px; border: 1.5px solid #D6DAE0; border-radius: 9px; padding: 0 14px; font-size: 14.5px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+                <button onClick="{{ c.addProduct }}" title="Добавить товар в категорию" style="height: 44px; padding: 0 14px; background: #EAF1FB; color: #1657C4; border: none; border-radius: 9px; font-size: 13.5px; font-weight: 700; cursor: pointer; white-space: nowrap; flex: none;" style-hover="background: #D9E7FA;">+ Товар</button>
+                <button onClick="{{ c.remove }}" aria-label="Удалить категорию" style="width: 44px; height: 44px; border-radius: 9px; border: none; background: #FBEAEA; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none;" style-hover="background: #F5D5D5;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M9 6V4h6v2M6 6l1 15h10l1-15" stroke="#C43D3D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ addCategory }}" style="margin-top: 14px; background: #fff; color: #1657C4; border: 1.5px solid #1657C4; padding: 11px 18px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer;" style-hover="background: #EAF1FB;">+ Добавить категорию</button>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Фильтры сайдбара</h2>
+          <p style="font-size: 13px; color: #8891A0; margin: 0 0 16px;">Каждое значение — с новой строки.</p>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div>
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">РАДИУС ПРИ ВЕРШИНЕ RE</label>
+              <textarea value="{{ radiusText }}" onChange="{{ onRadiusTextChange }}" rows="3" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+            </div>
+            <div>
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">РАЗМЕР ПЛАСТИНЫ</label>
+              <textarea value="{{ sizeText }}" onChange="{{ onSizeTextChange }}" rows="3" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+            </div>
+            <div>
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">СПЛАВ ПЛАСТИНЫ</label>
+              <textarea value="{{ alloyText }}" onChange="{{ onAlloyTextChange }}" rows="4" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+            </div>
+            <div>
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">СТРУЖКОЛОМ</label>
+              <textarea value="{{ chipbreakerText }}" onChange="{{ onChipbreakerTextChange }}" rows="4" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box; resize: vertical;" style-focus="border-color: #1657C4;"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <button onClick="{{ saveCatalog }}" style="background: #1657C4; color: #fff; border: none; padding: 14px 26px; border-radius: 10px; font-size: 15.5px; font-weight: 700; cursor: pointer;" style-hover="background: #123F94;">Сохранить изменения</button>
+          <sc-if value="{{ catalogSaved }}" hint-placeholder-val="{{ false }}">
+            <span style="margin-left: 14px; font-size: 14px; color: #2E7D32; font-weight: 600;">Сохранено — обновите страницу каталога, чтобы увидеть изменения</span>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ---- PRODUCT CARD PAGE EDITOR ---- -->
+    <sc-if value="{{ isProductEditor }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px;">
+        <h1 style="font-size: 26px; font-weight: 700; color: #14161A; margin: 0;">Редактор: Карточка товара</h1>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <sc-if value="{{ productSaved }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size: 14px; color: #2E7D32; font-weight: 600;">Сохранено</span>
+          </sc-if>
+          <a href="./Товар.dc.html" target="_blank" style="font-size: 14px; color: #1657C4; text-decoration: none; font-weight: 600;" style-hover="text-decoration: underline;">Открыть страницу ↗</a>
+          <button onClick="{{ saveProduct }}" style="background: #1657C4; color: #fff; border: none; padding: 12px 22px; border-radius: 8px; font-size: 14.5px; font-weight: 700; cursor: pointer;" style-hover="background: #123F94;">Сохранить</button>
+        </div>
+      </div>
+
+<p style="font-size: 14.5px; color: #6B7480; margin: 0 0 20px; max-width: 640px;">Настройте, какие блоки и строки характеристик показывать на странице товара по умолчанию. Значения (артикул, цена, остаток и т.д.) редактируются в разделе «Товары» у каждого товара отдельно.</p>
+
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px; margin-bottom: 20px;">
+        <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 18px;">Фотографии</h2>
+        <div style="display: flex; align-items: center; justify-content: space-between; max-width: 420px;">
+          <span style="font-size: 15px; color: #14161A;">Количество фото в галерее (макс. 10)</span>
+          <input type="number" min="1" max="10" value="{{ productPhotoCount }}" onChange="{{ onProductPhotoCount }}" style="width: 72px; height: 40px; border: 1.5px solid #D6DAE0; border-radius: 8px; text-align: center; font-size: 15px; font-family: inherit; outline: none;" style-focus="border-color: #1657C4;"/>
+        </div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px; margin-bottom: 20px;">
+        <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 18px;">Блоки карточки</h2>
+        <div style="display: flex; flex-direction: column;">
+          <sc-for list="{{ productBlockToggles }}" as="b" hint-placeholder-count="6">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid #EDEFF2;">
+              <span style="font-size: 15px; color: #14161A;">{{ b.label }}</span>
+              <button onClick="{{ b.toggle }}" style="position: relative; width: 44px; height: 24px; border-radius: 100px; border: none; padding: 0; cursor: pointer; background: {{ b.bg }}; flex: none;">
+                <span style="position: absolute; top: 2px; left: {{ b.knobLeft }}; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.25); transition: left 0.15s;"></span>
+              </button>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 28px;">
+        <h2 style="font-size: 17px; font-weight: 700; color: #14161A; margin: 0 0 18px;">Строки характеристик</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px;">
+          <sc-for list="{{ productRowToggles }}" as="r" hint-placeholder-count="10">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid #EDEFF2;">
+              <span style="font-size: 15px; color: #14161A;">{{ r.label }}</span>
+              <button onClick="{{ r.toggle }}" style="position: relative; width: 44px; height: 24px; border-radius: 100px; border: none; padding: 0; cursor: pointer; background: {{ r.bg }}; flex: none;">
+                <span style="position: absolute; top: 2px; left: {{ r.knobLeft }}; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.25); transition: left 0.15s;"></span>
+              </button>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ---- OTHER PAGE EDITOR (placeholder) ---- -->
+    <sc-if value="{{ isOtherPageEditor }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px;">
+        <h1 style="font-size: 26px; font-weight: 700; color: #14161A; margin: 0;">Редактор: {{ selectedPageLabel }}</h1>
+        <a href="{{ selectedPageHref }}" target="_blank" style="font-size: 14px; color: #1657C4; text-decoration: none; font-weight: 600;" style-hover="text-decoration: underline;">Открыть страницу →</a>
+      </div>
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; padding: 48px; text-align: center; color: #8891A0; font-size: 15px;">Редактор для этой страницы — в разработке.</div>
+    </sc-if>
+
+    <!-- ---- ORDERS TAB ---- -->
+    <sc-if value="{{ isOrders }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+        <h1 style="font-size: 24px; font-weight: 700; color: #14161A; margin: 0;">Заявки</h1>
+        <button onClick="{{ openAddOrderModal }}" style="background: #1657C4; color: #fff; border: none; padding: 11px 18px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; flex: none;" style-hover="background: #123F94;">Создать заказ</button>
+      </div>
+
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 12px; overflow: hidden;">
+        <div style="display: grid; grid-template-columns: 90px 1.2fr 1.4fr 100px 200px; gap: 14px; align-items: center; padding: 12px 20px; background: #F7F8FA; border-bottom: 1px solid #E3E6EA;">
+          <span style="font-size: 12px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">№</span>
+          <span style="font-size: 12px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">КЛИЕНТ</span>
+          <span style="font-size: 12px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">ПОЗИЦИЯ</span>
+          <span style="font-size: 12px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">ДАТА</span>
+          <span style="font-size: 12px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">СТАТУС</span>
+        </div>
+
+        <sc-for list="{{ orderRows }}" as="o" hint-placeholder-count="3">
+          <div style="display: grid; grid-template-columns: 90px 1.2fr 1.4fr 100px 200px; gap: 14px; align-items: center; padding: 14px 20px; border-bottom: 1px solid #EDEFF2; background: {{ o.rowBg }};">
+            <span style="font-size: 14px; color: {{ o.rowText }}; font-weight: 600;">{{ o.number }}</span>
+            <span style="font-size: 14px; color: {{ o.rowText }};">{{ o.client }}</span>
+            <span style="font-size: 14px; color: {{ o.rowMuted }};">{{ o.item }}, {{ o.qty }} шт.</span>
+            <span style="font-size: 14px; color: {{ o.rowMuted }};">{{ o.date }}</span>
+            <select value="{{ o.status }}" onChange="{{ o.onStatusChange }}" style="height: 36px; border: 1.5px solid #D6DAE0; border-radius: 7px; padding: 0 10px; font-size: 13.5px; font-family: inherit; outline: none; background: #fff; box-sizing: border-box; color: {{ o.statusColor }}; font-weight: 600;">
+              <option value="forming">Формируем заказ</option>
+              <option value="shipping">В доставке</option>
+              <option value="delivered">Доставлено</option>
+            </select>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ ordersSaved }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top: 14px; font-size: 14px; color: #2E7D32; font-weight: 600;">Статус обновлён — изменения видны клиенту в личном кабинете</div>
+      </sc-if>
+
+      <!-- ---- CREATE ORDER MODAL ---- -->
+      <sc-if value="{{ isAddOrderModalOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeAddOrderModal }}" style="position: fixed; inset: 0; background: rgba(11,37,69,0.45); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px;">
+          <div onClick="{{ stopPropagation }}" style="background: #fff; border-radius: 16px; width: 100%; max-width: 460px; max-height: 88vh; overflow-y: auto; padding: 28px 28px 24px; box-sizing: border-box;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+              <h2 style="font-size: 20px; font-weight: 700; color: #14161A; margin: 0;">Новый заказ</h2>
+              <button onClick="{{ closeAddOrderModal }}" aria-label="Закрыть" style="width: 32px; height: 32px; border-radius: 8px; border: none; background: #F1F3F6; cursor: pointer; display: flex; align-items: center; justify-content: center;" style-hover="background: #E3E6EA;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="#3A4048" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+              <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">ФИО / КОМПАНИЯ КЛИЕНТА</label>
+              <input value="{{ newOrder.client }}" onChange="{{ newOrder.onClientChange }}" placeholder="ООО «Компания» или Иванов И.И." style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+              <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">ПОЗИЦИЯ</label>
+              <select value="{{ newOrder.sku }}" onChange="{{ newOrder.onSkuChange }}" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 30px 0 12px; font-size: 14px; font-family: inherit; outline: none; background: #fff; box-sizing: border-box;">
+                <option value="">Выберите позицию</option>
+                <sc-for list="{{ productSkuOptions }}" as="p" hint-placeholder-count="6">
+                  <option value="{{ p.sku }}">{{ p.sku }}</option>
+                </sc-for>
+              </select>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">КОЛИЧЕСТВО, ШТ.</label>
+                <input value="{{ newOrder.qty }}" onChange="{{ newOrder.onQtyChange }}" placeholder="10" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+              </div>
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">ДАТА ЗАЯВКИ</label>
+                <input type="date" value="{{ newOrder.date }}" onChange="{{ newOrder.onDateChange }}" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">СТАТУС</label>
+              <select value="{{ newOrder.status }}" onChange="{{ newOrder.onStatusChange }}" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 30px 0 12px; font-size: 14px; font-family: inherit; outline: none; background: #fff; box-sizing: border-box;">
+                <option value="forming">Формируем заказ</option>
+                <option value="shipping">В доставке</option>
+                <option value="delivered">Доставлено</option>
+              </select>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+              <button onClick="{{ closeAddOrderModal }}" style="flex: 1; background: #F1F3F6; color: #3A4048; border: none; padding: 13px; border-radius: 9px; font-size: 14.5px; font-weight: 600; cursor: pointer;" style-hover="background: #E3E6EA;">Отмена</button>
+              <button onClick="{{ confirmAddOrder }}" style="flex: 1; background: #1657C4; color: #fff; border: none; padding: 13px; border-radius: 9px; font-size: 14.5px; font-weight: 700; cursor: pointer;" style-hover="background: #123F94;">Создать заказ</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </sc-if>
+
+    <!-- ---- PRODUCTS TAB ---- -->
+    <sc-if value="{{ isProducts }}" hint-placeholder-val="{{ false }}">
+      <h1 style="font-size: 24px; font-weight: 700; color: #14161A; margin: 0 0 20px;">Список товаров</h1>
+
+      <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+        <button onClick="{{ addProduct }}" style="background: #1657C4; color: #fff; border: none; padding: 11px 18px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; flex: none;" style-hover="background: #123F94;">Добавить товар</button>
+        <button onClick="{{ exportExcel }}" style="background: #fff; color: #1657C4; border: 1.5px solid #1657C4; padding: 11px 18px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; flex: none;" style-hover="background: #EAF1FB;">Экспорт в Excel</button>
+      </div>
+
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        <input value="{{ searchQuery }}" onChange="{{ onSearchQueryChange }}" placeholder="Артикул, наименование" style="flex: 1; min-width: 220px; height: 38px; border: 1.5px solid #D6DAE0; border-radius: 7px; padding: 0 12px; font-size: 13.5px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+        <select value="{{ filterCategoryId }}" onChange="{{ onFilterCategoryChange }}" style="height: 38px; border: 1.5px solid #D6DAE0; border-radius: 7px; padding: 0 10px; font-size: 13.5px; font-family: inherit; outline: none; background: #fff;">
+          <option value="all">Все</option>
+          <sc-for list="{{ categoryOptions }}" as="c" hint-placeholder-count="6">
+            <option value="{{ c.id }}">{{ c.label }}</option>
+          </sc-for>
+        </select>
+        <button onClick="{{ resetFilters }}" style="height: 38px; background: #F1F3F6; color: #3A4048; border: none; padding: 0 16px; border-radius: 7px; font-size: 13.5px; font-weight: 600; cursor: pointer;" style-hover="background: #E3E6EA;">Показать все</button>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <select value="{{ bulkAction }}" onChange="{{ onBulkActionChange }}" disabled="{{ noSelection }}" style="height: 38px; border: 1.5px solid #D6DAE0; border-radius: 7px; padding: 0 12px; font-size: 13.5px; font-family: inherit; outline: none; background: #fff;">
+          <option value="">Действия с отмеченными товарами</option>
+          <option value="hide">Скрыть</option>
+          <option value="delete">Удалить</option>
+        </select>
+      </div>
+
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 12px; overflow-x: auto;">
+        <div style="display: grid; grid-template-columns: 28px 56px 1.1fr 1.4fr 1.1fr 90px 100px 140px 36px; gap: 14px; align-items: center; padding: 12px 20px; background: #F7F8FA; border-bottom: 1px solid #E3E6EA; min-width: 780px;">
+          <input type="checkbox" checked="{{ allSelected }}" onChange="{{ onToggleSelectAll }}" style="width: 16px; height: 16px; accent-color: #1657C4;"/>
+          <span></span>
+          <span style="font-size: 11.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">АРТИКУЛ</span>
+          <span style="font-size: 11.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">НАИМЕНОВАНИЕ</span>
+          <span style="font-size: 11.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">РУБРИКА</span>
+          <span style="font-size: 11.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">КОЛ-ВО</span>
+          <span style="font-size: 11.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">ЦЕНА, ₽</span>
+          <span style="font-size: 11.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px;">ОТОБРАЖЕНИЕ</span>
+          <span></span>
+        </div>
+
+        <sc-for list="{{ productRows }}" as="p" hint-placeholder-count="6">
+          <div style="display: grid; grid-template-columns: 28px 56px 1.1fr 1.4fr 1.1fr 90px 100px 140px 36px; gap: 14px; align-items: center; padding: 12px 20px; border-bottom: 1px solid #EDEFF2; background: {{ p.rowBg }}; min-width: 900px;">
+            <input type="checkbox" checked="{{ p.selected }}" onChange="{{ p.onToggleSelect }}" style="width: 16px; height: 16px; accent-color: #1657C4;"/>
+
+            <label style="width: 48px; height: 48px; border-radius: 7px; background-color: #F7F8FA; background-image: {{ p.photoBg }}; background-size: contain; background-repeat: no-repeat; background-position: center; border: 1px dashed #D6DAE0; cursor: pointer; display: block;" style-hover="border-color: #1657C4;">
+              <input type="file" accept="image/*" onChange="{{ p.onPhotoChange }}" style="display: none;"/>
+            </label>
+
+            <input value="{{ p.sku }}" onChange="{{ p.onSkuChange }}" style="width: 100%; height: 34px; border: 1px solid transparent; border-radius: 6px; padding: 0 8px; font-size: 13.5px; font-family: inherit; outline: none; box-sizing: border-box; background: transparent;" style-hover="border-color: #D6DAE0;" style-focus="border-color: #1657C4; background: #fff;"/>
+
+            <input value="{{ p.name }}" onChange="{{ p.onNameChange }}" style="width: 100%; height: 34px; border: 1px solid transparent; border-radius: 6px; padding: 0 8px; font-size: 13.5px; font-weight: 600; color: #1657C4; font-family: inherit; outline: none; box-sizing: border-box; background: transparent;" style-hover="border-color: #D6DAE0;" style-focus="border-color: #1657C4; background: #fff;"/>
+
+            <select value="{{ p.categoryId }}" onChange="{{ p.onCategoryChange }}" style="width: 100%; height: 34px; border: 1px solid #D6DAE0; border-radius: 6px; padding: 0 20px 0 6px; font-size: 12.5px; font-family: inherit; outline: none; background: #fff; box-sizing: border-box;">
+              <option value="">—</option>
+              <sc-for list="{{ categoryOptions }}" as="c" hint-placeholder-count="6">
+                <option value="{{ c.id }}">{{ c.label }}</option>
+              </sc-for>
+            </select>
+
+            <input value="{{ p.stockQty }}" onChange="{{ p.onStockQtyChange }}" style="width: 100%; height: 34px; border: 1px solid #D6DAE0; border-radius: 6px; padding: 0 8px; font-size: 13.5px; font-family: inherit; outline: none; box-sizing: border-box; color: {{ p.stockColor }}; font-weight: 700;"/>
+
+            <input value="{{ p.price }}" onChange="{{ p.onPriceChange }}" style="width: 100%; height: 34px; border: 1px solid #D6DAE0; border-radius: 6px; padding: 0 8px; font-size: 13.5px; font-family: inherit; outline: none; box-sizing: border-box;"/>
+
+            <select value="{{ p.visibility }}" onChange="{{ p.onVisibilityChange }}" style="width: 100%; height: 34px; border: 1px solid #D6DAE0; border-radius: 6px; padding: 0 6px; font-size: 12.5px; font-family: inherit; outline: none; background: #fff; box-sizing: border-box;">
+              <option value="visible">отображать</option>
+              <option value="hidden">скрыт</option>
+            </select>
+
+            <button onClick="{{ p.remove }}" aria-label="Удалить товар" style="width: 32px; height: 32px; border-radius: 7px; border: none; background: #FBEAEA; display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: #F5D5D5;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M9 6V4h6v2M6 6l1 15h10l1-15" stroke="#C43D3D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <button onClick="{{ saveProducts }}" style="background: #1657C4; color: #fff; border: none; padding: 14px 26px; border-radius: 10px; font-size: 15.5px; font-weight: 700; cursor: pointer;" style-hover="background: #123F94;">Сохранить изменения</button>
+        <sc-if value="{{ productsSaved }}" hint-placeholder-val="{{ false }}">
+          <span style="margin-left: 14px; font-size: 14px; color: #2E7D32; font-weight: 600;">Сохранено — обновите страницу каталога, чтобы увидеть изменения</span>
+        </sc-if>
+      </div>
+
+      <!-- ---- ADD PRODUCT MODAL ---- -->
+      <sc-if value="{{ isAddModalOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeAddModal }}" style="position: fixed; inset: 0; background: rgba(11,37,69,0.45); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px;">
+          <div onClick="{{ stopPropagation }}" style="background: #fff; border-radius: 16px; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; padding: 28px 28px 24px; box-sizing: border-box;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+              <h2 style="font-size: 20px; font-weight: 700; color: #14161A; margin: 0;">Новый товар</h2>
+              <button onClick="{{ closeAddModal }}" aria-label="Закрыть" style="width: 32px; height: 32px; border-radius: 8px; border: none; background: #F1F3F6; cursor: pointer; display: flex; align-items: center; justify-content: center;" style-hover="background: #E3E6EA;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="#3A4048" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+
+            <label style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 120px; border-radius: 10px; background-color: #F7F8FA; background-image: {{ newProduct.photoBg }}; background-size: contain; background-repeat: no-repeat; background-position: center; border: 1.5px dashed #D6DAE0; cursor: pointer; box-sizing: border-box; margin-bottom: 18px;" style-hover="border-color: #1657C4;">
+              <sc-if value="{{ newProduct.hasPhoto }}" hint-placeholder-val="{{ false }}" negate="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 17V7a2 2 0 0 1 2-2h2l1.5-2h5L16 5h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z" stroke="#8891A0" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.5" stroke="#8891A0" stroke-width="1.6"/></svg>
+                <span style="font-size: 13px; color: #8891A0;">Загрузить фото</span>
+              </sc-if>
+              <input type="file" accept="image/*" onChange="{{ newProduct.onPhotoChange }}" style="display: none;"/>
+            </label>
+
+            <div style="margin-bottom: 14px;">
+              <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">АРТИКУЛ</label>
+              <input value="{{ newProduct.sku }}" onChange="{{ newProduct.onSkuChange }}" placeholder="Например, CNMG120408-GM" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+              <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">НАИМЕНОВАНИЕ</label>
+              <input value="{{ newProduct.name }}" onChange="{{ newProduct.onNameChange }}" placeholder="Например, Токарная пластина CNMG120408" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+              <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">РУБРИКА</label>
+              <select value="{{ newProduct.categoryId }}" onChange="{{ newProduct.onCategoryChange }}" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 30px 0 12px; font-size: 14px; font-family: inherit; outline: none; background: #fff; box-sizing: border-box;">
+                <option value="">Выберите рубрику</option>
+                <sc-for list="{{ categoryOptions }}" as="c" hint-placeholder-count="6">
+                  <option value="{{ c.id }}">{{ c.label }}</option>
+                </sc-for>
+              </select>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">КОЛ-ВО НА СКЛАДЕ</label>
+                <input value="{{ newProduct.stockQty }}" onChange="{{ newProduct.onStockQtyChange }}" placeholder="0" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+              </div>
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">ЦЕНА, ₽/ШТ.</label>
+                <input value="{{ newProduct.price }}" onChange="{{ newProduct.onPriceChange }}" placeholder="0" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 12px; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" style-focus="border-color: #1657C4;"/>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <label style="display: block; font-size: 12px; font-weight: 700; color: #8891A0; margin-bottom: 6px;">ОТОБРАЖЕНИЕ НА САЙТЕ</label>
+              <select value="{{ newProduct.visibility }}" onChange="{{ newProduct.onVisibilityChange }}" style="width: 100%; height: 42px; border: 1.5px solid #D6DAE0; border-radius: 8px; padding: 0 30px 0 12px; font-size: 14px; font-family: inherit; outline: none; background: #fff; box-sizing: border-box;">
+                <option value="visible">Отображать</option>
+                <option value="hidden">Не отображать</option>
+              </select>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+              <button onClick="{{ closeAddModal }}" style="flex: 1; background: #F1F3F6; color: #3A4048; border: none; padding: 13px; border-radius: 9px; font-size: 14.5px; font-weight: 600; cursor: pointer;" style-hover="background: #E3E6EA;">Отмена</button>
+              <button onClick="{{ confirmAddProduct }}" style="flex: 1; background: #1657C4; color: #fff; border: none; padding: 13px; border-radius: 9px; font-size: 14.5px; font-weight: 700; cursor: pointer;" style-hover="background: #123F94;">Создать товар</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </sc-if>
+
+
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const TAB_BASE = 'display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 9px; text-decoration: none; font-size: 14.5px; border: none; cursor: pointer; width: 100%; text-align: left; font-family: inherit;';
+const TAB_ACTIVE = TAB_BASE + ' background: #EAF1FB; color: #1657C4; font-weight: 600;';
+const TAB_INACTIVE = TAB_BASE + ' background: transparent; color: #3A4048; font-weight: 500;';
+
+const ORDERS_STORAGE_KEY = 'iteross_order_statuses';
+
+const ORDERS_DATA_BASE = [
+  { number: '1042', client: 'ООО «Компания»', item: 'CNMG120408-GM', qty: 50, date: '12.07.2026', status: 'forming' },
+  { number: '1038', client: 'ООО «Стан-Пром»', item: 'APMT1604PDER-M2', qty: 20, date: '05.07.2026', status: 'shipping' },
+  { number: '1021', client: 'ИП Петров', item: 'MGMN300-M-GM', qty: 30, date: '28.06.2026', status: 'delivered' },
+];
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  return d + '.' + m + '.' + y;
+}
+
+const STATUS_COLORS = { forming: '#B8791E', shipping: '#1657C4', delivered: '#2E7D32' };
+
+function readOrderStatuses() {
+  try { return JSON.parse(localStorage.getItem(ORDERS_STORAGE_KEY)) || {}; } catch (e) { return {}; }
+}
+
+const PAGES = [
+  { id: 'home', label: 'Главная', href: './Главная АЙТЕРОСС.dc.html' },
+  { id: 'catalog', label: 'Каталог', href: './Каталог.dc.html' },
+  { id: 'delivery', label: 'Доставка', href: './Доставка.dc.html' },
+  { id: 'product', label: 'Карточка товара', href: './Товар.dc.html' },
+];
+
+class Component extends DCLogic {
+  state = {
+    tab: 'page',
+    selectedPageId: 'home',
+    heroTitle: 'Твердосплавные пластины для станков с ЧПУ',
+    heroSubtitle: 'Прямые поставки, подбор аналогов и стабильные партии от 10 штук — для производств, которым важна предсказуемость.',
+    heroCta: 'Получить предложение',
+    heroBenefits: [
+      'Работаем с юридическими лицами',
+      'Минимальная партия от 10 шт.',
+      'Подбор аналогов',
+      'Поставка по России',
+    ],
+    advantages: [
+      { title: 'Только юридическим лицам', desc: 'Работаем по договору и счёту, с закрывающими документами для бухгалтерии.', iconPhoto: '' },
+      { title: 'Партии от 10 шт.', desc: 'Минимальный порог ниже, чем у большинства дистрибьюторов — удобно для тестовых закупок.', iconPhoto: '' },
+      { title: 'Подбор аналогов', desc: 'Поможем подобрать замену пластине от Sandvik, ISCAR, Walter или Kennametal.', iconPhoto: '' },
+      { title: 'Поставка по всей России', desc: 'Отгружаем транспортными компаниями в любой регион, сроки — от 2 дней.', iconPhoto: '' },
+      { title: 'Техническая консультация', desc: 'Инженер поможет с выбором геометрии, покрытия и марки сплава под задачу.', iconPhoto: '' },
+      { title: 'Стабильное наличие', desc: 'Держим складской запас ходовых позиций, чтобы не срывать сроки производства.', iconPhoto: '' },
+    ],
+    workTypes: [
+      { title: 'Токарные пластины', desc: 'Точение валов, втулок и тел вращения на станках с ЧПУ. Подбор геометрии под черновую и чистовую обработку.', photo: 'https://images.unsplash.com/photo-1666618090858-fbcee636bd3e?fm=jpg&q=80&w=1200&auto=format&fit=crop' },
+      { title: 'Фрезерные пластины', desc: 'Торцевое и концевое фрезерование корпусных деталей, плоскостей и пазов.', photo: 'https://images.unsplash.com/photo-1570207344214-c60ad57f3c00?fm=jpg&q=80&w=1200&auto=format&fit=crop' },
+      { title: 'Канавочные пластины', desc: 'Протачивание канавок, отрезка и обработка узких пазов с высокой точностью.', photo: 'https://images.unsplash.com/photo-1776090188130-26c7253ff423?fm=jpg&q=80&w=1200&auto=format&fit=crop' },
+      { title: 'Резьбовые пластины', desc: 'Нарезание наружной и внутренней резьбы различного профиля и шага.', photo: 'https://images.unsplash.com/photo-1666618090858-fbcee636bd3e?fm=jpg&q=80&w=1200&auto=format&fit=crop' },
+      { title: 'Сверлильные пластины', desc: 'Сверление отверстий в стали, чугуне и нержавеющих сталях.', photo: 'https://images.unsplash.com/photo-1570207344214-c60ad57f3c00?fm=jpg&q=80&w=1200&auto=format&fit=crop' },
+      { title: 'Обработка нержавеющих и жаропрочных сталей', desc: 'Подбор пластин и режимов резания для труднообрабатываемых материалов и легированных сталей.', photo: 'https://images.unsplash.com/photo-1776090188130-26c7253ff423?fm=jpg&q=80&w=1200&auto=format&fit=crop' },
+    ],
+    aboutParagraph1: '«Айтеросс» производит твердосплавный инструмент для металлообработки: сменные пластины для токарных, фрезерных, канавочных, резьбовых и сверлильных операций.',
+    aboutParagraph2: 'Работаем только с юридическими лицами, отгружаем от 10 пластин в партии и помогаем подобрать аналог, если нужной позиции нет в наличии у текущего поставщика.',
+    aboutPhoto: 'https://images.unsplash.com/photo-1570207344214-c60ad57f3c00?fm=jpg&q=80&w=1200&auto=format&fit=crop',
+    faq: [
+      { q: 'Какая минимальная партия заказа?', a: 'Минимальная партия — 10 пластин по одному артикулу. Меньшими партиями, к сожалению, не отгружаем.' },
+      { q: 'Как оформить заказ?', a: 'Выбираете нужные позиции в каталоге и отправляете заявку через форму на сайте. Менеджер свяжется с вами, уточнит детали и подготовит счёт — оплата на сайте не производится.' },
+      { q: 'Есть ли доставка по России?', a: 'Да, отгружаем транспортными компаниями в любой регион России. Сроки — обычно от 2 до 5 рабочих дней в зависимости от города.' },
+      { q: 'Как подобрать аналог пластины?', a: 'Укажите артикул текущего поставщика (Sandvik, ISCAR, Walter, Kennametal и др.) в комментарии к заявке — инженер подберёт аналог по геометрии, покрытию и марке сплава.' },
+    ],
+    formLabelName: 'ИМЯ И КОМПАНИЯ',
+    formLabelPhone: 'ТЕЛЕФОН',
+    formLabelEmail: 'EMAIL',
+    formLabelComment: 'ОПИСАНИЕ ЗАДАЧИ',
+    formSubmitLabel: 'Получить предложение',
+    homeSaved: false,
+
+    catPageTitle: 'Каталог продукции',
+    catPageSubtitle: 'Твердосплавные сменные пластины для станков с ЧПУ. Цены указаны за штуку, минимальная партия — 10 шт.',
+    catCategories: [
+      { id: 'turning', label: 'Токарные пластины' },
+      { id: 'milling', label: 'Фрезерные пластины' },
+      { id: 'grooving', label: 'Канавочные пластины' },
+      { id: 'threading', label: 'Резьбовые пластины' },
+      { id: 'drilling', label: 'Сверлильные пластины' },
+      { id: 'heatresistant', label: 'Обработка нержавеющих и жаропрочных сталей' },
+    ],
+    radiusOptions: ['0.2', '0.4', '0.8', '1.2', '1.6', '2.4'],
+    sizeOptions: ['09', '12', '16', '19', '25'],
+    alloyOptions: ['GPT6130', 'GS3115', 'GS3125', 'GS3210', 'GS3220', 'GS4130', 'GST7115', 'GST7120', 'GST7130', 'H010', 'RK1125', 'RM1125', 'RM2130', 'RM230', 'RM2315', 'RM2320', 'RM2325', 'RM3325', 'RP1105', 'RP1115'],
+    chipbreakerOptions: ['BF', 'BM', 'BS', 'CM', 'EF', 'EL', 'EM', 'ER', 'ESM', 'FP', 'FS', 'FT', 'GF', 'GM', 'GMR', 'GR', 'GS', 'HA', 'HK', 'HLS'],
+    catalogSaved: false,
+
+    products: [
+      { sku: '22IRN60M-TSP15', name: 'Токарная пластина 22IRN60M', categoryId: 'turning', price: 1358, photo: './assets/carbide-insert.jpg', stockQty: 120, visibility: 'visible', selected: false },
+      { sku: 'CNMG120408-GM', name: 'Токарная пластина CNMG120408', categoryId: 'turning', price: 1190, photo: './assets/carbide-insert.jpg', stockQty: 85, visibility: 'visible', selected: false },
+      { sku: 'APMT1604PDER-M2', name: 'Фрезерная пластина APMT1604', categoryId: 'milling', price: 1640, photo: './assets/carbide-insert.jpg', stockQty: 40, visibility: 'visible', selected: false },
+      { sku: 'MGMN300-M-GM', name: 'Канавочная пластина MGMN300', categoryId: 'grooving', price: 980, photo: './assets/carbide-insert.jpg', stockQty: 0, visibility: 'visible', selected: false },
+      { sku: '16ER-AG60-GM', name: 'Резьбовая пластина 16ER-AG60', categoryId: 'threading', price: 1420, photo: './assets/carbide-insert.jpg', stockQty: 60, visibility: 'visible', selected: false },
+      { sku: 'SPMG090308-GM', name: 'Сверлильная пластина SPMG090308', categoryId: 'drilling', price: 1275, photo: './assets/carbide-insert.jpg', stockQty: 15, visibility: 'visible', selected: false },
+    ],
+    productsSaved: false,
+    searchQuery: '',
+    filterCategoryId: 'all',
+    bulkAction: '',
+    isAddModalOpen: false,
+    newProduct: { sku: '', name: '', categoryId: '', stockQty: '', price: '', visibility: 'visible', photo: '' },
+    orderStatuses: readOrderStatuses(),
+    ordersSaved: false,
+    ordersExtra: [],
+    isAddOrderModalOpen: false,
+    newOrder: { client: '', sku: '', qty: '', date: '', status: 'forming' },
+    productTemplate: {
+      showStock: true,
+      showAnalogs: true,
+      showCart: true,
+      showWish: true,
+      showMaterials: true,
+      showProcessingTypes: true,
+      showAlsoBought: true,
+      photoCount: 4,
+      rows: {
+        brand: true, geometry: true, shape: true, size: true, radius: true,
+        backAngle: true, construction: true, plateMaterial: true, alloy: true, chipbreaker: true,
+      },
+    },
+    productSaved: false,
+  };
+
+  componentDidMount() {
+    try {
+      const raw = window.localStorage.getItem('aiteross_home_overrides');
+      if (raw) {
+        const ov = JSON.parse(raw);
+        const patch = {};
+        if (ov.advantages) patch.advantages = this.state.advantages.map((a, i) => ({ ...a, ...(ov.advantages[i] || {}) }));
+        if (ov.workTypes) patch.workTypes = this.state.workTypes.map((w, i) => ({ ...w, ...(ov.workTypes[i] || {}) }));
+        if (ov.faq) patch.faq = this.state.faq.map((f, i) => ({ ...f, ...(ov.faq[i] || {}) }));
+        ['aboutParagraph1', 'aboutParagraph2', 'aboutPhoto', 'formLabelName', 'formLabelPhone', 'formLabelEmail', 'formLabelComment', 'formSubmitLabel'].forEach(k => {
+          if (ov[k]) patch[k] = ov[k];
+        });
+        this.setState(patch);
+      }
+    } catch (e) {}
+
+    try {
+      const rawCat = window.localStorage.getItem('aiteross_catalog_overrides');
+      if (rawCat) {
+        const ov = JSON.parse(rawCat);
+        const patch = {};
+        if (ov.pageTitle) patch.catPageTitle = ov.pageTitle;
+        if (ov.pageSubtitle) patch.catPageSubtitle = ov.pageSubtitle;
+        if (ov.categories) patch.catCategories = this.state.catCategories.map(c => ({ ...c, label: ov.categories[c.id] || c.label }));
+        if (ov.radiusOptions) patch.radiusOptions = ov.radiusOptions;
+        if (ov.sizeOptions) patch.sizeOptions = ov.sizeOptions;
+        if (ov.alloyOptions) patch.alloyOptions = ov.alloyOptions;
+        if (ov.chipbreakerOptions) patch.chipbreakerOptions = ov.chipbreakerOptions;
+        if (ov.products && ov.products.length) patch.products = ov.products;
+        this.setState(patch);
+      }
+    } catch (e) {}
+
+    try {
+      const rawProd = window.localStorage.getItem('aiteross_product_template');
+      if (rawProd) {
+        const ov = JSON.parse(rawProd);
+        this.setState(s => ({ productTemplate: { ...s.productTemplate, ...ov, rows: { ...s.productTemplate.rows, ...(ov.rows || {}) } } }));
+      }
+    } catch (e) {}
+  }
+
+  selectPage = (id) => this.setState({ tab: 'page', selectedPageId: id });
+  showPagesPicker = () => this.setState({ tab: 'pagesPicker' });
+  showOrders = () => this.setState({ tab: 'orders' });
+
+  openAddOrderModal = () => this.setState({
+    isAddOrderModalOpen: true,
+    newOrder: { client: '', sku: '', qty: '', date: '', status: 'forming' },
+  });
+  closeAddOrderModal = () => this.setState({ isAddOrderModalOpen: false });
+
+  updateNewOrder = (field, value) => this.setState(s => ({ newOrder: { ...s.newOrder, [field]: value } }));
+
+  confirmAddOrder = () => {
+    const no = this.state.newOrder;
+    if (!no.client.trim() || !no.sku) return;
+    this.setState(s => {
+      const nextNumber = String(1043 + s.ordersExtra.length);
+      return {
+        ordersExtra: [...s.ordersExtra, {
+          number: nextNumber,
+          client: no.client,
+          item: no.sku,
+          qty: Number(no.qty) || 0,
+          date: formatDate(no.date) || '—',
+          status: no.status,
+        }],
+        isAddOrderModalOpen: false,
+      };
+    });
+  };
+
+  onOrderStatusChange = (number, status) => {
+    this.setState(s => {
+      const orderStatuses = { ...s.orderStatuses, [number]: status };
+      localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(orderStatuses));
+      return { orderStatuses, ordersSaved: true };
+    });
+    setTimeout(() => this.setState({ ordersSaved: false }), 2500);
+  };
+  showProducts = () => this.setState({ tab: 'products' });
+  onHeroTitleChange = (e) => this.setState({ heroTitle: e.target.value });
+  onHeroSubtitleChange = (e) => this.setState({ heroSubtitle: e.target.value });
+  onHeroCtaChange = (e) => this.setState({ heroCta: e.target.value });
+
+  onAboutParagraph1Change = (e) => this.setState({ aboutParagraph1: e.target.value });
+  onAboutParagraph2Change = (e) => this.setState({ aboutParagraph2: e.target.value });
+  onFormLabelNameChange = (e) => this.setState({ formLabelName: e.target.value });
+  onFormLabelPhoneChange = (e) => this.setState({ formLabelPhone: e.target.value });
+  onFormLabelEmailChange = (e) => this.setState({ formLabelEmail: e.target.value });
+  onFormLabelCommentChange = (e) => this.setState({ formLabelComment: e.target.value });
+  onFormSubmitLabelChange = (e) => this.setState({ formSubmitLabel: e.target.value });
+
+  updateBenefit = (i, value) => this.setState(s => {
+    const heroBenefits = s.heroBenefits.slice();
+    heroBenefits[i] = value;
+    return { heroBenefits };
+  });
+
+  updateAdvantage = (i, field, value) => this.setState(s => {
+    const advantages = s.advantages.slice();
+    advantages[i] = { ...advantages[i], [field]: value };
+    return { advantages };
+  });
+
+  updateWorkType = (i, field, value) => this.setState(s => {
+    const workTypes = s.workTypes.slice();
+    workTypes[i] = { ...workTypes[i], [field]: value };
+    return { workTypes };
+  });
+
+  updateFaq = (i, field, value) => this.setState(s => {
+    const faq = s.faq.slice();
+    faq[i] = { ...faq[i], [field]: value };
+    return { faq };
+  });
+
+  readFileAsDataUrl = (file, cb) => {
+    const reader = new FileReader();
+    reader.onload = () => cb(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  onAdvantageIconChange = (i, e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    this.readFileAsDataUrl(file, (dataUrl) => this.updateAdvantage(i, 'iconPhoto', dataUrl));
+  };
+
+  onWorkTypePhotoChange = (i, e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    this.readFileAsDataUrl(file, (dataUrl) => this.updateWorkType(i, 'photo', dataUrl));
+  };
+
+  onAboutPhotoChange = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    this.readFileAsDataUrl(file, (dataUrl) => this.setState({ aboutPhoto: dataUrl }));
+  };
+
+  // ---- Catalog page editor ----
+  onCatPageTitleChange = (e) => this.setState({ catPageTitle: e.target.value });
+  onCatPageSubtitleChange = (e) => this.setState({ catPageSubtitle: e.target.value });
+
+  updateCategoryLabel = (id, value) => this.setState(s => ({
+    catCategories: s.catCategories.map(c => c.id === id ? { ...c, label: value } : c),
+  }));
+
+  addCategory = () => this.setState(s => ({
+    catCategories: [...s.catCategories, { id: 'cat-' + Date.now(), label: 'Новая категория' }],
+  }));
+
+  removeCategory = (id) => this.setState(s => ({
+    catCategories: s.catCategories.filter(c => c.id !== id),
+  }));
+
+  toggleProductBlock = (key) => this.setState(s => ({
+    productTemplate: { ...s.productTemplate, [key]: !s.productTemplate[key] },
+  }));
+
+  updateProductPhotoCount = (value) => {
+    const n = Math.max(1, Math.min(10, Number(value) || 1));
+    this.setState(s => ({ productTemplate: { ...s.productTemplate, photoCount: n } }));
+  };
+
+  toggleProductRow = (key) => this.setState(s => ({
+    productTemplate: { ...s.productTemplate, rows: { ...s.productTemplate.rows, [key]: !s.productTemplate.rows[key] } },
+  }));
+
+  saveProduct = () => {
+    try { window.localStorage.setItem('aiteross_product_template', JSON.stringify(this.state.productTemplate)); } catch (e) {}
+    this.setState({ productSaved: true });
+    setTimeout(() => this.setState({ productSaved: false }), 3000);
+  };
+
+  addProductToCategory = (categoryId) => this.setState({
+    tab: 'products',
+    isAddModalOpen: true,
+    newProduct: { sku: '', name: '', categoryId, stockQty: '', price: '', visibility: 'visible', photo: '' },
+  });
+
+  onRadiusTextChange = (e) => this.setState({ radiusOptions: e.target.value.split('\n').map(s => s.trim()).filter(Boolean) });
+  onSizeTextChange = (e) => this.setState({ sizeOptions: e.target.value.split('\n').map(s => s.trim()).filter(Boolean) });
+  onAlloyTextChange = (e) => this.setState({ alloyOptions: e.target.value.split('\n').map(s => s.trim()).filter(Boolean) });
+  onChipbreakerTextChange = (e) => this.setState({ chipbreakerOptions: e.target.value.split('\n').map(s => s.trim()).filter(Boolean) });
+
+  saveCatalog = () => {
+    const categories = {};
+    this.state.catCategories.forEach(c => { categories[c.id] = c.label; });
+    const overrides = {
+      pageTitle: this.state.catPageTitle,
+      pageSubtitle: this.state.catPageSubtitle,
+      categories,
+      radiusOptions: this.state.radiusOptions,
+      sizeOptions: this.state.sizeOptions,
+      alloyOptions: this.state.alloyOptions,
+      chipbreakerOptions: this.state.chipbreakerOptions,
+      products: this.state.products,
+    };
+    try { window.localStorage.setItem('aiteross_catalog_overrides', JSON.stringify(overrides)); } catch (e) {}
+    this.setState({ catalogSaved: true });
+    setTimeout(() => this.setState({ catalogSaved: false }), 3000);
+  };
+
+  // ---- Products CRUD ----
+  updateProduct = (i, field, value) => this.setState(s => {
+    const products = s.products.slice();
+    products[i] = { ...products[i], [field]: value };
+    return { products };
+  });
+
+  onProductPhotoChange = (i, e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    this.readFileAsDataUrl(file, (dataUrl) => this.updateProduct(i, 'photo', dataUrl));
+  };
+
+  addProduct = () => this.setState({
+    isAddModalOpen: true,
+    newProduct: { sku: '', name: '', categoryId: '', stockQty: '', price: '', visibility: 'visible', photo: '' },
+  });
+
+  closeAddModal = () => this.setState({ isAddModalOpen: false });
+
+  stopPropagation = (e) => e.stopPropagation();
+
+  updateNewProduct = (field, value) => this.setState(s => ({ newProduct: { ...s.newProduct, [field]: value } }));
+
+  onNewProductPhotoChange = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => this.updateNewProduct('photo', reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  confirmAddProduct = () => {
+    const np = this.state.newProduct;
+    if (!np.sku.trim()) return;
+    this.setState(s => ({
+      products: [...s.products, {
+        sku: np.sku,
+        name: np.name || np.sku,
+        categoryId: np.categoryId,
+        price: Number(np.price) || 0,
+        photo: np.photo || './assets/carbide-insert.jpg',
+        stockQty: Number(np.stockQty) || 0,
+        visibility: np.visibility,
+        selected: false,
+      }],
+      isAddModalOpen: false,
+    }));
+  };
+
+  removeProduct = (i) => this.setState(s => ({ products: s.products.filter((_, idx) => idx !== i) }));
+
+  onSearchQueryChange = (e) => this.setState({ searchQuery: e.target.value });
+  onFilterCategoryChange = (e) => this.setState({ filterCategoryId: e.target.value });
+  resetFilters = () => this.setState({ searchQuery: '', filterCategoryId: 'all' });
+
+  toggleSelectProduct = (i) => this.setState(s => {
+    const products = s.products.slice();
+    products[i] = { ...products[i], selected: !products[i].selected };
+    return { products };
+  });
+
+  toggleSelectAll = (e) => {
+    const checked = e.target.checked;
+    this.setState(s => ({ products: s.products.map(p => ({ ...p, selected: checked })) }));
+  };
+
+  onBulkActionChange = (e) => {
+    const action = e.target.value;
+    if (action === 'hide') {
+      this.setState(s => ({
+        products: s.products.map(p => p.selected ? { ...p, visibility: 'hidden', selected: false } : p),
+        bulkAction: '',
+      }));
+    } else if (action === 'delete') {
+      this.setState(s => ({
+        products: s.products.filter(p => !p.selected),
+        bulkAction: '',
+      }));
+    } else {
+      this.setState({ bulkAction: action });
+    }
+  };
+
+  exportExcel = () => {
+    const rows = [['Артикул', 'Наименование', 'Рубрика', 'Кол-во', 'Цена'], ...this.state.products.map(p => [p.sku, p.name, p.categoryId, p.stockQty, p.price])];
+    const csv = rows.map(r => r.map(v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"').join(',')).join('\n');
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'products.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  saveProducts = () => {
+    try {
+      const catRaw = window.localStorage.getItem('aiteross_catalog_overrides');
+      const catOv = catRaw ? JSON.parse(catRaw) : {};
+      catOv.products = this.state.products;
+      window.localStorage.setItem('aiteross_catalog_overrides', JSON.stringify(catOv));
+    } catch (e) {}
+    this.setState({ productsSaved: true });
+    setTimeout(() => this.setState({ productsSaved: false }), 3000);
+  };
+
+  saveHome = () => {
+    const overrides = {
+      advantages: this.state.advantages.map(a => ({ title: a.title, desc: a.desc, iconPhoto: a.iconPhoto })),
+      workTypes: this.state.workTypes.map(w => ({ title: w.title, desc: w.desc, photo: w.photo })),
+      faq: this.state.faq.map(f => ({ q: f.q, a: f.a })),
+      aboutParagraph1: this.state.aboutParagraph1,
+      aboutParagraph2: this.state.aboutParagraph2,
+      aboutPhoto: this.state.aboutPhoto,
+      formLabelName: this.state.formLabelName,
+      formLabelPhone: this.state.formLabelPhone,
+      formLabelEmail: this.state.formLabelEmail,
+      formLabelComment: this.state.formLabelComment,
+      formSubmitLabel: this.state.formSubmitLabel,
+    };
+    try {
+      window.localStorage.setItem('aiteross_home_overrides', JSON.stringify(overrides));
+    } catch (e) {}
+    this.setState({ homeSaved: true });
+    setTimeout(() => this.setState({ homeSaved: false }), 3000);
+  };
+
+  renderVals() {
+    const isPage = this.state.tab === 'page';
+    const isPagesPicker = this.state.tab === 'pagesPicker';
+    const selectedPage = PAGES.find(p => p.id === this.state.selectedPageId) || PAGES[0];
+
+    return {
+      isPagesPicker,
+      isHomeEditor: isPage && this.state.selectedPageId === 'home',
+      isCatalogEditor: isPage && this.state.selectedPageId === 'catalog',
+      isProductEditor: isPage && this.state.selectedPageId === 'product',
+      isOtherPageEditor: isPage && this.state.selectedPageId !== 'home' && this.state.selectedPageId !== 'catalog' && this.state.selectedPageId !== 'product',
+      productSaved: this.state.productSaved,
+      saveProduct: this.saveProduct,
+      productPhotoCount: this.state.productTemplate.photoCount,
+      onProductPhotoCount: (e) => this.updateProductPhotoCount(e.target.value),
+      productBlockToggles: [
+        { key: 'showStock', label: 'Наличие на складе' },
+        { key: 'showAnalogs', label: 'Блок «Аналоги»' },
+        { key: 'showAlsoBought', label: 'Блок «Также покупают»' },
+        { key: 'showCart', label: 'Кнопка «В корзину» и количество' },
+        { key: 'showWish', label: 'Кнопка «Избранное»' },
+        { key: 'showMaterials', label: 'Обрабатываемый материал (ISO)' },
+        { key: 'showProcessingTypes', label: 'Тип обработки' },
+      ].map(item => ({
+        label: item.label,
+        on: this.state.productTemplate[item.key],
+        knobLeft: this.state.productTemplate[item.key] ? '22px' : '2px',
+        bg: this.state.productTemplate[item.key] ? '#1657C4' : '#D6DAE0',
+        toggle: () => this.toggleProductBlock(item.key),
+      })),
+      productRowToggles: [
+        { key: 'brand', label: 'Бренд' },
+        { key: 'geometry', label: 'Геометрия' },
+        { key: 'shape', label: 'Форма пластины' },
+        { key: 'size', label: 'Размер' },
+        { key: 'radius', label: 'Радиус при вершине RE' },
+        { key: 'backAngle', label: 'Задний угол' },
+        { key: 'construction', label: 'Конструкция пластины' },
+        { key: 'plateMaterial', label: 'Материал пластины' },
+        { key: 'alloy', label: 'Сплав пластины' },
+        { key: 'chipbreaker', label: 'Стружколом' },
+      ].map(item => ({
+        label: item.label,
+        on: this.state.productTemplate.rows[item.key],
+        knobLeft: this.state.productTemplate.rows[item.key] ? '22px' : '2px',
+        bg: this.state.productTemplate.rows[item.key] ? '#1657C4' : '#D6DAE0',
+        toggle: () => this.toggleProductRow(item.key),
+      })),
+      selectedPageLabel: selectedPage.label,
+      selectedPageHref: selectedPage.href,
+      showPagesPicker: this.showPagesPicker,
+      pagesTabStyle: (isPage || isPagesPicker) ? TAB_ACTIVE : TAB_INACTIVE,
+      pages: PAGES.map(p => ({
+        label: p.label,
+        select: () => this.selectPage(p.id),
+      })),
+      isOrders: this.state.tab === 'orders',
+      isProducts: this.state.tab === 'products',
+      ordersSaved: this.state.ordersSaved,
+      isAddOrderModalOpen: this.state.isAddOrderModalOpen,
+      openAddOrderModal: this.openAddOrderModal,
+      closeAddOrderModal: this.closeAddOrderModal,
+      confirmAddOrder: this.confirmAddOrder,
+      productSkuOptions: this.state.products.map(p => ({ sku: p.sku })),
+      newOrder: {
+        client: this.state.newOrder.client,
+        sku: this.state.newOrder.sku,
+        qty: this.state.newOrder.qty,
+        date: this.state.newOrder.date,
+        status: this.state.newOrder.status,
+        onClientChange: (e) => this.updateNewOrder('client', e.target.value),
+        onSkuChange: (e) => this.updateNewOrder('sku', e.target.value),
+        onQtyChange: (e) => this.updateNewOrder('qty', e.target.value),
+        onDateChange: (e) => this.updateNewOrder('date', e.target.value),
+        onStatusChange: (e) => this.updateNewOrder('status', e.target.value),
+      },
+      orderRows: [...ORDERS_DATA_BASE, ...this.state.ordersExtra].map(o => {
+        const status = this.state.orderStatuses[o.number] || o.status;
+        const delivered = status === 'delivered';
+        return {
+          ...o,
+          status,
+          statusColor: STATUS_COLORS[status],
+          onStatusChange: (e) => this.onOrderStatusChange(o.number, e.target.value),
+          rowBg: delivered ? '#F7F8FA' : '#fff',
+          rowText: delivered ? '#8891A0' : '#14161A',
+          rowMuted: delivered ? '#ABB2BC' : '#6B7480',
+        };
+      }),
+      ordersTabStyle: this.state.tab === 'orders' ? TAB_ACTIVE : TAB_INACTIVE,
+      productsTabStyle: this.state.tab === 'products' ? TAB_ACTIVE : TAB_INACTIVE,
+      showOrders: this.showOrders,
+      showProducts: this.showProducts,
+      heroTitle: this.state.heroTitle,
+      heroSubtitle: this.state.heroSubtitle,
+      heroCta: this.state.heroCta,
+      onHeroTitleChange: this.onHeroTitleChange,
+      onHeroSubtitleChange: this.onHeroSubtitleChange,
+      onHeroCtaChange: this.onHeroCtaChange,
+      heroBenefits: this.state.heroBenefits.map((value, i) => ({ value, onChange: (e) => this.updateBenefit(i, e.target.value) })),
+      advantages: this.state.advantages.map((a, i) => ({
+        title: a.title,
+        desc: a.desc,
+        noIconPhoto: !a.iconPhoto,
+        iconBg: a.iconPhoto ? ("url('" + a.iconPhoto + "')") : 'none',
+        onTitleChange: (e) => this.updateAdvantage(i, 'title', e.target.value),
+        onDescChange: (e) => this.updateAdvantage(i, 'desc', e.target.value),
+        onIconChange: (e) => this.onAdvantageIconChange(i, e),
+      })),
+      workTypes: this.state.workTypes.map((w, i) => ({
+        title: w.title,
+        desc: w.desc,
+        photoBg: "url('" + w.photo + "')",
+        onTitleChange: (e) => this.updateWorkType(i, 'title', e.target.value),
+        onDescChange: (e) => this.updateWorkType(i, 'desc', e.target.value),
+        onPhotoChange: (e) => this.onWorkTypePhotoChange(i, e),
+      })),
+      faq: this.state.faq.map((f, i) => ({
+        q: f.q,
+        a: f.a,
+        onQChange: (e) => this.updateFaq(i, 'q', e.target.value),
+        onAChange: (e) => this.updateFaq(i, 'a', e.target.value),
+      })),
+      aboutParagraph1: this.state.aboutParagraph1,
+      aboutParagraph2: this.state.aboutParagraph2,
+      aboutPhotoBg: this.state.aboutPhoto ? ("url('" + this.state.aboutPhoto + "')") : 'none',
+      noAboutPhoto: !this.state.aboutPhoto,
+      onAboutParagraph1Change: this.onAboutParagraph1Change,
+      onAboutParagraph2Change: this.onAboutParagraph2Change,
+      onAboutPhotoChange: this.onAboutPhotoChange,
+      formLabelName: this.state.formLabelName,
+      formLabelPhone: this.state.formLabelPhone,
+      formLabelEmail: this.state.formLabelEmail,
+      formLabelComment: this.state.formLabelComment,
+      formSubmitLabel: this.state.formSubmitLabel,
+      onFormLabelNameChange: this.onFormLabelNameChange,
+      onFormLabelPhoneChange: this.onFormLabelPhoneChange,
+      onFormLabelEmailChange: this.onFormLabelEmailChange,
+      onFormLabelCommentChange: this.onFormLabelCommentChange,
+      onFormSubmitLabelChange: this.onFormSubmitLabelChange,
+      saveHome: this.saveHome,
+      homeSaved: this.state.homeSaved,
+
+      catPageTitle: this.state.catPageTitle,
+      catPageSubtitle: this.state.catPageSubtitle,
+      onCatPageTitleChange: this.onCatPageTitleChange,
+      onCatPageSubtitleChange: this.onCatPageSubtitleChange,
+      addCategory: this.addCategory,
+      catCategories: this.state.catCategories.map(c => ({
+        label: c.label,
+        onChange: (e) => this.updateCategoryLabel(c.id, e.target.value),
+        addProduct: () => this.addProductToCategory(c.id),
+        remove: () => this.removeCategory(c.id),
+      })),
+      radiusText: this.state.radiusOptions.join('\n'),
+      sizeText: this.state.sizeOptions.join('\n'),
+      alloyText: this.state.alloyOptions.join('\n'),
+      chipbreakerText: this.state.chipbreakerOptions.join('\n'),
+      onRadiusTextChange: this.onRadiusTextChange,
+      onSizeTextChange: this.onSizeTextChange,
+      onAlloyTextChange: this.onAlloyTextChange,
+      onChipbreakerTextChange: this.onChipbreakerTextChange,
+      saveCatalog: this.saveCatalog,
+      catalogSaved: this.state.catalogSaved,
+
+      addProduct: this.addProduct,
+      isAddModalOpen: this.state.isAddModalOpen,
+      closeAddModal: this.closeAddModal,
+      stopPropagation: this.stopPropagation,
+      confirmAddProduct: this.confirmAddProduct,
+      newProduct: {
+        sku: this.state.newProduct.sku,
+        name: this.state.newProduct.name,
+        categoryId: this.state.newProduct.categoryId,
+        stockQty: this.state.newProduct.stockQty,
+        price: this.state.newProduct.price,
+        visibility: this.state.newProduct.visibility,
+        hasPhoto: !!this.state.newProduct.photo,
+        photoBg: this.state.newProduct.photo ? "url('" + this.state.newProduct.photo + "')" : 'none',
+        onSkuChange: (e) => this.updateNewProduct('sku', e.target.value),
+        onNameChange: (e) => this.updateNewProduct('name', e.target.value),
+        onCategoryChange: (e) => this.updateNewProduct('categoryId', e.target.value),
+        onStockQtyChange: (e) => this.updateNewProduct('stockQty', e.target.value),
+        onPriceChange: (e) => this.updateNewProduct('price', e.target.value),
+        onVisibilityChange: (e) => this.updateNewProduct('visibility', e.target.value),
+        onPhotoChange: this.onNewProductPhotoChange,
+      },
+      exportExcel: this.exportExcel,
+      saveProducts: this.saveProducts,
+      productsSaved: this.state.productsSaved,
+      categoryOptions: this.state.catCategories.map(c => ({ id: c.id, label: c.label })),
+      searchQuery: this.state.searchQuery,
+      onSearchQueryChange: this.onSearchQueryChange,
+      filterCategoryId: this.state.filterCategoryId,
+      onFilterCategoryChange: this.onFilterCategoryChange,
+      resetFilters: this.resetFilters,
+      allSelected: this.state.products.length > 0 && this.state.products.every(p => p.selected),
+      onToggleSelectAll: this.toggleSelectAll,
+      hasSelection: this.state.products.some(p => p.selected),
+      noSelection: !this.state.products.some(p => p.selected),
+      bulkAction: this.state.bulkAction,
+      onBulkActionChange: this.onBulkActionChange,
+      productRows: this.state.products
+        .map((p, i) => ({ p, i }))
+        .filter(({ p }) => {
+          const q = this.state.searchQuery.trim().toLowerCase();
+          const matchesQuery = !q || p.sku.toLowerCase().includes(q) || p.name.toLowerCase().includes(q);
+          const matchesCategory = !this.state.filterCategoryId || this.state.filterCategoryId === 'all' || p.categoryId === this.state.filterCategoryId;
+          return matchesQuery && matchesCategory;
+        })
+        .map(({ p, i }) => ({
+          sku: p.sku,
+          name: p.name,
+          categoryId: p.categoryId,
+          price: p.price,
+          stockQty: p.stockQty,
+          stockColor: p.stockQty > 0 ? '#14161A' : '#C43D3D',
+          visibility: p.visibility,
+          selected: p.selected,
+          rowBg: p.selected ? '#FBF6E8' : '#fff',
+          photoBg: "url('" + p.photo + "')",
+          onToggleSelect: () => this.toggleSelectProduct(i),
+          onSkuChange: (e) => this.updateProduct(i, 'sku', e.target.value),
+          onNameChange: (e) => this.updateProduct(i, 'name', e.target.value),
+          onCategoryChange: (e) => this.updateProduct(i, 'categoryId', e.target.value),
+          onPriceChange: (e) => this.updateProduct(i, 'price', Number(e.target.value) || 0),
+          onStockQtyChange: (e) => this.updateProduct(i, 'stockQty', Number(e.target.value) || 0),
+          onVisibilityChange: (e) => this.updateProduct(i, 'visibility', e.target.value),
+          onPhotoChange: (e) => this.onProductPhotoChange(i, e),
+          remove: () => this.removeProduct(i),
+        })),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

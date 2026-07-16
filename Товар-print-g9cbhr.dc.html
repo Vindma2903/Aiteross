@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style data-omelette-print-defaults>
+@media print {
+  @page { margin: 0.5in; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  figure, table, pre, blockquote, img, svg, tr, [class~="card" i] { break-inside: avoid; }
+  img, svg { max-width: 100%; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+    body { margin: 0; }
+  </style>
+</helmet>
+
+<div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14161A; background: #FFFFFF; min-height: 100vh; width: 100%;">
+
+  <!-- ============ HEADER ============ -->
+  <header data-screen-label="Header" style="position: sticky; top: 0; z-index: 100; background: #FFFFFF; border-bottom: 1px solid #E3E6EA;">
+
+    <!-- Top bar -->
+    <div style="border-bottom: 1px solid #EDEFF2;">
+      <div style="max-width: 1360px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 28px;">
+        <nav style="display: flex; align-items: center; gap: 22px;">
+          <a href="./Главная АЙТЕРОСС.dc.html#about" style="text-decoration: none; color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap;" style-hover="color: #0B2545;">О компании</a>
+          <a href="./Главная АЙТЕРОСС.dc.html#about" style="text-decoration: none; color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap;" style-hover="color: #0B2545;">Условия покупки</a>
+          <a href="./Главная АЙТЕРОСС.dc.html#footer" style="text-decoration: none; color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap;" style-hover="color: #0B2545;">Контакты</a>
+        </nav>
+
+        <div style="flex: 1;"></div>
+
+        <a href="tel:+74951234567" style="text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 600; white-space: nowrap;">+7 (495) 123-45-67</a>
+        <a href="mailto:info@iteross.ru" style="text-decoration: none; color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap;" style-hover="color: #0B2545;">info@iteross.ru</a>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <a href="#" aria-label="WhatsApp" style="width: 32px; height: 32px; border-radius: 50%; background: #F1F3F6; display: flex; align-items: center; justify-content: center; flex: none;" style-hover="background: #E3E6EA;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#5B6470" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#5B6470"/></svg>
+          </a>
+          <a href="#" aria-label="Telegram" style="width: 32px; height: 32px; border-radius: 50%; background: #F1F3F6; display: flex; align-items: center; justify-content: center; flex: none;" style-hover="background: #E3E6EA;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <a href="./Главная АЙТЕРОСС.dc.html#lead-form-section" style="background: #1657C4; color: #fff; border: none; padding: 10px 18px; border-radius: 100px; font-size: 14px; font-weight: 600; white-space: nowrap; text-decoration: none;" style-hover="background: #123F94;">Заказать обратный звонок</a>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div style="max-width: 1360px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 20px;">
+      <a href="./Главная АЙТЕРОСС.dc.html" style="text-decoration: none; flex: none;">
+        <div style="font-size: 22px; font-weight: 700; color: #0B2545; letter-spacing: 0.3px; white-space: nowrap;">АЙТЕРОСС</div>
+      </a>
+
+      <a href="./Каталог.dc.html" style="display: flex; align-items: center; background: #1657C4; color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 100px; font-size: 15px; font-weight: 600; white-space: nowrap; flex: none;" style-hover="background: #123F94;">Каталог</a>
+
+      <div style="flex: 1;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #fff; border: 1.5px solid #1657C4; border-radius: 100px; padding: 0 6px 0 20px; height: 46px;">
+          <input placeholder="Поиск товаров..." style="flex: 1; border: none; background: transparent; outline: none; font-size: 14.5px; font-family: inherit; color: #14161A;"/>
+          <button aria-label="Найти" style="width: 38px; height: 38px; border-radius: 50%; border: none; background: #1657C4; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none;" style-hover="background: #123F94;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="1.8"/><path d="M20 20 L16.2 16.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <a href="#wish" style="display: flex; align-items: center; gap: 7px; text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500; white-space: nowrap; flex: none;" style-hover="color: #1657C4;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>
+        Избранное
+      </a>
+
+      <a href="#cart" style="display: flex; align-items: center; gap: 7px; text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500; white-space: nowrap; flex: none;" style-hover="color: #1657C4;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 5h2l1.6 10.2a2 2 0 0 0 2 1.8h7.8a2 2 0 0 0 2-1.6L20.4 8H6.5" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20.5" r="1.4" fill="#1657C4"/><circle cx="17" cy="20.5" r="1.4" fill="#1657C4"/></svg>
+        Корзина
+      </a>
+
+      <a href="#login" style="display: flex; align-items: center; gap: 7px; text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500; white-space: nowrap; flex: none;" style-hover="color: #1657C4;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Войти
+      </a>
+    </div>
+
+  </header>
+
+  <!-- ============ BREADCRUMB ============ -->
+  <section style="max-width: 1360px; margin: 0 auto; padding: 28px 32px 0;">
+    <div style="font-size: 14px; color: #8891A0;">
+      <a href="./Главная АЙТЕРОСС.dc.html" style="color: #8891A0; text-decoration: none;" style-hover="color: #1657C4;">Главная</a>
+      <span style="margin: 0 6px;">/</span>
+      <a href="./Каталог.dc.html" style="color: #8891A0; text-decoration: none;" style-hover="color: #1657C4;">Каталог</a>
+      <span style="margin: 0 6px;">/</span>
+      <span style="color: #14161A;">Токарные пластины</span>
+    </div>
+  </section>
+
+  <!-- ============ PRODUCT ============ -->
+  <section style="max-width: 1360px; margin: 0 auto; padding: 24px 32px 90px; display: grid; grid-template-columns: 460px 1fr; gap: 56px; align-items: start;">
+
+    <!-- Photo -->
+    <div style="position: sticky; top: 100px;">
+      <div style="aspect-ratio: 1/1; border-radius: 14px; overflow: hidden; background: #F7F8FA; border: 1px solid #E3E6EA;">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="product-photo" shape="rect" placeholder="Фото пластины CNMG090308" style="width: 100%; height: 100%;" hint-size="100%,100%"></x-import>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 12.5px; font-weight: 700; color: #8891A0; letter-spacing: 0.5px;">АРТИКУЛ:</span>
+          <span style="font-size: 15px; font-weight: 700; color: #14161A;">{{ sku }}</span>
+          <button onClick="{{ copySku }}" aria-label="Копировать артикул" style="width: 28px; height: 28px; border-radius: 6px; border: 1px solid #E3E6EA; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="border-color: #1657C4;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="1.5" stroke="#5B6470" stroke-width="1.6"/><path d="M5 15V6a1 1 0 0 1 1-1h9" stroke="#5B6470" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </button>
+          <sc-if value="{{ skuCopied }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size: 13px; color: #1F8A4C; font-weight: 600;">Скопировано</span>
+          </sc-if>
+        </div>
+        <span style="font-size: 14px; color: #3A4048; font-weight: 600;">{{ stockLabel }}</span>
+      </div>
+
+      <h1 style="font-size: 27px; font-weight: 700; color: #14161A; margin: 0 0 22px; letter-spacing: -0.2px; text-transform: uppercase; line-height: 1.35;">{{ sku }} | ТОКАРНАЯ ПЛАСТИНА</h1>
+
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 32px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; border: 1.5px solid #D6DAE0; border-radius: 9px; overflow: hidden;">
+          <button onClick="{{ decQty }}" aria-label="Меньше" style="width: 38px; height: 46px; border: none; background: #fff; font-size: 18px; color: #14161A; cursor: pointer;" style-hover="background: #F1F3F6;">−</button>
+          <span style="width: 44px; text-align: center; font-size: 16px; font-weight: 700; color: #14161A;">{{ qty }}</span>
+          <button onClick="{{ incQty }}" aria-label="Больше" style="width: 38px; height: 46px; border: none; background: #fff; font-size: 18px; color: #14161A; cursor: pointer;" style-hover="background: #F1F3F6;">+</button>
+        </div>
+
+        <button onClick="{{ addToCart }}" style="background: #1657C4; color: #fff; border: none; padding: 0 26px; height: 46px; border-radius: 9px; font-size: 15px; font-weight: 700; cursor: pointer;" style-hover="background: #123F94;">{{ cartLabel }}</button>
+
+        <button onClick="{{ toggleWish }}" aria-label="В избранное" style="width: 46px; height: 46px; border-radius: 9px; border: 1.5px solid #D6DAE0; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="border-color: #1657C4;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="{{ wishFill }}"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>
+        </button>
+
+      </div>
+
+      <!-- Spec list -->
+      <div style="display: flex; flex-direction: column;">
+        <sc-for list="{{ specs }}" as="row" hint-placeholder-count="14">
+          <sc-if value="{{ row.isBadges }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; align-items: baseline; gap: 10px; padding: 11px 0; border-bottom: 1px dotted #D6DAE0;">
+              <span style="font-size: 15px; color: #3A4048; flex: none;">{{ row.label }}</span>
+              <span style="flex: 1; border-bottom: 1px dotted #D6DAE0; margin-bottom: 4px;"></span>
+              <div style="display: flex; gap: 6px;">
+                <sc-for list="{{ row.badges }}" as="b" hint-placeholder-count="2">
+                  <span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 22px; border-radius: 4px; background: {{ b.color }}; color: #fff; font-size: 12.5px; font-weight: 700;">{{ b.iso }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ row.isMulti }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 11px 0; border-bottom: 1px dotted #D6DAE0;">
+              <div style="display: flex; align-items: baseline; gap: 10px;">
+                <span style="font-size: 15px; color: #3A4048;">{{ row.label }}</span>
+                <span style="flex: 1;"></span>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; margin-top: 6px;">
+                <sc-for list="{{ row.values }}" as="v" hint-placeholder-count="2">
+                  <span style="font-size: 15px; color: #14161A; font-weight: 600;">{{ v }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ row.isPlain }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; align-items: baseline; gap: 10px; padding: 11px 0; border-bottom: 1px dotted #D6DAE0;">
+              <span style="font-size: 15px; color: #3A4048; flex: none; white-space: nowrap;">{{ row.label }}</span>
+              <span style="flex: 1; border-bottom: 1px dotted #D6DAE0; margin-bottom: 4px;"></span>
+              <span style="font-size: 15px; color: #14161A; font-weight: 600; text-align: right; white-space: nowrap;">{{ row.value }}</span>
+            </div>
+          </sc-if>
+        </sc-for>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ ANALOGS ============ -->
+  <section style="max-width: 1360px; margin: 0 auto; padding: 0 32px 90px;">
+    <h2 style="font-size: 22px; font-weight: 700; color: #14161A; margin: 0 0 24px; text-transform: uppercase; letter-spacing: 0.3px;">Аналоги</h2>
+    <div style="position: relative;">
+      <button onClick="{{ slidePrev }}" aria-label="Назад" style="position: absolute; left: -18px; top: 78px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #E3E6EA; background: #fff; box-shadow: 0 4px 12px rgba(11,37,69,0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2;" style-hover="border-color: #1657C4;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#14161A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button onClick="{{ slideNext }}" aria-label="Вперёд" style="position: absolute; right: -18px; top: 78px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #E3E6EA; background: #fff; box-shadow: 0 4px 12px rgba(11,37,69,0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2;" style-hover="border-color: #1657C4;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#14161A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <div id="analog-slider" style="display: flex; gap: 18px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding-bottom: 2px;">
+        <sc-for list="{{ analogs }}" as="a" hint-placeholder-count="6">
+          <a href="./Товар.dc.html" style="text-decoration: none; display: flex; flex-direction: column; flex: 0 0 200px; width: 200px;">
+            <div style="aspect-ratio: 1/1; border-radius: 8px; overflow: hidden; background: #F7F8FA; border: 1px solid #E3E6EA; margin-bottom: 12px;">
+              <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ a.slotId }}" shape="rect" placeholder="Фото пластины" style="width: 100%; height: 100%;" hint-size="100%,100%"></x-import>
+            </div>
+            <div style="font-size: 12.5px; color: #8891A0; margin-bottom: 4px;">Арт: {{ a.sku }}</div>
+            <div style="font-size: 14px; font-weight: 700; color: #14161A; margin-bottom: 4px; line-height: 1.3;">{{ a.sku }}</div>
+            <div style="font-size: 13px; color: #1657C4; font-weight: 600;">Склад: {{ a.stock }}</div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA STRIP ============ -->
+  <section style="background: #F7F8FA; border-top: 1px solid #E3E6EA;">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 44px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+      <div>
+        <h2 style="font-size: 21px; font-weight: 700; color: #14161A; margin: 0 0 6px;">Нужен аналог или другая партия?</h2>
+        <p style="font-size: 15px; color: #4B535E; margin: 0;">Пришлите артикул — подберём замену и подготовим КП в тот же день.</p>
+      </div>
+      <a href="./Главная АЙТЕРОСС.dc.html#lead-form-section" style="background: #1657C4; color: #fff; text-decoration: none; padding: 15px 26px; border-radius: 10px; font-size: 15px; font-weight: 700; white-space: nowrap;" style-hover="background: #123F94;">Получить предложение</a>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer id="footer" style="background: #33363C;">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 64px 32px 32px; display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 40px;">
+      <div>
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 18px; font-weight: 700; color: #fff;">АЙТЕРОСС</div>
+        </div>
+        <p style="font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6; margin: 0 0 20px; max-width: 280px;">Поставка твердосплавного инструмента для металлообработки. Работаем с юридическими лицами по всей России.</p>
+        <div style="display: flex; gap: 10px;">
+          <a href="#" aria-label="Telegram" style="width: 38px; height: 38px; border-radius: 9px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none;" style-hover="background: rgba(255,255,255,0.2);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#" aria-label="WhatsApp" style="width: 38px; height: 38px; border-radius: 9px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none;" style-hover="background: rgba(255,255,255,0.2);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#fff" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#fff"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-bottom: 18px;">НАВИГАЦИЯ</div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <a href="./Каталог.dc.html" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;" style-hover="color: #fff;">Каталог</a>
+          <a href="./Главная АЙТЕРОСС.dc.html#about" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;" style-hover="color: #fff;">О компании</a>
+          <a href="./Главная АЙТЕРОСС.dc.html#about" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;" style-hover="color: #fff;">Доставка</a>
+          <a href="./Главная АЙТЕРОСС.dc.html#footer" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;" style-hover="color: #fff;">Контакты</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-bottom: 18px;">КОНТАКТЫ</div>
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px; color: rgba(255,255,255,0.8);">
+          <a href="tel:+74951234567" style="color: inherit; text-decoration: none;" style-hover="color: #fff;">+7 (495) 123-45-67</a>
+          <a href="mailto:info@iteross.ru" style="color: inherit; text-decoration: none;" style-hover="color: #fff;">info@iteross.ru</a>
+          <div>г. Москва, Дербеневская ул., 12, стр. 3</div>
+          <div style="color: rgba(255,255,255,0.5); font-size: 13.5px;">Пн–Пт, 9:00–18:00</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-bottom: 18px;">РЕКВИЗИТЫ</div>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; color: rgba(255,255,255,0.6); line-height: 1.6;">
+          <div>ООО «АЙТЕРОСС»</div>
+          <div>ИНН 7700000000</div>
+          <div>ОГРН 1157700000000</div>
+          <div>КПП 770001001</div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width: 1360px; margin: 0 auto; padding: 24px 32px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: rgba(255,255,255,0.4);">© 2026 ООО «АЙТЕРОСС». Все права защищены.</div>
+  </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { qty: 1, added: false, wish: false, copied: false };
+
+  incQty = () => this.setState(s => ({ qty: s.qty + 1 }));
+  decQty = () => this.setState(s => ({ qty: Math.max(1, s.qty - 1) }));
+  addToCart = () => {
+    this.setState({ added: true });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ added: false }), 1800);
+  };
+  toggleWish = () => this.setState(s => ({ wish: !s.wish }));
+  slidePrev = () => {
+    const el = document.getElementById('analog-slider');
+    if (el) el.scrollBy({ left: -436, behavior: 'smooth' });
+  };
+  slideNext = () => {
+    const el = document.getElementById('analog-slider');
+    if (el) el.scrollBy({ left: 436, behavior: 'smooth' });
+  };
+  copySku = () => {
+    const sku = 'CNMG090308-GM-GP1225';
+    if (navigator.clipboard) navigator.clipboard.writeText(sku).catch(() => {});
+    this.setState({ copied: true });
+    clearTimeout(this._c);
+    this._c = setTimeout(() => this.setState({ copied: false }), 1600);
+  };
+
+  renderVals() {
+    const P = '#1565C0', K = '#C62828';
+    return {
+      sku: 'CNMG090308-GM-GP1225',
+      stockLabel: '240 шт на складе',
+      qty: this.state.qty,
+      cartLabel: this.state.added ? 'Добавлено ✓' : 'В корзину',
+      addToCart: this.addToCart,
+      incQty: this.incQty,
+      decQty: this.decQty,
+      toggleWish: this.toggleWish,
+      wishFill: this.state.wish ? '#1657C4' : 'none',
+      copySku: this.copySku,
+      skuCopied: this.state.copied,
+      slidePrev: this.slidePrev,
+      slideNext: this.slideNext,
+      analogs: [
+        { sku: 'CNMG120408-LM-GS4130', stock: '2817', slotId: 'analog-1' },
+        { sku: 'CNMG120408-ML-RM1125', stock: '2489', slotId: 'analog-2' },
+        { sku: 'CNMG120408-ME-RST1730', stock: '2338', slotId: 'analog-3' },
+        { sku: 'CNMG120408-LE-RST1715', stock: '2200', slotId: 'analog-4' },
+        { sku: 'CNMG120408-YF-GM3220', stock: '1992', slotId: 'analog-5' },
+        { sku: 'CNMG120404-ML-RM1125', stock: '1780', slotId: 'analog-6' },
+        { sku: 'CNMG120408-QM-RP1105', stock: '1540', slotId: 'analog-7' },
+        { sku: 'CNMG120412-MF-GS3220', stock: '1205', slotId: 'analog-8' },
+      ],
+      specs: [
+        { isPlain: true, label: 'Тип', value: 'пластина токарная твердосплавная' },
+        { isPlain: true, label: 'Бренд', value: 'GESAC' },
+        { isPlain: true, label: 'Геометрия', value: 'CNMG' },
+        { isPlain: true, label: 'Форма пластины', value: 'Ромб 80° (C***)' },
+        { isPlain: true, label: 'Размер', value: '09' },
+        { isPlain: true, label: 'Радиус RE', value: '0.8' },
+        { isBadges: true, label: 'Обрабатываемый материал', badges: [{ iso: 'P', color: P }, { iso: 'K', color: K }] },
+        { isMulti: true, label: 'Тип обработки', values: ['Получистовая', 'Черновая'] },
+        { isPlain: true, label: 'D1', value: '3.81' },
+        { isPlain: true, label: 'IC', value: '9.525' },
+        { isPlain: true, label: 'LE', value: '9.7' },
+        { isPlain: true, label: 'S', value: '3.18' },
+        { isPlain: true, label: 'Задний угол', value: '0° (*N**)' },
+        { isPlain: true, label: 'Конструкция пластины', value: 'с отверстием / двухсторонний (***G)' },
+        { isPlain: true, label: 'Материал пластины', value: 'твердый сплав с CVD' },
+        { isPlain: true, label: 'Сплав пластины', value: 'GP1225' },
+        { isPlain: true, label: 'Стружколом', value: 'GM' },
+      ],
+    };
+  }
+}
+</script>
+<script>
+(async () => {
+  if (!document.title || !document.title.trim()) document.title = "Товар";
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    print-color-adjust: exact; -webkit-print-color-adjust: exact;\n    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  // Project support.js may predate runtime default-seeding; push via bridge.
+  if (isDc && window.__dcSetProps && window.__dcRootName) {
+    try {
+      const dpEl = document.querySelector('script[data-dc-script]');
+      const meta = JSON.parse((dpEl && dpEl.getAttribute('data-props')) || '{}');
+      const bag = {};
+      for (const k in meta)
+        if (k[0] !== '$' && meta[k] && meta[k].default !== undefined)
+          bag[k] = meta[k].default;
+      if (Object.keys(bag).length) {
+        window.__dcSetProps(window.__dcRootName(), bag);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    } catch (e) {}
+  }
+  // Reveal content gated on scroll or visibility before printing. Lazy <img>,
+  // IntersectionObserver fade-ins, and collapsed <details> don't render while
+  // off-screen, so a long page would print with them blank or closed. Open
+  // every <details>, force native-lazy images eager, and scroll the document
+  // through its full height to trip lazy-load + IO; then wait (bounded) for the
+  // newly-triggered images. Inert for deck-stage (slides aren't scroll-gated).
+  try {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+    for (const img of document.querySelectorAll('img[loading="lazy"]'))
+      img.loading = 'eager';
+    const scroller = document.scrollingElement || document.documentElement;
+    const full = Math.max(scroller.scrollHeight, document.body.scrollHeight);
+    const step = window.innerHeight || 800;
+    for (let y = 0; y <= full; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    window.scrollTo(0, 0);
+    await Promise.race([
+      Promise.all(
+        [...document.images].map((img) =>
+          img.complete
+            ? null
+            : new Promise((res) => {
+                img.addEventListener('load', res, { once: true });
+                img.addEventListener('error', res, { once: true });
+              })
+        )
+      ),
+      new Promise((r) => setTimeout(r, 4000)),
+    ]);
+  } catch (e) {}
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  // Re-append deck-stage's @page last so no author @page can add a margin and
+  // spill each full-bleed slide onto two sheets. Backstop for old copies.
+  if (ds) {
+    let pg = document.getElementById('deck-stage-print-page');
+    if (!pg) {
+      pg = document.createElement('style');
+      pg.textContent = '@page{size:' + (+ds.getAttribute('width') || 1920) +
+        'px ' + (+ds.getAttribute('height') || 1080) + 'px;margin:0}';
+    }
+    document.body.appendChild(pg);
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  // Size the PDF page to the rendered design unless the file opted into
+  // standard paper via @page{size:letter|A4|…}. Decks own their own @page.
+  // Wrappers (body, …) lose padding+margin so the frame sits at (0,0); the
+  // frame itself loses only margin — its padding is INSIDE the measured
+  // rect and must stay, or content shifts and leaves a gap at bottom/right.
+  var __m = null;
+  try { __m = (() => {
+  var STAMP = true;
+  var docEl = document.documentElement;
+  var doc = { width: docEl.scrollWidth, height: docEl.scrollHeight };
+
+  var ds = document.querySelector('deck-stage');
+  if (ds) {
+    var dw = Number(ds.getAttribute('width')) || 1920;
+    var dh = Number(ds.getAttribute('height')) || 1080;
+    var n = typeof ds.length === 'number' ? ds.length : ds.children.length;
+    var idx = typeof ds.index === 'number' ? ds.index : 0;
+    var frames = [];
+    for (var i = 0; i < n; i++) frames.push({ left: 0, top: 0, width: dw, height: dh });
+    return { kind: 'deck', source: 'declared', doc: doc, frames: frames,
+      authored: frames.map(function(){return{width:true,height:true}}),
+      deck: { width: dw, height: dh, slideCount: n, index: idx },
+      signals: { paperPage: false, pxPage: false } };
+  }
+
+  // Declared kind: a doc-page tag names the kind outright, so no signal
+  // heuristics run (like the deck branch above, signals report false —
+  // they describe inferred classifications only). The tag alone is not
+  // trusted: the element must have upgraded (shadowRoot present), so a
+  // leftover tag whose script was deleted falls through to the heuristics
+  // that handle plain markup.
+  var stageSx = window.scrollX || 0, stageSy = window.scrollY || 0;
+  var dp = document.querySelector('doc-page');
+  if (dp && dp.shadowRoot) {
+    // Crop to the sheet, not the host — the desk around it is screen-only
+    // chrome that must not land in PNG exports.
+    var sheet = dp.shadowRoot.querySelector('.sheet');
+    var sr = (sheet || dp).getBoundingClientRect();
+    return { kind: 'paper-doc', source: 'declared', doc: doc,
+      frames: [{ left: sr.left + stageSx, top: sr.top + stageSy,
+        width: sr.width, height: sr.height }],
+      authored: [{ width: false, height: false }],
+      signals: { paperPage: false, pxPage: false } };
+  }
+  var paperPage = false, pxPage = false;
+  var eachRule = function (fn) {
+    for (var s = 0; s < document.styleSheets.length; s++) {
+      var rs; try { rs = document.styleSheets[s].cssRules; } catch (e) { continue; }
+      for (var r = 0; r < rs.length; r++) {
+        fn(rs[r]);
+        if (rs[r].cssRules) for (var n = 0; n < rs[r].cssRules.length; n++) fn(rs[r].cssRules[n]);
+      }
+    }
+  };
+  eachRule(function (r) {
+    if (r.type !== 6) return;
+    var m = /\bsize\s*:\s*([^;}]+)/i.exec(r.cssText || '');
+    if (!m) return;
+    if (/\b(letter|a[3-5]|legal|ledger)\b/i.test(m[1])) paperPage = true;
+    if (/\d+(?:\.\d+)?px\b/i.test(m[1])) pxPage = true;
+  });
+  var signals = { paperPage: paperPage, pxPage: pxPage };
+
+  var pxVal = function (v) {
+    var m = /^(\d+(?:\.\d+)?)px$/.exec(v || ''); return m ? +m[1] : 0;
+  };
+  var authoredPx = function (el, prop) {
+    if (pxVal(el.style[prop])) return true;
+    var attr = el.getAttribute(prop);
+    if (attr && /^\d+$/.test(attr)) return true;
+    var hit = false;
+    eachRule(function (r) {
+      if (hit || r.type !== 1 || !r.style) return;
+      try { if (el.matches(r.selectorText) && pxVal(r.style[prop])) hit = true; } catch (e) {}
+    });
+    return hit;
+  };
+
+  var el = document.body, rootPxW = false;
+  for (;;) {
+    var kids = [];
+    for (var c = 0; c < el.children.length; c++) {
+      var t = el.children[c].tagName;
+      if (t !== 'SCRIPT' && t !== 'STYLE' && t !== 'TEMPLATE') kids.push(el.children[c]);
+    }
+    if (kids.length !== 1 || !(kids[0] instanceof HTMLElement)) break;
+    if (STAMP) el.setAttribute('data-om-frame-wrap', '');
+    el = kids[0];
+    rootPxW = authoredPx(el, 'width');
+    if (rootPxW) break;
+  }
+  if (!rootPxW) rootPxW = authoredPx(el, 'width');
+
+  // @page{size:letter} alone is a flowing doc; with a px-width root it's a
+  // fixed sheet pretending to be paper — fall through and size to render.
+  if (paperPage && !rootPxW) {
+    return { kind: 'paper-doc', source: 'inferred', doc: doc, signals: signals,
+      frames: [{ left: 0, top: 0, width: doc.width, height: doc.height }],
+      authored: [{ width: false, height: false }] };
+  }
+
+  var sx = window.scrollX || 0, sy = window.scrollY || 0;
+  var rectOf = function (e) {
+    var r = e.getBoundingClientRect();
+    var oy; try { oy = getComputedStyle(e).overflowY; } catch (err) {}
+    var h = oy === 'visible' ? Math.max(r.height, e.scrollHeight || 0) : r.height;
+    return { left: r.left + sx, top: r.top + sy, width: r.width, height: h };
+  };
+
+  // Multi-frame: off unless the page opts in via data-om-multi-frame on the
+  // stop element — the explicit opt-in is what guards against card grids
+  // and pricing tables that match the geometry but aren't separate
+  // canvases. Two ways to name the frames, explicit first:
+  // 1. Descendants marked data-om-frame-export (the social-frames starter
+  //    marks each asset frame; shells/panels around them are presentation,
+  //    so nesting is expected). Document order.
+  // 2. Fallback, no marked descendants: direct children with an authored px
+  //    width AND height (the original geometry heuristic).
+  // Frames may be different sizes (a gallery mixes 1080×1920 stories with
+  // 728×90 banners); data-om-frame-label rides along for export filenames.
+  if (el.hasAttribute('data-om-multi-frame')) {
+    var visOk = function (e) {
+      var cs; try { cs = getComputedStyle(e); } catch (err) { return false; }
+      return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.position !== 'fixed';
+    };
+    // A frame's crop is its VISUAL box — never the scrollHeight-inflated
+    // rect that rectOf computes for page roots. Shadow-DOM hover controls
+    // (image-slot's Replace bar parks 29px below its host) and similar
+    // escaping UI contribute scrollable overflow to the frame, and the
+    // inflated height both squashes the nominal-size resize and drags
+    // content below the frame into the crop. Zoom-independent; bit every
+    // slot-bearing frame.
+    var frameRectOf = function (e) {
+      var r = e.getBoundingClientRect();
+      return { left: r.left + sx, top: r.top + sy, width: r.width, height: r.height };
+    };
+    var pushCand = function (list, e) {
+      if (!visOk(e)) return;
+      var rc = frameRectOf(e);
+      if (rc.width < 2 || rc.height < 2) return;
+      var lbl = e.getAttribute('data-om-frame-label');
+      if (lbl) rc.label = lbl;
+      list.push(rc);
+    };
+    var cands = [];
+    var marked = el.querySelectorAll('[data-om-frame-export]');
+    if (marked.length) {
+      for (var mk = 0; mk < marked.length; mk++) pushCand(cands, marked[mk]);
+    } else {
+      for (var k = 0; k < el.children.length; k++) {
+        var ch = el.children[k];
+        if (!authoredPx(ch, 'width') || !authoredPx(ch, 'height')) continue;
+        pushCand(cands, ch);
+      }
+    }
+    if (cands.length >= 2) {
+      return { kind: 'multi-frame', source: 'inferred', doc: doc, signals: signals,
+        frames: cands, authored: cands.map(function(){return{width:true,height:true}}) };
+    }
+  }
+
+  if (STAMP) el.setAttribute('data-om-frame', '');
+  return { kind: 'single-canvas', source: 'inferred', doc: doc, signals: signals,
+    frames: [rectOf(el)],
+    authored: [{ width: rootPxW, height: authoredPx(el, 'height') }] };
+})(); } catch (e) {}
+  var frame = null;
+  if (__m && __m.kind === 'single-canvas') {
+    var f = __m.frames && __m.frames[0];
+    if (f && f.width >= 200 && f.height >= 200) {
+      frame = f;
+      var fst = document.createElement('style');
+      fst.textContent = '@media print{@page{size:' + Math.ceil(f.width) + 'px ' +
+        Math.ceil(f.height) + 'px;margin:0}' +
+        'html,body,[data-om-frame-wrap]{padding:0!important;margin:0!important;background:none!important}' +
+        '[data-om-frame]{margin:0!important}}';
+      document.body.appendChild(fst);
+    }
+  }
+  // Relax break-inside on oversized elements. An element taller than a
+  // printable page can't honor break-inside: avoid — browsers either overflow
+  // it or push it whole to the next page, leaving a blank gap, then break it
+  // anyway at an arbitrary point. After the final layout (content revealed,
+  // animations jumped), find elements taller than a page that still compute
+  // break-inside: avoid and reset them to auto, so the browser breaks them at
+  // their children's boundaries instead (children keep their own avoid). PAGE_PX
+  // is a conservative portrait estimate at 96 CSS px/in — Letter/A4 usable
+  // height minus our 0.5in margins — so only clearly-oversized elements are
+  // touched and under-page elements still stay whole. Skipped for decks (slides
+  // are sized to the page) and for fixed-size canvases (frame set, or an author
+  // px-based @page) — runs as before for flowing docs on letter/A4.
+  try {
+    if (!ds && !frame && !(__m && __m.signals && __m.signals.pxPage)) {
+      const PAGE_PX = 1024;
+      // Our print defaults add a real @page margin only when the source has
+      // no @page of its own; computed style can't tell us (it reports screen
+      // media), so read the injected rule directly.
+      const defaults = document.querySelector('style[data-omelette-print-defaults]');
+      const pageInset = /@page\s*\{[^}]*margin/.test(defaults ? defaults.textContent || '' : '');
+      const SEL = 'section,article,figure,table,pre,blockquote,[class~="card" i],[class~="page" i],[class~="sheet" i]';
+      for (const el of document.body.querySelectorAll(SEL)) {
+        if (el instanceof HTMLElement && el.offsetHeight > PAGE_PX) {
+          el.setAttribute('data-om-oversized', '');
+          // Fake-paged docs simulate sheets with over-tall break-after:page
+          // boxes; honoring the break spills half-blank pages and ends a
+          // colored box mid-sheet. Flow them, and (only when we own the page
+          // inset) drop the redundant padding/background via the rule below.
+          const cs = getComputedStyle(el);
+          if (cs.breakAfter === 'page' || cs.pageBreakAfter === 'always') {
+            el.setAttribute('data-om-fakepage', '');
+          }
+        }
+      }
+      const ost = document.createElement('style');
+      ost.textContent = '@media print{' +
+        '[data-om-oversized]{break-inside:auto !important;page-break-inside:auto !important}' +
+        '[data-om-fakepage]{break-after:auto !important;page-break-after:auto !important}' +
+        (pageInset ? '[data-om-fakepage]{padding:0 !important;background:none !important}' : '') +
+        '}';
+      document.head.appendChild(ost);
+    }
+  } catch (e) {}
+  // macOS Preview renders Skia-PDF Luminosity soft-masks as opaque grey boxes;
+  // swap the CSS that triggers them for Preview-safe forms.
+  try {
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+
+      if (cs.boxShadow !== 'none' && cs.filter === 'none') {
+        const outs = [], kept = [];
+        for (const s of cs.boxShadow.split(/,(?![^(]*[)])/)) {
+          const t = s.trim();
+          const m = t.match(/^(rgba?[(][^)]+[)]) (-?[0-9.]+px) (-?[0-9.]+px) ([0-9.]+px) -?[0-9.]+px$/);
+          if (m && parseFloat(m[4]) > 0) outs.push('drop-shadow(' + m[2] + ' ' + m[3] + ' ' + m[4] + ' ' + m[1] + ')');
+          else kept.push(t);
+        }
+        if (outs.length) {
+          el.style.setProperty('filter', outs.join(' '), 'important');
+          el.style.setProperty('box-shadow', kept.join(', ') || 'none', 'important');
+        }
+      }
+
+      const mask = cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+      if (mask && mask !== 'none' && cs.filter === 'none') el.style.setProperty('filter', 'opacity(1)', 'important');
+    }
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body>
+</html>
