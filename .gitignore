@@ -1,0 +1,23 @@
+# Laravel / PHP
+**/.env
+**/vendor/
+**/bootstrap/cache/*.php
+**/storage/logs/*.log
+**/storage/framework/cache/data/*
+**/storage/framework/sessions/*
+**/storage/framework/views/*
+
+# Node
+**/node_modules/
+
+# Local databases
+**/database/*.sqlite
+
+# Local temp / artifacts
+cookies*.txt
+*.log
+.playwright-cli/
+
+# OS / editor
+Thumbs.db
+.DS_Store

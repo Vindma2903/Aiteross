@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Вход | АЙТЕРОСС</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'IBM Plex Sans', system-ui, sans-serif;
+            color: #14161A;
+            background: #F7F8FA;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: #FFFFFF;
+            border-bottom: 1px solid #E3E6EA;
+        }
+        .header__inner {
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 18px 20px;
+        }
+        .brand {
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: 700;
+            color: #0B2545;
+            letter-spacing: 0.3px;
+        }
+        .auth {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 20px;
+        }
+        .card {
+            width: 100%;
+            max-width: 440px;
+            background: #fff;
+            border: 1px solid #E3E6EA;
+            border-radius: 16px;
+            box-shadow: 0 24px 48px -20px rgba(11, 37, 69, 0.15);
+            padding: 40px;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 0 0 8px;
+        }
+        p {
+            font-size: 15px;
+            color: #6B7480;
+            margin: 0 0 32px;
+            line-height: 1.5;
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #8891A0;
+            letter-spacing: 0.3px;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            height: 50px;
+            border: 1.5px solid #D6DAE0;
+            border-radius: 10px;
+            padding: 0 16px;
+            font-size: 15.5px;
+            font-family: inherit;
+            outline: none;
+        }
+        input:focus {
+            border-color: #1657C4;
+        }
+        .field {
+            margin-bottom: 18px;
+        }
+        .field--last {
+            margin-bottom: 28px;
+        }
+        .status {
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            background: #ECFDF5;
+            color: #166534;
+            border: 1px solid #86EFAC;
+        }
+        .error-list {
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            background: #FFF1F2;
+            color: #9F1239;
+            border: 1px solid #FDA4AF;
+        }
+        button {
+            width: 100%;
+            background: #1657C4;
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #123F94;
+        }
+        .footer-link {
+            text-align: center;
+            margin-top: 22px;
+        }
+        .footer-link a {
+            font-size: 14.5px;
+            color: #1657C4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header__inner">
+            <a href="/" class="brand">АЙТЕРОСС</a>
+        </div>
+    </header>
+
+    <main class="auth">
+        <div class="card">
+            <h1>Вход в личный кабинет</h1>
+            <p>Введите почту и пароль, чтобы открыть личный кабинет.</p>
+
+            @if (session('status'))
+                <div class="status">{{ session('status') }}</div>
+            @endif
+
+            @if ($errors->any())
+                <div class="error-list">
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
+
+            <form action="{{ route('login.store') }}" method="post">
+                @csrf
+                <div class="field">
+                    <label for="email">ПОЧТА</label>
+                    <input id="email" name="email" type="email" value="{{ old('email') }}" placeholder="you@company.ru" required>
+                </div>
+
+                <div class="field field--last">
+                    <label for="password">ПАРОЛЬ</label>
+                    <input id="password" name="password" type="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit">Войти</button>
+            </form>
+
+            <div class="footer-link">
+                <a href="/register">Ещё не зарегистрированы? Регистрация</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
