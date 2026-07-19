@@ -1,6 +1,8 @@
 <?php
 
 use App\Application\Favorites\FavoriteService;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CatalogController;
@@ -258,6 +260,9 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+
+    Route::get('/admin/login', [AdminLoginController::class, 'create'])->name('admin.login');
+    Route::post('/admin/login', [AdminLoginController::class, 'store'])->name('admin.login.store');
 });
 
 Route::middleware('auth')->group(function () {
@@ -268,4 +273,19 @@ Route::middleware('auth')->group(function () {
     })->name('account');
 
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/pages/{page}', [AdminDashboardController::class, 'editor'])->name('admin.pages.editor');
+    Route::post('/admin/catalog/categories', [AdminDashboardController::class, 'updateCatalogCategories'])->name('admin.catalog.categories.update');
+    Route::post('/admin/products', [AdminDashboardController::class, 'storeProduct'])->name('admin.products.store');
+    Route::put('/admin/products/{product}', [AdminDashboardController::class, 'updateProduct'])->name('admin.products.update');
+    Route::delete('/admin/products/{product}', [AdminDashboardController::class, 'destroyProduct'])->name('admin.products.destroy');
+    Route::get('/admin/legacy-products', [AdminDashboardController::class, 'legacyProducts'])->name('admin.legacy.products');
+    Route::get('/admin/static-preview/{page}', [AdminDashboardController::class, 'preview'])->name('admin.static.preview');
+    Route::get('/admin/legacy-editor/{page}', [AdminDashboardController::class, 'legacyEditor'])->name('admin.legacy.editor');
+    Route::get('/admin/static-resource/{path}', [AdminDashboardController::class, 'resource'])
+        ->where('path', '.*')
+        ->name('admin.static.resource');
 });

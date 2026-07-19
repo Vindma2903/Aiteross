@@ -15,18 +15,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(CategorySeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(AdminUserSeeder::class);
 
         User::query()->updateOrCreate([
-            'email' => 'test@example.com',
+            'email' => 'v9957820668@gmail.com',
         ], [
-            'name' => 'Test User',
-            'first_name' => 'Test',
-            'last_name' => 'User',
-            'company' => 'Iteross Test',
-            'phone' => '+7 (999) 123-45-67',
-            'email' => 'test@example.com',
-            'password' => 'password',
+            'name' => 'Обычный пользователь',
+            'first_name' => 'Обычный',
+            'last_name' => 'Пользователь',
+            'company' => 'АЙТЕРОСС',
+            'phone' => '+7 (999) 582-06-68',
+            'role' => User::ROLE_USER,
+            'email' => 'v9957820668@gmail.com',
+            'password' => 'Art29031705%',
         ]);
     }
 }

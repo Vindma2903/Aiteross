@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Админка | АЙТЕРОСС</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'IBM Plex Sans', system-ui, sans-serif;
+            color: #14161A;
+            background: #FFFFFF;
+        }
+        .shell {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            background: #FFFFFF;
+        }
+        .sidebar {
+            width: 320px;
+            flex: none;
+            padding: 34px 24px;
+            background: #FFFFFF;
+            border-right: 1px solid #E3E6EA;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: #0B2545;
+        }
+        .sidebar-subtitle {
+            margin: 6px 0 0;
+            color: #8891A0;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .nav-title {
+            padding: 18px 14px 8px;
+            margin-top: 8px;
+            border-top: 1px solid #E3E6EA;
+            color: #8891A0;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            min-height: 52px;
+            padding: 0 14px;
+            border-radius: 14px;
+            color: #14161A;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .nav-link:hover {
+            background: #F5F7FB;
+        }
+        .nav-link--active {
+            background: #EAF1FB;
+            color: #1657C4;
+        }
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #E3E6EA;
+        }
+        .logout-button {
+            width: 100%;
+            min-height: 52px;
+            border: 1px solid #F0D7D7;
+            border-radius: 14px;
+            background: transparent;
+            color: #D34040;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .logout-button:hover {
+            background: #FDF4F4;
+        }
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 36px 48px;
+        }
+        .hero {
+            margin-bottom: 28px;
+        }
+        .hero h1 {
+            margin: 0 0 14px;
+            font-size: 26px;
+        }
+        .hero p {
+            margin: 0;
+            color: #8891A0;
+            line-height: 1.6;
+            font-size: 14.5px;
+            max-width: 760px;
+        }
+        .content-card {
+            background: #FFFFFF;
+            border: 1px solid #E3E6EA;
+            border-radius: 22px;
+            padding: 36px 48px 44px;
+            min-height: 690px;
+        }
+        .status {
+            margin-bottom: 18px;
+            border-radius: 12px;
+            padding: 14px 16px;
+            background: #ECFDF5;
+            color: #166534;
+            border: 1px solid #86EFAC;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 26px;
+            max-width: 760px;
+        }
+        .page-tile {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            padding: 30px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #14161A;
+            border: 1px solid #E3E6EA;
+            background: #fff;
+            font-weight: 600;
+            min-height: 176px;
+            transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .page-tile:hover {
+            transform: translateY(-1px);
+            border-color: #1657C4;
+            box-shadow: 0 12px 28px -16px rgba(11, 37, 69, 0.2);
+        }
+        .page-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: #EAF1FB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .page-tile__label {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        .placeholder-panel {
+            display: grid;
+            gap: 20px;
+            max-width: 760px;
+        }
+        .placeholder-box {
+            background: #fff;
+            border: 1px solid #E3E6EA;
+            border-radius: 18px;
+            padding: 28px;
+        }
+        .placeholder-box h2 {
+            margin: 0 0 12px;
+            font-size: 18px;
+        }
+        .placeholder-box p,
+        .placeholder-box li {
+            margin: 0;
+            color: #5B6470;
+            line-height: 1.7;
+        }
+        .placeholder-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .products-shell {
+            display: grid;
+            gap: 20px;
+        }
+        .products-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .products-filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 18px;
+            border: 1px solid #E3E6EA;
+            border-radius: 18px;
+            background: #fff;
+        }
+        .products-title {
+            margin: 0;
+            font-size: 20px;
+        }
+        .primary-button,
+        .secondary-button,
+        .danger-button {
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: inherit;
+        }
+        .primary-button {
+            border: none;
+            background: #1657C4;
+            color: #fff;
+        }
+        .primary-button:hover {
+            background: #123F94;
+        }
+        .secondary-button {
+            border: 1.5px solid #1657C4;
+            background: #fff;
+            color: #1657C4;
+        }
+        .secondary-button:hover {
+            background: #EAF1FB;
+        }
+        .danger-button {
+            border: 1px solid #F0D7D7;
+            background: #fff;
+            color: #D34040;
+        }
+        .danger-button:hover {
+            background: #FDF4F4;
+        }
+        .products-table-wrap {
+            overflow-x: auto;
+            border: 1px solid #E3E6EA;
+            border-radius: 18px;
+            background: #fff;
+        }
+        .products-table {
+            width: 100%;
+            min-width: 980px;
+            border-collapse: collapse;
+        }
+        .products-table th,
+        .products-table td {
+            padding: 16px 18px;
+            border-bottom: 1px solid #EDEFF2;
+            vertical-align: top;
+            text-align: left;
+        }
+        .products-table th {
+            background: #F8FAFD;
+            color: #7E8896;
+            font-size: 12px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+        .products-table tr:last-child td {
+            border-bottom: none;
+        }
+        .table-product-name {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .table-product-desc {
+            color: #6A7381;
+            font-size: 13px;
+            line-height: 1.5;
+            max-width: 320px;
+        }
+        .table-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .table-chip {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 0 12px;
+            border-radius: 999px;
+            background: #F5F7FB;
+            color: #526070;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .table-chip--hidden {
+            background: #FFF3E8;
+            color: #B26A1F;
+        }
+        .table-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .link-button {
+            border: none;
+            background: transparent;
+            color: #1657C4;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+        }
+        .link-button:hover {
+            color: #123F94;
+        }
+        .empty-box {
+            border: 1px dashed #CBD4DE;
+            border-radius: 18px;
+            padding: 28px;
+            color: #5B6470;
+            line-height: 1.7;
+            background: #FBFCFE;
+        }
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 37, 69, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 2000;
+        }
+        .modal-backdrop.is-open {
+            display: flex;
+        }
+        .modal-card {
+            width: 100%;
+            max-width: 760px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: #fff;
+            border-radius: 22px;
+            border: 1px solid #E3E6EA;
+            box-shadow: 0 36px 80px -36px rgba(11, 37, 69, 0.45);
+            padding: 28px;
+        }
+        .modal-header {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .modal-header h2 {
+            margin: 0 0 8px;
+            font-size: 24px;
+        }
+        .modal-header p {
+            margin: 0;
+            color: #6A7381;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        .icon-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid #D8DEE6;
+            background: #fff;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: none;
+        }
+        .icon-button:hover {
+            background: #F5F7FB;
+        }
+        .product-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .field {
+            display: grid;
+            gap: 8px;
+        }
+        .field--full {
+            grid-column: 1 / -1;
+        }
+        .field label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #8891A0;
+            letter-spacing: 0.3px;
+        }
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            border: 1.5px solid #D6DAE0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            background: #fff;
+        }
+        .field input,
+        .field select {
+            min-height: 48px;
+        }
+        .field textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: #1657C4;
+            box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
+        }
+        .filter-input,
+        .filter-select {
+            min-height: 46px;
+            border: 1.5px solid #D6DAE0;
+            border-radius: 10px;
+            padding: 0 14px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            background: #fff;
+        }
+        .filter-input {
+            min-width: 280px;
+            flex: 1;
+        }
+        .filter-select {
+            min-width: 220px;
+        }
+        .filter-input:focus,
+        .filter-select:focus {
+            border-color: #1657C4;
+            box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
+        }
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 48px;
+            flex-wrap: wrap;
+        }
+        .modal-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 1100px) {
+            .pages-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (max-width: 900px) {
+            .shell {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #E3E6EA;
+            }
+            .main {
+                padding: 28px 20px;
+            }
+            .content-card {
+                padding: 28px 20px 32px;
+                min-height: auto;
+            }
+            .pages-grid,
+            .product-form-grid {
+                grid-template-columns: 1fr;
+            }
+            .products-toolbar,
+            .modal-header,
+            .modal-actions {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <aside class="sidebar">
+            <div>
+                <div class="brand">АЙТЕРОСС</div>
+                <p class="sidebar-subtitle">Панель администратора</p>
+            </div>
+
+            <nav class="nav">
+                <a href="{{ route('admin.dashboard', ['section' => 'pages']) }}" class="nav-link{{ $selectedSection === 'pages' ? ' nav-link--active' : '' }}">Страницы</a>
+
+                <div class="nav-title">УПРАВЛЕНИЕ</div>
+                <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link{{ $selectedSection === 'orders' ? ' nav-link--active' : '' }}">Заявки</a>
+                <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link{{ $selectedSection === 'products' ? ' nav-link--active' : '' }}">Товары</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button type="submit" class="logout-button">Выйти</button>
+                </form>
+            </div>
+        </aside>
+
+        <main class="main">
+            <section class="hero">
+                <div>
+                    @if ($selectedSection === 'pages')
+                        <h1>Страницы сайта</h1>
+                        <p>Выберите страницу, для которой нужно открыть отдельную полноценную страницу редактора.</p>
+                    @elseif ($selectedSection === 'orders')
+                        <h1>Заявки</h1>
+                        <p>Раздел подготовлен под просмотр входящих заявок. Сейчас здесь можно закрепить будущую таблицу, фильтры и карточки обращений.</p>
+                    @else
+                        <h1>Товары</h1>
+                        <p>На этой странице есть таблица товаров и pop-up окно для создания новой позиции.</p>
+                    @endif
+                </div>
+            </section>
+
+            <section class="content-card">
+                @if (session('status'))
+                    <div class="status">{{ session('status') }}</div>
+                @endif
+
+                @if ($selectedSection === 'pages')
+                    <div class="pages-grid">
+                        @foreach (['home', 'catalog', 'delivery', 'product'] as $slug)
+                            <a href="{{ route('admin.pages.editor', ['page' => $slug]) }}" class="page-tile">
+                                <div class="page-icon">
+                                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M4 4h16v16H4z" stroke="#1657C4" stroke-width="1.6"/>
+                                        <path d="M4 9h16M9 9v11" stroke="#1657C4" stroke-width="1.6"/>
+                                    </svg>
+                                </div>
+                                <div class="page-tile__label">{{ $staticPages[$slug]['label'] }}</div>
+                            </a>
+                        @endforeach
+                    </div>
+                @elseif ($selectedSection === 'orders')
+                    <div class="placeholder-panel">
+                        <div class="placeholder-box">
+                            <h2>Заявки пока не подключены</h2>
+                            <p>Сюда можно вывести таблицу входящих заявок из формы сайта, фильтры по статусу и карточку детали обращения.</p>
+                        </div>
+                        <div class="placeholder-box">
+                            <h2>Что уже можно показать дальше</h2>
+                            <ul>
+                                <li>имя клиента и компания</li>
+                                <li>телефон и email</li>
+                                <li>комментарий к заявке</li>
+                                <li>дата создания и статус обработки</li>
+                            </ul>
+                        </div>
+                    </div>
+                @else
+                    <div class="products-shell">
+                        <div class="products-toolbar">
+                            <h2 class="products-title">Список товаров</h2>
+                            <button type="button" class="primary-button" data-open-create-modal>Создать товар</button>
+                        </div>
+
+                        <form method="get" action="{{ route('admin.dashboard') }}" class="products-filters">
+                            <input type="hidden" name="section" value="products">
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ $productSearch }}"
+                                class="filter-input"
+                                placeholder="Поиск по названию или артикулу"
+                            >
+                            <select name="category" class="filter-select">
+                                <option value="">Все категории</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" @selected((string) $productCategory === (string) $category->id)>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="primary-button">Найти</button>
+                            <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="secondary-button">Сбросить</a>
+                        </form>
+
+                        @if ($products->isEmpty())
+                            <div class="empty-box">По текущему фильтру товары не найдены. Попробуйте изменить поиск, категорию или создайте новую позицию.</div>
+                        @else
+                            <div class="products-table-wrap">
+                                <table class="products-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Артикул</th>
+                                            <th>Товар</th>
+                                            <th>Категория</th>
+                                            <th>Цена</th>
+                                            <th>Остаток</th>
+                                            <th>Статус</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($products as $product)
+                                            <tr>
+                                                <td><strong>{{ $product->sku }}</strong></td>
+                                                <td>
+                                                    <div class="table-product-name">{{ $product->name }}</div>
+                                                    <div class="table-product-desc">{{ $product->description ?: 'Без описания' }}</div>
+                                                </td>
+                                                <td>{{ $product->category?->name ?? 'Без категории' }}</td>
+                                                <td>{{ number_format($product->price, 0, ',', ' ') }} ₽</td>
+                                                <td>{{ $product->stock_quantity }}</td>
+                                                <td>
+                                                    <div class="table-chips">
+                                                        <span class="table-chip{{ $product->is_visible ? '' : ' table-chip--hidden' }}">
+                                                            {{ $product->is_visible ? 'Виден' : 'Скрыт' }}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="table-actions">
+                                                        <button type="button" class="link-button" data-open-edit-modal="edit-product-{{ $product->id }}">Редактировать</button>
+                                                        <form action="{{ route('admin.products.destroy', $product) }}" method="post">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="danger-button">Удалить</button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+            </section>
+        </main>
+    </div>
+
+    @if ($selectedSection === 'products')
+        <div class="modal-backdrop" id="create-product-modal" aria-hidden="true">
+            <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="create-product-title">
+                <div class="modal-header">
+                    <div>
+                        <h2 id="create-product-title">Создать товар</h2>
+                        <p>Заполните основные поля нового товара. После сохранения он сразу появится в таблице.</p>
+                    </div>
+                    <button type="button" class="icon-button" data-close-create-modal aria-label="Закрыть окно">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M5 5L19 19M19 5L5 19" stroke="#3A4048" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <form action="{{ route('admin.products.store') }}" method="post">
+                    @csrf
+
+                    <div class="product-form-grid">
+                        <div class="field">
+                            <label for="create-name">Название</label>
+                            <input id="create-name" type="text" name="name" value="{{ old('name') }}" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="create-sku">Артикул</label>
+                            <input id="create-sku" type="text" name="sku" value="{{ old('sku') }}" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="create-category">Категория</label>
+                            <select id="create-category" name="category_id">
+                                <option value="">Без категории</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="create-price">Цена, ₽</label>
+                            <input id="create-price" type="number" min="0" name="price" value="{{ old('price', 0) }}" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="create-stock">Остаток</label>
+                            <input id="create-stock" type="number" min="0" name="stock_quantity" value="{{ old('stock_quantity', 0) }}" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="create-image">Ссылка на изображение</label>
+                            <input id="create-image" type="text" name="image" value="{{ old('image') }}" placeholder="https://...">
+                        </div>
+
+                        <div class="field field--full">
+                            <label for="create-description">Описание</label>
+                            <textarea id="create-description" name="description">{{ old('description') }}</textarea>
+                        </div>
+
+                        <div class="field field--full">
+                            <label>Видимость на сайте</label>
+                            <div class="toggle-row">
+                                <label><input type="radio" name="is_visible" value="1" @checked(old('is_visible', '1') == '1')> Показывать</label>
+                                <label><input type="radio" name="is_visible" value="0" @checked(old('is_visible') == '0')> Скрыть</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="secondary-button" data-close-create-modal>Отмена</button>
+                        <button type="submit" class="primary-button">Создать товар</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @foreach ($products as $product)
+            <div class="modal-backdrop" id="edit-product-{{ $product->id }}" aria-hidden="true">
+                <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="edit-product-title-{{ $product->id }}">
+                    <div class="modal-header">
+                        <div>
+                            <h2 id="edit-product-title-{{ $product->id }}">Редактировать товар</h2>
+                            <p>Изменения сохранятся в базу и сразу отразятся в каталоге и в админке.</p>
+                        </div>
+                        <button type="button" class="icon-button" data-close-edit-modal="edit-product-{{ $product->id }}" aria-label="Закрыть окно">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M5 5L19 19M19 5L5 19" stroke="#3A4048" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <form action="{{ route('admin.products.update', $product) }}" method="post">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="product-form-grid">
+                            <div class="field">
+                                <label for="name-{{ $product->id }}">Название</label>
+                                <input id="name-{{ $product->id }}" type="text" name="name" value="{{ $product->name }}" required>
+                            </div>
+
+                            <div class="field">
+                                <label for="sku-{{ $product->id }}">Артикул</label>
+                                <input id="sku-{{ $product->id }}" type="text" name="sku" value="{{ $product->sku }}" required>
+                            </div>
+
+                            <div class="field">
+                                <label for="category-{{ $product->id }}">Категория</label>
+                                <select id="category-{{ $product->id }}" name="category_id">
+                                    <option value="">Без категории</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}" @selected((string) $product->category_id === (string) $category->id)>{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="field">
+                                <label for="price-{{ $product->id }}">Цена, ₽</label>
+                                <input id="price-{{ $product->id }}" type="number" min="0" name="price" value="{{ $product->price }}" required>
+                            </div>
+
+                            <div class="field">
+                                <label for="stock-{{ $product->id }}">Остаток</label>
+                                <input id="stock-{{ $product->id }}" type="number" min="0" name="stock_quantity" value="{{ $product->stock_quantity }}" required>
+                            </div>
+
+                            <div class="field">
+                                <label for="image-{{ $product->id }}">Ссылка на изображение</label>
+                                <input id="image-{{ $product->id }}" type="text" name="image" value="{{ $product->image }}" placeholder="https://...">
+                            </div>
+
+                            <div class="field field--full">
+                                <label for="description-{{ $product->id }}">Описание</label>
+                                <textarea id="description-{{ $product->id }}" name="description">{{ $product->description }}</textarea>
+                            </div>
+
+                            <div class="field field--full">
+                                <label>Видимость на сайте</label>
+                                <div class="toggle-row">
+                                    <label><input type="radio" name="is_visible" value="1" @checked($product->is_visible)> Показывать</label>
+                                    <label><input type="radio" name="is_visible" value="0" @checked(! $product->is_visible)> Скрыть</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-actions">
+                            <button type="button" class="secondary-button" data-close-edit-modal="edit-product-{{ $product->id }}">Отмена</button>
+                            <button type="submit" class="primary-button">Сохранить изменения</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endforeach
+    @endif
+
+    @if ($selectedSection === 'products')
+        <script>
+            (function () {
+                var modal = document.getElementById('create-product-modal');
+                var openButton = document.querySelector('[data-open-create-modal]');
+
+                function openModal() {
+                    if (!modal) {
+                        return;
+                    }
+
+                    modal.classList.add('is-open');
+                    modal.setAttribute('aria-hidden', 'false');
+                }
+
+                function closeModal() {
+                    if (!modal) {
+                        return;
+                    }
+
+                    modal.classList.remove('is-open');
+                    modal.setAttribute('aria-hidden', 'true');
+                }
+
+                if (openButton) {
+                    openButton.addEventListener('click', openModal);
+                }
+
+                document.querySelectorAll('[data-close-create-modal]').forEach(function (button) {
+                    button.addEventListener('click', closeModal);
+                });
+
+                if (modal) {
+                    modal.addEventListener('click', function (event) {
+                        if (event.target === modal) {
+                            closeModal();
+                        }
+                    });
+                }
+
+                function openNamedModal(modalId) {
+                    var targetModal = modalId ? document.getElementById(modalId) : null;
+                    if (!targetModal) {
+                        return;
+                    }
+
+                    targetModal.classList.add('is-open');
+                    targetModal.setAttribute('aria-hidden', 'false');
+                }
+
+                function closeNamedModal(modalId) {
+                    var targetModal = modalId ? document.getElementById(modalId) : null;
+                    if (!targetModal) {
+                        return;
+                    }
+
+                    targetModal.classList.remove('is-open');
+                    targetModal.setAttribute('aria-hidden', 'true');
+                }
+
+                document.querySelectorAll('[data-open-edit-modal]').forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        openNamedModal(button.getAttribute('data-open-edit-modal'));
+                    });
+                });
+
+                document.querySelectorAll('[data-close-edit-modal]').forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        closeNamedModal(button.getAttribute('data-close-edit-modal'));
+                    });
+                });
+
+                document.querySelectorAll('.modal-backdrop[id^="edit-product-"]').forEach(function (editModal) {
+                    editModal.addEventListener('click', function (event) {
+                        if (event.target === editModal) {
+                            closeNamedModal(editModal.id);
+                        }
+                    });
+                });
+            })();
+        </script>
+    @endif
+</body>
+</html>

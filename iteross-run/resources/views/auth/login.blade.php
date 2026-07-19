@@ -86,6 +86,44 @@
         .field--last {
             margin-bottom: 28px;
         }
+        .password-field {
+            position: relative;
+        }
+        .password-field input {
+            padding-right: 52px;
+        }
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 14px;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border: none;
+            padding: 0;
+            background: transparent;
+            color: #6B7480;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .password-toggle svg {
+            display: block;
+            flex: none;
+        }
+        .password-toggle svg[hidden] {
+            display: none;
+        }
+        .password-toggle:hover {
+            color: #1657C4;
+            background: transparent;
+        }
+        .password-toggle:focus-visible {
+            outline: 2px solid #1657C4;
+            outline-offset: 2px;
+            border-radius: 6px;
+        }
         .status {
             border-radius: 10px;
             padding: 14px 16px;
@@ -104,7 +142,7 @@
             color: #9F1239;
             border: 1px solid #FDA4AF;
         }
-        button {
+        .submit-button {
             width: 100%;
             background: #1657C4;
             color: #fff;
@@ -115,7 +153,7 @@
             font-weight: 700;
             cursor: pointer;
         }
-        button:hover {
+        .submit-button:hover {
             background: #123F94;
         }
         .footer-link {
@@ -166,10 +204,24 @@
 
                 <div class="field field--last">
                     <label for="password">ПАРОЛЬ</label>
-                    <input id="password" name="password" type="password" placeholder="••••••••" required>
+                    <div class="password-field">
+                        <input id="password" name="password" type="password" placeholder="••••••••" required>
+                        <button type="button" class="password-toggle" data-password-toggle="password" aria-label="Показать пароль" aria-pressed="false">
+                            <svg data-eye-open viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
+                                <path d="M2 12C3.73 8.11 7.53 5.5 12 5.5C16.47 5.5 20.27 8.11 22 12C20.27 15.89 16.47 18.5 12 18.5C7.53 18.5 3.73 15.89 2 12Z" stroke="currentColor" stroke-width="1.7"/>
+                                <circle cx="12" cy="12" r="3.25" stroke="currentColor" stroke-width="1.7"/>
+                            </svg>
+                            <svg data-eye-closed viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true" hidden>
+                                <path d="M3 3L21 21" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                                <path d="M10.58 10.58C10.21 10.95 10 11.46 10 12C10 13.1 10.9 14 12 14C12.54 14 13.05 13.79 13.42 13.42" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                                <path d="M6.72 6.72C4.8 8.01 3.21 9.8 2 12C3.73 15.89 7.53 18.5 12 18.5C14.15 18.5 16.14 17.9 17.84 16.86" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                                <path d="M9.88 5.73C10.57 5.58 11.28 5.5 12 5.5C16.47 5.5 20.27 8.11 22 12C21.19 13.82 19.96 15.39 18.44 16.61" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
-                <button type="submit">Войти</button>
+                <button type="submit" class="submit-button">Войти</button>
             </form>
 
             <div class="footer-link">
@@ -177,5 +229,29 @@
             </div>
         </div>
     </main>
+
+    <script>
+        document.querySelectorAll('[data-password-toggle]').forEach(function (toggle) {
+            var input = document.getElementById(toggle.getAttribute('data-password-toggle'));
+            if (!input) {
+                return;
+            }
+
+            var eyeOpen = toggle.querySelector('[data-eye-open]');
+            var eyeClosed = toggle.querySelector('[data-eye-closed]');
+
+            toggle.addEventListener('click', function () {
+                var willShowPassword = input.type === 'password';
+                input.type = willShowPassword ? 'text' : 'password';
+                toggle.setAttribute('aria-pressed', willShowPassword ? 'true' : 'false');
+                toggle.setAttribute('aria-label', willShowPassword ? 'Скрыть пароль' : 'Показать пароль');
+
+                if (eyeOpen && eyeClosed) {
+                    eyeOpen.hidden = willShowPassword;
+                    eyeClosed.hidden = !willShowPassword;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

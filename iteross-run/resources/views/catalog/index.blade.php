@@ -239,6 +239,49 @@
             border: 1px solid #86EFAC;
             font-size: 14px;
         }
+        .categories {
+            margin-bottom: 24px;
+            background: #FFFFFF;
+            border: 1px solid #E3E6EA;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 20px 40px -28px rgba(11, 37, 69, 0.2);
+        }
+        .categories h2 {
+            margin: 0 0 16px;
+            font-size: 24px;
+        }
+        .category-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .category-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 999px;
+            border: 1px solid #D6DAE0;
+            background: #F8FAFD;
+            color: #14161A;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .category-count {
+            min-width: 24px;
+            height: 24px;
+            padding: 0 8px;
+            border-radius: 999px;
+            background: #EAF1FB;
+            color: #1657C4;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -428,11 +471,30 @@
             <div class="status">{{ session('status') }}</div>
         @endif
 
+        @if ($categories->isNotEmpty())
+            <section class="categories">
+                <h2>Категории</h2>
+                <div class="category-list">
+                    @foreach ($categories as $category)
+                        <div class="category-pill">
+                            <span>{{ $category->name }}</span>
+                            <span class="category-count">{{ $category->products_count }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
         <section class="grid">
             @foreach ($products as $product)
                 <article class="card">
                     <div class="top">
-                        <div class="sku">{{ $product->sku }}</div>
+                        <div>
+                            <div class="sku">{{ $product->sku }}</div>
+                            @if ($product->category)
+                                <div class="sku" style="margin-top: 8px;">{{ $product->category->name }}</div>
+                            @endif
+                        </div>
                         <form action="{{ route('favorites.toggle', $product) }}" method="post">
                             @csrf
                             @php($isFavorite = in_array($product->id, $favoriteProductIds, true))
