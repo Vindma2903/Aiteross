@@ -14,6 +14,7 @@ use App\Modules\Identity\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class);
+Route::view('/delivery', 'delivery')->name('delivery');
 Route::get('/catalog/{categorySlug?}', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 Route::post('/favorites/{product}/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
