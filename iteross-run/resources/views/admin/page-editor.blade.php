@@ -3,499 +3,723 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $selectedEditorMeta['label'] }} | Админка АЙТЕРОСС</title>
+    <title>Редактор страниц | АЙТЕРОСС</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg: #f4f6f8;
+            --surface: #ffffff;
+            --line: #e3e6ea;
+            --text: #14161a;
+            --muted: #6b7480;
+            --blue: #1657c4;
+            --danger: #c43d3d;
+            --shadow: 0 20px 40px -24px rgba(11, 37, 69, 0.18);
+        }
+
         * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            font-family: 'IBM Plex Sans', system-ui, sans-serif;
-            color: #14161A;
-            background: #FFFFFF;
-        }
-        .shell {
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            background: #FFFFFF;
-        }
-        .sidebar {
-            width: 320px;
-            flex: none;
-            padding: 34px 24px;
-            background: #FFFFFF;
-            border-right: 1px solid #E3E6EA;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-        .brand {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            color: #0B2545;
-        }
-        .sidebar-subtitle {
-            margin: 6px 0 0;
-            color: #8891A0;
-            line-height: 1.6;
-            font-size: 13px;
-        }
-        .nav {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .nav-title {
-            padding: 18px 14px 8px;
-            margin-top: 8px;
-            border-top: 1px solid #E3E6EA;
-            color: #8891A0;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        .nav-link {
-            display: flex;
-            align-items: center;
-            min-height: 52px;
-            padding: 0 14px;
-            border-radius: 14px;
-            color: #14161A;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 600;
-        }
-        .nav-link:hover {
-            background: #F5F7FB;
-        }
-        .nav-link--active {
-            background: #EAF1FB;
-            color: #1657C4;
-        }
-        .sidebar-footer {
-            margin-top: auto;
-            padding-top: 20px;
-            border-top: 1px solid #E3E6EA;
-        }
-        .logout-button {
-            width: 100%;
-            min-height: 52px;
-            border: 1px solid #F0D7D7;
-            border-radius: 14px;
-            background: transparent;
-            color: #D34040;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .logout-button:hover {
-            background: #FDF4F4;
-        }
-        .main {
-            flex: 1;
-            min-width: 0;
-            padding: 36px 48px;
-        }
-        .hero {
-            margin-bottom: 28px;
-        }
-        .hero h1 {
-            margin: 0 0 14px;
-            font-size: 26px;
-        }
-        .hero p {
-            margin: 0;
-            color: #8891A0;
-            line-height: 1.6;
-            font-size: 14.5px;
-            max-width: 720px;
-        }
-        .content-card {
-            background: #FFFFFF;
-            border: 1px solid #E3E6EA;
+        body { margin: 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+        .main { max-width: 1440px; margin: 0 auto; padding: 32px; }
+        .hero, .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); }
+        .hero { padding: 28px; margin-bottom: 24px; }
+        .hero h1 { margin: 0 0 10px; font-size: 32px; }
+        .hero p { margin: 0; color: var(--muted); line-height: 1.6; max-width: 920px; }
+        .card { padding: 24px; }
+        .back-link { display: inline-flex; gap: 8px; align-items: center; color: var(--blue); text-decoration: none; font-weight: 600; margin-bottom: 16px; }
+        .status { margin-bottom: 18px; padding: 14px 16px; border-radius: 12px; background: #edf4ff; color: #123f94; font-weight: 600; }
+        .panel-list { display: grid; gap: 20px; }
+        .panel { border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+        .panel--home {
+            position: relative;
+            border: 2px solid #dbe6f7;
             border-radius: 22px;
-            padding: 36px 48px 44px;
-            min-height: 690px;
+            padding: 26px;
+            background:
+                linear-gradient(180deg, rgba(22, 87, 196, 0.04) 0%, rgba(22, 87, 196, 0) 120px),
+                #fff;
         }
-        .editor-shell {
-            display: grid;
-            gap: 22px;
-            max-width: 920px;
+        .panel--home + .panel--home {
+            margin-top: 4px;
         }
-        .editor-link {
+        .panel-marker {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            width: fit-content;
-            color: #1657C4;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 700;
-        }
-        .editor-form,
-        .editor-panels {
-            display: grid;
-            gap: 20px;
-        }
-        .editor-panel {
-            border: 1px solid #E3E6EA;
-            border-radius: 18px;
-            background: #fff;
-            padding: 28px;
-        }
-        .editor-panel h2 {
-            margin: 0 0 18px;
-            font-size: 18px;
-        }
-        .field-grid {
-            display: grid;
-            gap: 16px;
-        }
-        .field {
-            display: grid;
-            gap: 8px;
-        }
-        .field label {
-            font-size: 13px;
-            font-weight: 700;
-            color: #8891A0;
-            letter-spacing: 0.3px;
-        }
-        .field input,
-        .field textarea {
-            width: 100%;
-            border: 1.5px solid #D6DAE0;
-            border-radius: 10px;
-            padding: 12px 14px;
-            font-size: 15px;
-            font-family: inherit;
-            outline: none;
-            box-sizing: border-box;
-            background: #fff;
-        }
-        .field input {
-            height: 48px;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-        .field textarea {
-            min-height: 96px;
-            resize: vertical;
-        }
-        .toggle-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0 24px;
-        }
-        .toggle-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            padding: 14px 0;
-            border-bottom: 1px solid #EDEFF2;
-        }
-        .toggle-row span {
-            font-size: 15px;
-            color: #14161A;
-        }
-        .toggle {
-            position: relative;
-            width: 44px;
-            height: 24px;
+            min-height: 30px;
+            padding: 0 12px;
+            margin-bottom: 14px;
             border-radius: 999px;
-            background: #1657C4;
-            flex: none;
+            background: #1657c4;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
         }
-        .toggle::after {
-            content: "";
-            position: absolute;
-            top: 2px;
-            left: 22px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #fff;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        .panel h2 { margin: 0 0 8px; font-size: 22px; }
+        .panel p { margin: 0 0 18px; color: var(--muted); line-height: 1.6; }
+        .panel-subnote {
+            margin: -6px 0 18px;
+            padding: 12px 14px;
+            border-left: 4px solid #1657c4;
+            border-radius: 0 12px 12px 0;
+            background: #f4f8ff;
+            color: #45607f;
+            font-size: 14px;
+            line-height: 1.6;
         }
-        .editor-actions {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-        .category-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .category-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .category-name-input {
-            flex: 1;
-            height: 44px;
-            border: 1.5px solid #D6DAE0;
-            border-radius: 9px;
-            padding: 0 14px;
-            font-size: 14.5px;
+        .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+        .field { display: flex; flex-direction: column; gap: 8px; }
+        .field--full { grid-column: 1 / -1; }
+        .field label { font-size: 13px; font-weight: 700; color: #778191; text-transform: uppercase; letter-spacing: .04em; }
+        .field input, .field textarea, .field select { width: 100%; padding: 12px 14px; border: 1.5px solid #d6dae0; border-radius: 10px; font: inherit; color: var(--text); background: #fff; }
+        .field textarea { min-height: 108px; resize: vertical; }
+        .repeater { display: grid; gap: 14px; }
+        .repeater-item { border: 1px solid var(--line); border-radius: 14px; padding: 16px; background: #fbfcfd; }
+        .repeater-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .repeater-title { font-size: 16px; font-weight: 700; }
+        .button-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+        .button-primary, .button-secondary, .button-danger {
+            min-height: 44px;
+            border-radius: 10px;
+            border: none;
+            padding: 0 16px;
+            font: inherit;
             font-weight: 600;
-            font-family: inherit;
-            color: #14161A;
-            background: #FFFFFF;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            cursor: pointer;
         }
-        .category-name-input:hover {
-            border-color: #BCD0F1;
-            background: #FCFDFF;
+        .button-primary { background: var(--blue); color: #fff; }
+        .button-secondary { background: #eef3fb; color: var(--blue); }
+        .button-danger { background: #fff3f3; color: var(--danger); border: 1px solid #f1c7c7; }
+        .note { color: var(--muted); font-size: 14px; line-height: 1.6; }
+        .readonly { background: #f5f7fa !important; color: #6b7480; }
+        .catalog-list { display: grid; gap: 12px; }
+        .catalog-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fbfcfd;
         }
-        .category-name-input:focus {
-            border-color: #1657C4;
+        .catalog-name-input {
+            width: 100%;
+            min-height: 46px;
+            padding: 12px 14px;
+            border: 1.5px solid #d6dae0;
+            border-radius: 10px;
+            background: #fff;
+            color: var(--text);
+            font: inherit;
+            transition: border-color .15s ease, box-shadow .15s ease;
+        }
+        .catalog-name-input:focus {
+            outline: none;
+            border-color: var(--blue);
             box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
         }
-        .category-add-product {
-            height: 44px;
-            padding: 0 14px;
-            background: #EAF1FB;
-            color: #1657C4;
-            border: none;
-            border-radius: 9px;
-            font-size: 13.5px;
-            font-weight: 700;
-            cursor: pointer;
-            white-space: nowrap;
-            flex: none;
-        }
-        .category-add-product:hover {
-            background: #D9E7FA;
-        }
-        .category-remove {
-            width: 44px;
-            height: 44px;
-            border-radius: 9px;
-            border: none;
-            background: #FBEAEA;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex: none;
-        }
-        .category-remove:hover {
-            background: #F5D5D5;
-        }
-        .category-add {
-            margin-top: 14px;
-            width: fit-content;
-            min-height: 44px;
-            padding: 0 18px;
-            background: #fff;
-            color: #1657C4;
-            border: 1.5px solid #1657C4;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .category-add:hover {
-            background: #EAF1FB;
-        }
-        .save-button {
-            min-height: 48px;
-            padding: 0 22px;
-            border: none;
-            border-radius: 12px;
-            background: #1657C4;
-            color: #fff;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .save-note {
-            font-size: 14px;
-            color: #2E7D32;
-            font-weight: 600;
-        }
-        @media (max-width: 900px) {
-            .shell {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid #E3E6EA;
-            }
-            .main {
-                padding: 28px 20px;
-            }
-            .content-card {
-                padding: 28px 20px 32px;
-                min-height: auto;
-            }
-            .toggle-grid {
-                grid-template-columns: 1fr;
-            }
+
+        @media (max-width: 960px) {
+            .main { padding: 20px; }
+            .field-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="shell">
-        <aside class="sidebar">
-            <div>
-                <div class="brand">АЙТЕРОСС</div>
-                <p class="sidebar-subtitle">Панель администратора</p>
-            </div>
+@php
+    $homeIcons = \App\Modules\Admin\Domain\HomePageContent::ICON_OPTIONS;
+    $homeWorkTypeItems = collect($catalogCategories ?? [])->map(function ($category) use ($homePageContent) {
+        $meta = $homePageContent['work_types']['items'][$category->slug] ?? [];
 
-            <nav class="nav">
-                <a href="{{ route('admin.dashboard', ['section' => 'pages']) }}" class="nav-link nav-link--active">Страницы</a>
+        return [
+            'name' => $category->name,
+            'slug' => $category->slug,
+            'icon' => $meta['icon'] ?? 'turn',
+            'image' => $meta['image'] ?? '',
+            'description' => $meta['description'] ?? '',
+        ];
+    })->values();
+@endphp
 
-                <div class="nav-title">УПРАВЛЕНИЕ</div>
-                <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link">Заявки</a>
-                <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link">Товары</a>
-            </nav>
+<main class="main">
+    <section class="hero">
+        <h1>Редактор: {{ $selectedEditorMeta['label'] }}</h1>
+        <p>
+            @if ($selectedEditor === 'home')
+                Здесь настраивается фактический контент главной страницы: первый экран, преимущества, блок видов работ, блок компании и FAQ.
+            @elseif ($selectedEditor === 'catalog')
+                Здесь настраиваются категории каталога, которые используются и на главной, и на странице каталога.
+            @else
+                Для этой страницы пока доступен только базовый просмотр структуры.
+            @endif
+        </p>
+    </section>
 
-            <div class="sidebar-footer">
-                <form action="{{ route('logout') }}" method="post">
-                    @csrf
-                    <button type="submit" class="logout-button">Выйти</button>
-                </form>
-            </div>
-        </aside>
+    <section class="card">
+        <a href="{{ route('admin.dashboard', ['section' => 'pages']) }}" class="back-link">← К выбору страниц</a>
 
-        <main class="main">
-            <section class="hero">
-                <h1>Редактор: {{ $selectedEditorMeta['label'] }}</h1>
-                <p>Это отдельная полноценная страница настроек для выбранного раздела. Для каталога сохранение категорий уже подключено к базе данных и фронту.</p>
-            </section>
+        @if (session('status'))
+            <div class="status">{{ session('status') }}</div>
+        @endif
 
-            <section class="content-card">
-                <div class="editor-shell">
-                    <a href="{{ route('admin.dashboard', ['section' => 'pages']) }}" class="editor-link">← К выбору страниц</a>
+        @if ($selectedEditor === 'home')
+            <form action="{{ route('admin.pages.update', ['page' => 'home']) }}" method="post">
+                @csrf
 
-                    @if (session('status'))
-                        <div class="save-note">{{ session('status') }}</div>
-                    @endif
-
-                    @php($isCatalogEditor = $selectedEditor === 'catalog')
-
-                    <form class="editor-form" action="{{ $isCatalogEditor ? route('admin.catalog.categories.update') : '#' }}" method="post">
-                        @if ($isCatalogEditor)
-                            @csrf
-                        @endif
-
-                        <div class="editor-panels">
-                            @foreach (($editorDefinition['sections'] ?? []) as $section)
-                                <section class="editor-panel">
-                                    <h2>{{ $section['title'] }}</h2>
-
-                                    @if (!empty($section['categories']))
-                                        <div class="category-list" data-category-list>
-                                            @foreach ($section['categories'] as $index => $category)
-                                                <div class="category-row" data-category-row>
-                                                    <input
-                                                        type="text"
-                                                        class="category-name-input"
-                                                        value="{{ $category['label'] }}"
-                                                        @if ($isCatalogEditor) name="categories[{{ $index }}][name]" @endif
-                                                    >
-                                                    <button type="button" class="category-add-product">+ Товар</button>
-                                                    <button type="button" class="category-remove" aria-label="Удалить категорию" data-category-remove>
-                                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                            <path d="M4 6h16M9 6V4h6v2M6 6l1 15h10l1-15" stroke="#C43D3D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <button type="button" class="category-add" data-category-add>+ Добавить категорию</button>
-                                    @endif
-
-                                    @if (!empty($section['fields']))
-                                        <div class="field-grid">
-                                            @foreach ($section['fields'] as $field)
-                                                <div class="field">
-                                                    <label>{{ $field['label'] }}</label>
-                                                    @if ($field['type'] === 'textarea')
-                                                        <textarea>{{ $field['value'] }}</textarea>
-                                                    @else
-                                                        <input type="text" value="{{ $field['value'] }}">
-                                                    @endif
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @endif
-
-                                    @if (!empty($section['toggles']))
-                                        <div class="toggle-grid">
-                                            @foreach ($section['toggles'] as $toggle)
-                                                <div class="toggle-row">
-                                                    <span>{{ $toggle }}</span>
-                                                    <div class="toggle" aria-hidden="true"></div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </section>
-                            @endforeach
-
-                            <div class="editor-actions">
-                                <button type="{{ $isCatalogEditor ? 'submit' : 'button' }}" class="save-button">Сохранить изменения</button>
-                                <div class="save-note">
-                                    {{ $isCatalogEditor ? 'Категории каталога сохраняются в базу и сразу отображаются на фронте.' : 'Открыта отдельная полноценная страница редактора.' }}
-                                </div>
+                <div class="panel-list">
+                    <section class="panel panel--home">
+                        <div class="panel-marker">Блок 1</div>
+                        <h2>Первый экран</h2>
+                        <p>Фоновая фотография, основной заголовок, описание и кнопка первого экрана.</p>
+                        <div class="panel-subnote">Этот блок отвечает за самую верхнюю часть главной страницы, которую пользователь видит первой после открытия сайта.</div>
+                        <div class="field-grid">
+                            <div class="field field--full">
+                                <label for="hero_title">Заголовок</label>
+                                <input id="hero_title" type="text" name="hero[title]" value="{{ old('hero.title', $homePageContent['hero']['title']) }}">
+                            </div>
+                            <div class="field field--full">
+                                <label for="hero_description">Описание</label>
+                                <textarea id="hero_description" name="hero[description]">{{ old('hero.description', $homePageContent['hero']['description']) }}</textarea>
+                            </div>
+                            <div class="field">
+                                <label for="hero_cta_text">Текст кнопки</label>
+                                <input id="hero_cta_text" type="text" name="hero[cta_text]" value="{{ old('hero.cta_text', $homePageContent['hero']['cta_text']) }}">
+                            </div>
+                            <div class="field">
+                                <label for="hero_background_image">URL фотографии</label>
+                                <input id="hero_background_image" type="text" name="hero[background_image]" value="{{ old('hero.background_image', $homePageContent['hero']['background_image']) }}">
                             </div>
                         </div>
-                    </form>
+                    </section>
+
+                    <section class="panel panel--home">
+                        <div class="panel-marker">Шапка</div>
+                        <h2>Верхнее меню</h2>
+                        <p>Пункты верхней навигации в шапке сайта.</p>
+                        <div class="panel-subnote">Эти ссылки отображаются в верхней полосе сайта и ведут к разделам страницы или другим адресам.</div>
+                        <div class="repeater" data-repeater="header-nav">
+                            @foreach (old('header_nav', $homePageContent['header_nav']) as $index => $item)
+                                <div class="repeater-item" data-repeater-item>
+                                    <div class="repeater-head">
+                                        <div class="repeater-title">Пункт {{ $index + 1 }}</div>
+                                        <button type="button" class="button-danger" data-remove-item>Удалить</button>
+                                    </div>
+                                    <div class="field-grid">
+                                        <div class="field">
+                                            <label>Название</label>
+                                            <input type="text" name="header_nav[{{ $index }}][label]" value="{{ $item['label'] }}">
+                                        </div>
+                                        <div class="field">
+                                            <label>Ссылка</label>
+                                            <input type="text" name="header_nav[{{ $index }}][href]" value="{{ $item['href'] }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="button-row">
+                            <button type="button" class="button-secondary" data-add-item="header-nav">Добавить пункт</button>
+                        </div>
+                    </section>
+
+                    <section class="panel panel--home">
+                        <div class="panel-marker">Блок 1.1</div>
+                        <h2>Иконки и тезисы под первым экраном</h2>
+                        <p>Небольшие преимущества с иконками в первом блоке.</p>
+                        <div class="panel-subnote">Это короткие карточки под первым экраном: иконка плюс короткий тезис.</div>
+                        <div class="repeater" data-repeater="hero-benefits">
+                            @foreach (old('hero_benefits', $homePageContent['hero_benefits']) as $index => $item)
+                                <div class="repeater-item" data-repeater-item>
+                                    <div class="repeater-head">
+                                        <div class="repeater-title">Преимущество {{ $index + 1 }}</div>
+                                        <button type="button" class="button-danger" data-remove-item>Удалить</button>
+                                    </div>
+                                    <div class="field-grid">
+                                        <div class="field">
+                                            <label>Иконка</label>
+                                            <select name="hero_benefits[{{ $index }}][icon]">
+                                                @foreach ($homeIcons['header'] as $iconValue => $iconLabel)
+                                                    <option value="{{ $iconValue }}" @selected($item['icon'] === $iconValue)>{{ $iconLabel }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="field">
+                                            <label>Текст</label>
+                                            <input type="text" name="hero_benefits[{{ $index }}][text]" value="{{ $item['text'] }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="button-row">
+                            <button type="button" class="button-secondary" data-add-item="hero-benefits">Добавить тезис</button>
+                        </div>
+                    </section>
+
+                    <section class="panel panel--home">
+                        <div class="panel-marker">Блок 2</div>
+                        <h2>Второй блок</h2>
+                        <p>Заголовок, описание и карточки преимуществ с иконками.</p>
+                        <div class="panel-subnote">Здесь настраивается следующий информационный блок после первого экрана: заголовок, текст и карточки преимуществ.</div>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label>Заголовок блока</label>
+                                <input type="text" name="advantages[title]" value="{{ old('advantages.title', $homePageContent['advantages']['title']) }}">
+                            </div>
+                            <div class="field field--full">
+                                <label>Описание блока</label>
+                                <textarea name="advantages[description]">{{ old('advantages.description', $homePageContent['advantages']['description']) }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="repeater" data-repeater="advantages-items" style="margin-top: 18px;">
+                            @foreach (old('advantages.items', $homePageContent['advantages']['items']) as $index => $item)
+                                <div class="repeater-item" data-repeater-item>
+                                    <div class="repeater-head">
+                                        <div class="repeater-title">Карточка {{ $index + 1 }}</div>
+                                        <button type="button" class="button-danger" data-remove-item>Удалить</button>
+                                    </div>
+                                    <div class="field-grid">
+                                        <div class="field">
+                                            <label>Иконка</label>
+                                            <select name="advantages[items][{{ $index }}][icon]">
+                                                @foreach ($homeIcons['advantage'] as $iconValue => $iconLabel)
+                                                    <option value="{{ $iconValue }}" @selected($item['icon'] === $iconValue)>{{ $iconLabel }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="field">
+                                            <label>Заголовок</label>
+                                            <input type="text" name="advantages[items][{{ $index }}][title]" value="{{ $item['title'] }}">
+                                        </div>
+                                        <div class="field field--full">
+                                            <label>Текст</label>
+                                            <textarea name="advantages[items][{{ $index }}][text]">{{ $item['text'] }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="button-row">
+                            <button type="button" class="button-secondary" data-add-item="advantages-items">Добавить карточку</button>
+                        </div>
+                    </section>
+
+                    <section class="panel panel--home">
+                        <div class="panel-marker">Блок 3</div>
+                        <h2>Виды производимых работ</h2>
+                        <p>Названия берутся из БД. Здесь настраиваются иконки, фотографии и описания карточек.</p>
+                        <div class="panel-subnote">Названия карточек приходят из категорий каталога. Здесь редактируется только внешний вид и описание каждой карточки.</div>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label>Заголовок блока</label>
+                                <input type="text" name="work_types[title]" value="{{ old('work_types.title', $homePageContent['work_types']['title']) }}">
+                            </div>
+                            <div class="field field--full">
+                                <label>Описание блока</label>
+                                <textarea name="work_types[description]">{{ old('work_types.description', $homePageContent['work_types']['description']) }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="repeater" style="margin-top: 18px;">
+                            @foreach ($homeWorkTypeItems as $index => $item)
+                                <div class="repeater-item">
+                                    <div class="repeater-head">
+                                        <div class="repeater-title">{{ $item['name'] }}</div>
+                                    </div>
+                                    <div class="field-grid">
+                                        <input type="hidden" name="work_types[items][{{ $index }}][slug]" value="{{ $item['slug'] }}">
+                                        <div class="field">
+                                            <label>Slug категории</label>
+                                            <input type="text" class="readonly" value="{{ $item['slug'] }}" readonly>
+                                        </div>
+                                        <div class="field">
+                                            <label>Иконка</label>
+                                            <select name="work_types[items][{{ $index }}][icon]">
+                                                @foreach ($homeIcons['work_type'] as $iconValue => $iconLabel)
+                                                    <option value="{{ $iconValue }}" @selected($item['icon'] === $iconValue)>{{ $iconLabel }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="field">
+                                            <label>URL фотографии</label>
+                                            <input type="text" name="work_types[items][{{ $index }}][image]" value="{{ $item['image'] }}">
+                                        </div>
+                                        <div class="field field--full">
+                                            <label>Описание</label>
+                                            <textarea name="work_types[items][{{ $index }}][description]">{{ $item['description'] }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+
+                    <section class="panel panel--home">
+                        <div class="panel-marker">Блок 4</div>
+                        <h2>Блок компании</h2>
+                        <p>Заголовок, тексты, фотография и статистические показатели компании.</p>
+                        <div class="panel-subnote">Это раздел «О компании»: основной текст, фото и цифры вроде «300+ позиций в каталоге».</div>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label>Заголовок</label>
+                                <input type="text" name="about[title]" value="{{ old('about.title', $homePageContent['about']['title']) }}">
+                            </div>
+                            <div class="field field--full">
+                                <label>Подзаголовок</label>
+                                <textarea name="about[description]">{{ old('about.description', $homePageContent['about']['description']) }}</textarea>
+                            </div>
+                            <div class="field field--full">
+                                <label>Основной текст</label>
+                                <textarea name="about[text]">{{ old('about.text', $homePageContent['about']['text']) }}</textarea>
+                            </div>
+                            <div class="field">
+                                <label>URL фотографии</label>
+                                <input type="text" name="about[image]" value="{{ old('about.image', $homePageContent['about']['image']) }}">
+                            </div>
+                        </div>
+
+                        <div class="repeater" data-repeater="about-stats" style="margin-top: 18px;">
+                            @foreach (old('about.stats', $homePageContent['about']['stats']) as $index => $item)
+                                <div class="repeater-item" data-repeater-item>
+                                    <div class="repeater-head">
+                                        <div class="repeater-title">Показатель {{ $index + 1 }}</div>
+                                        <button type="button" class="button-danger" data-remove-item>Удалить</button>
+                                    </div>
+                                    <div class="field-grid">
+                                        <div class="field">
+                                            <label>Значение</label>
+                                            <input type="text" name="about[stats][{{ $index }}][value]" value="{{ $item['value'] }}">
+                                        </div>
+                                        <div class="field">
+                                            <label>Подпись</label>
+                                            <input type="text" name="about[stats][{{ $index }}][label]" value="{{ $item['label'] }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="button-row">
+                            <button type="button" class="button-secondary" data-add-item="about-stats">Добавить показатель</button>
+                        </div>
+                    </section>
+
+                    <section class="panel panel--home">
+                        <div class="panel-marker">Блок 5</div>
+                        <h2>Частые вопросы</h2>
+                        <p>Редактирование в формате вопрос-ответ.</p>
+                        <div class="panel-subnote">Каждая запись ниже - это отдельный вопрос и ответ, который будет показан в FAQ на главной странице.</div>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label>Заголовок блока</label>
+                                <input type="text" name="faq[title]" value="{{ old('faq.title', $homePageContent['faq']['title']) }}">
+                            </div>
+                            <div class="field field--full">
+                                <label>Описание блока</label>
+                                <textarea name="faq[description]">{{ old('faq.description', $homePageContent['faq']['description']) }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="repeater" data-repeater="faq-items" style="margin-top: 18px;">
+                            @foreach (old('faq.items', $homePageContent['faq']['items']) as $index => $item)
+                                <div class="repeater-item" data-repeater-item>
+                                    <div class="repeater-head">
+                                        <div class="repeater-title">Вопрос {{ $index + 1 }}</div>
+                                        <button type="button" class="button-danger" data-remove-item>Удалить</button>
+                                    </div>
+                                    <div class="field-grid">
+                                        <div class="field field--full">
+                                            <label>Вопрос</label>
+                                            <input type="text" name="faq[items][{{ $index }}][question]" value="{{ $item['question'] }}">
+                                        </div>
+                                        <div class="field field--full">
+                                            <label>Ответ</label>
+                                            <textarea name="faq[items][{{ $index }}][answer]">{{ $item['answer'] }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="button-row">
+                            <button type="button" class="button-secondary" data-add-item="faq-items">Добавить вопрос</button>
+                        </div>
+                    </section>
+
+                    <div class="button-row">
+                        <button type="submit" class="button-primary">Сохранить изменения</button>
+                        <div class="note">Изменения сразу применяются к главной странице сайта.</div>
+                    </div>
                 </div>
-            </section>
-        </main>
+            </form>
+        @elseif ($selectedEditor === 'catalog')
+            @php($isCatalogEditor = true)
+            <form action="{{ route('admin.catalog.categories.update') }}" method="post">
+                @csrf
+                <div class="panel-list">
+                    @foreach (($editorDefinition['sections'] ?? []) as $section)
+                        <section class="panel">
+                            <h2>{{ $section['title'] }}</h2>
+
+                            @if (!empty($section['fields']))
+                                <div class="field-grid">
+                                    @foreach ($section['fields'] as $field)
+                                        <div class="field {{ $field['type'] === 'textarea' ? 'field--full' : '' }}">
+                                            <label>{{ $field['label'] }}</label>
+                                            @if ($field['type'] === 'textarea')
+                                                <textarea>{{ $field['value'] }}</textarea>
+                                            @else
+                                                <input type="text" value="{{ $field['value'] }}">
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            @if (!empty($section['categories']))
+                                <div class="catalog-list" data-category-list>
+                                    @foreach ($section['categories'] as $index => $category)
+                                        <div class="catalog-row" data-category-row>
+                                            <input type="text" class="catalog-name-input" name="categories[{{ $index }}][name]" value="{{ $category['label'] }}">
+                                            <button type="button" class="button-danger" data-category-remove>Удалить</button>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="button-row">
+                                    <button type="button" class="button-secondary" data-category-add>Добавить категорию</button>
+                                </div>
+                            @endif
+                        </section>
+                    @endforeach
+
+                    <div class="button-row">
+                        <button type="submit" class="button-primary">Сохранить категории</button>
+                        <div class="note">Категории сохраняются в БД и используются на главной и в каталоге.</div>
+                    </div>
+                </div>
+            </form>
+        @else
+            <div class="panel-list">
+                @foreach (($editorDefinition['sections'] ?? []) as $section)
+                    <section class="panel">
+                        <h2>{{ $section['title'] }}</h2>
+                        @if (!empty($section['fields']))
+                            <div class="field-grid">
+                                @foreach ($section['fields'] as $field)
+                                    <div class="field {{ $field['type'] === 'textarea' ? 'field--full' : '' }}">
+                                        <label>{{ $field['label'] }}</label>
+                                        @if ($field['type'] === 'textarea')
+                                            <textarea>{{ $field['value'] }}</textarea>
+                                        @else
+                                            <input type="text" value="{{ $field['value'] }}">
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </section>
+                @endforeach
+            </div>
+        @endif
+    </section>
+</main>
+
+<template id="tpl-header-nav">
+    <div class="repeater-item" data-repeater-item>
+        <div class="repeater-head">
+            <div class="repeater-title">Новый пункт</div>
+            <button type="button" class="button-danger" data-remove-item>Удалить</button>
+        </div>
+        <div class="field-grid">
+            <div class="field">
+                <label>Название</label>
+                <input type="text" data-name-template="header_nav[__INDEX__][label]" value="">
+            </div>
+            <div class="field">
+                <label>Ссылка</label>
+                <input type="text" data-name-template="header_nav[__INDEX__][href]" value="/#about">
+            </div>
+        </div>
     </div>
-    <script>
-        var categoryIndex = document.querySelectorAll('[data-category-row]').length;
+</template>
 
-        document.querySelectorAll('[data-category-add]').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var list = button.previousElementSibling;
-                if (!list || !list.hasAttribute('data-category-list')) {
-                    return;
-                }
+<template id="tpl-hero-benefits">
+    <div class="repeater-item" data-repeater-item>
+        <div class="repeater-head">
+            <div class="repeater-title">Новое преимущество</div>
+            <button type="button" class="button-danger" data-remove-item>Удалить</button>
+        </div>
+        <div class="field-grid">
+            <div class="field">
+                <label>Иконка</label>
+                <select data-name-template="hero_benefits[__INDEX__][icon]">
+                    @foreach ($homeIcons['header'] as $iconValue => $iconLabel)
+                        <option value="{{ $iconValue }}">{{ $iconLabel }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field">
+                <label>Текст</label>
+                <input type="text" data-name-template="hero_benefits[__INDEX__][text]" value="">
+            </div>
+        </div>
+    </div>
+</template>
 
-                var row = document.createElement('div');
-                row.className = 'category-row';
-                row.setAttribute('data-category-row', '');
-                row.innerHTML =
-                    '<input type="text" class="category-name-input" name="categories[' + categoryIndex + '][name]" value="Новая категория">' +
-                    '<button type="button" class="category-add-product">+ Товар</button>' +
-                    '<button type="button" class="category-remove" aria-label="Удалить категорию" data-category-remove>' +
-                        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
-                            '<path d="M4 6h16M9 6V4h6v2M6 6l1 15h10l1-15" stroke="#C43D3D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>' +
-                        '</svg>' +
-                    '</button>';
+<template id="tpl-advantages-items">
+    <div class="repeater-item" data-repeater-item>
+        <div class="repeater-head">
+            <div class="repeater-title">Новая карточка</div>
+            <button type="button" class="button-danger" data-remove-item>Удалить</button>
+        </div>
+        <div class="field-grid">
+            <div class="field">
+                <label>Иконка</label>
+                <select data-name-template="advantages[items][__INDEX__][icon]">
+                    @foreach ($homeIcons['advantage'] as $iconValue => $iconLabel)
+                        <option value="{{ $iconValue }}">{{ $iconLabel }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field">
+                <label>Заголовок</label>
+                <input type="text" data-name-template="advantages[items][__INDEX__][title]" value="">
+            </div>
+            <div class="field field--full">
+                <label>Текст</label>
+                <textarea data-name-template="advantages[items][__INDEX__][text]"></textarea>
+            </div>
+        </div>
+    </div>
+</template>
 
-                list.appendChild(row);
-                categoryIndex += 1;
-                bindCategoryRemove(row.querySelector('[data-category-remove]'));
-            });
-        });
+<template id="tpl-about-stats">
+    <div class="repeater-item" data-repeater-item>
+        <div class="repeater-head">
+            <div class="repeater-title">Новый показатель</div>
+            <button type="button" class="button-danger" data-remove-item>Удалить</button>
+        </div>
+        <div class="field-grid">
+            <div class="field">
+                <label>Значение</label>
+                <input type="text" data-name-template="about[stats][__INDEX__][value]" value="">
+            </div>
+            <div class="field">
+                <label>Подпись</label>
+                <input type="text" data-name-template="about[stats][__INDEX__][label]" value="">
+            </div>
+        </div>
+    </div>
+</template>
 
-        function bindCategoryRemove(button) {
-            if (!button) {
+<template id="tpl-faq-items">
+    <div class="repeater-item" data-repeater-item>
+        <div class="repeater-head">
+            <div class="repeater-title">Новый вопрос</div>
+            <button type="button" class="button-danger" data-remove-item>Удалить</button>
+        </div>
+        <div class="field-grid">
+            <div class="field field--full">
+                <label>Вопрос</label>
+                <input type="text" data-name-template="faq[items][__INDEX__][question]" value="">
+            </div>
+            <div class="field field--full">
+                <label>Ответ</label>
+                <textarea data-name-template="faq[items][__INDEX__][answer]"></textarea>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    const repeaterMap = {
+        'header-nav': { templateId: 'tpl-header-nav', selector: '[data-repeater="header-nav"]' },
+        'hero-benefits': { templateId: 'tpl-hero-benefits', selector: '[data-repeater="hero-benefits"]' },
+        'advantages-items': { templateId: 'tpl-advantages-items', selector: '[data-repeater="advantages-items"]' },
+        'about-stats': { templateId: 'tpl-about-stats', selector: '[data-repeater="about-stats"]' },
+        'faq-items': { templateId: 'tpl-faq-items', selector: '[data-repeater="faq-items"]' },
+    };
+
+    function bindRemoveButtons(root = document) {
+        root.querySelectorAll('[data-remove-item]').forEach((button) => {
+            if (button.dataset.bound === '1') {
                 return;
             }
 
-            button.addEventListener('click', function () {
-                var row = button.closest('[data-category-row]');
-                if (row) {
-                    row.remove();
-                }
+            button.dataset.bound = '1';
+            button.addEventListener('click', () => {
+                button.closest('[data-repeater-item]')?.remove();
             });
+        });
+    }
+
+    document.querySelectorAll('[data-add-item]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const type = button.dataset.addItem;
+            const config = repeaterMap[type];
+
+            if (!config) {
+                return;
+            }
+
+            const list = document.querySelector(config.selector);
+            const template = document.getElementById(config.templateId);
+
+            if (!list || !template) {
+                return;
+            }
+
+            const fragment = template.content.cloneNode(true);
+            const item = fragment.querySelector('[data-repeater-item]');
+            const index = list.querySelectorAll('[data-repeater-item]').length;
+
+            item.querySelectorAll('[data-name-template]').forEach((field) => {
+                field.name = field.dataset.nameTemplate.replace(/__INDEX__/g, index);
+            });
+
+            list.appendChild(fragment);
+            bindRemoveButtons(list);
+        });
+    });
+
+    let categoryIndex = document.querySelectorAll('[data-category-row]').length;
+
+    document.querySelectorAll('[data-category-add]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const list = document.querySelector('[data-category-list]');
+
+            if (!list) {
+                return;
+            }
+
+            const row = document.createElement('div');
+            row.className = 'catalog-row';
+            row.setAttribute('data-category-row', '');
+            row.innerHTML = `
+                <input type="text" class="catalog-name-input" name="categories[${categoryIndex}][name]" value="Новая категория">
+                <button type="button" class="button-danger" data-category-remove>Удалить</button>
+            `;
+
+            list.appendChild(row);
+            categoryIndex += 1;
+            bindCategoryRemove(row.querySelector('[data-category-remove]'));
+        });
+    });
+
+    function bindCategoryRemove(button) {
+        if (!button || button.dataset.bound === '1') {
+            return;
         }
 
-        document.querySelectorAll('[data-category-remove]').forEach(bindCategoryRemove);
-    </script>
+        button.dataset.bound = '1';
+        button.addEventListener('click', () => {
+            button.closest('[data-category-row]')?.remove();
+        });
+    }
+
+    document.querySelectorAll('[data-category-remove]').forEach(bindCategoryRemove);
+    bindRemoveButtons();
+</script>
 </body>
 </html>

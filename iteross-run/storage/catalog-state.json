@@ -1,0 +1,116 @@
+{
+    "categories": [
+        {
+            "id": 1,
+            "name": "Токарные пластины",
+            "slug": "tokarnye-plastiny",
+            "sort_order": 1,
+            "created_at": "2026-07-20T08:12:17.000000Z",
+            "updated_at": "2026-07-20T08:12:17.000000Z",
+            "products_count": 1
+        },
+        {
+            "id": 2,
+            "name": "Фрезерные пластины",
+            "slug": "frezernye-plastiny",
+            "sort_order": 2,
+            "created_at": "2026-07-20T08:12:18.000000Z",
+            "updated_at": "2026-07-20T08:12:18.000000Z",
+            "products_count": 2
+        },
+        {
+            "id": 3,
+            "name": "Канавочные пластины",
+            "slug": "kanavochnye-plastiny",
+            "sort_order": 3,
+            "created_at": "2026-07-20T08:12:18.000000Z",
+            "updated_at": "2026-07-20T08:12:18.000000Z",
+            "products_count": 1
+        },
+        {
+            "id": 4,
+            "name": "Резьбовые пластины",
+            "slug": "rezbovye-plastiny",
+            "sort_order": 4,
+            "created_at": "2026-07-20T08:12:18.000000Z",
+            "updated_at": "2026-07-20T08:12:18.000000Z",
+            "products_count": 1
+        },
+        {
+            "id": 5,
+            "name": "Сверлильные пластины",
+            "slug": "sverlilnye-plastiny",
+            "sort_order": 5,
+            "created_at": "2026-07-20T08:12:18.000000Z",
+            "updated_at": "2026-07-20T08:12:18.000000Z",
+            "products_count": 2
+        },
+        {
+            "id": 6,
+            "name": "Обработка нержавеющих и жаропрочных сталей",
+            "slug": "obrabotka-nerzhaveyuschih-i-zharoprochnyh-staley",
+            "sort_order": 6,
+            "created_at": "2026-07-20T08:12:18.000000Z",
+            "updated_at": "2026-07-20T08:12:18.000000Z",
+            "products_count": 1
+        }
+    ],
+    "products": [
+        {
+            "id": 1,
+            "name": "Твердосплавная пластина CNMG 120408",
+            "sku": "CNMG-120408-MA",
+            "category_id": 1,
+            "is_visible": true
+        },
+        {
+            "id": 2,
+            "name": "Фреза концевая 10 мм",
+            "sku": "EM-10-4F",
+            "category_id": 2,
+            "is_visible": true
+        },
+        {
+            "id": 3,
+            "name": "Сверло твердосплавное 8 мм",
+            "sku": "DR-08-CARB",
+            "category_id": 5,
+            "is_visible": true
+        },
+        {
+            "id": 4,
+            "name": "Резьбовая пластина 16ER AG60",
+            "sku": "16ER-AG60",
+            "category_id": 4,
+            "is_visible": true
+        },
+        {
+            "id": 5,
+            "name": "Фрезерная пластина APMT 1604",
+            "sku": "APMT-1604-PDER",
+            "category_id": 2,
+            "is_visible": true
+        },
+        {
+            "id": 6,
+            "name": "Канавочная пластина MGMN 300",
+            "sku": "MGMN-300-M",
+            "category_id": 3,
+            "is_visible": true
+        },
+        {
+            "id": 7,
+            "name": "Сверлильная пластина SPMG 090408",
+            "sku": "SPMG-090408",
+            "category_id": 5,
+            "is_visible": true
+        },
+        {
+            "id": 8,
+            "name": "Пластина для обработки жаропрочных сталей SNMG 190612",
+            "sku": "SNMG-190612-HRSA",
+            "category_id": 6,
+            "is_visible": true
+        }
+    ]
+}
