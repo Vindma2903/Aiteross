@@ -4,11 +4,80 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Личный кабинет | АЙТЕРОСС</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
     * { box-sizing: border-box; }
     body { margin: 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14161A; background: #F7F8FA; }
     a { text-decoration: none; }
+
+    /* ── Header (same as home page) ── */
+    .container { max-width: 1360px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+    .topbar { border-bottom: 1px solid #EDEFF2; background: #FFFFFF; }
+    .topbar-inner { min-height: 58px; display: flex; align-items: center; gap: 28px; }
+    .topbar-nav { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+    .topbar-nav a { color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap; text-decoration: none; transition: color 0.15s ease; }
+    .topbar-nav a:hover { color: #0B2545; }
+    .topbar-spacer { flex: 1; }
+    .topbar-phone { color: #14161A; font-size: 14.5px; font-weight: 600; white-space: nowrap; text-decoration: none; }
+    .topbar-email { color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap; text-decoration: none; transition: color 0.15s ease; }
+    .topbar-email:hover { color: #0B2545; }
+    .social-row { display: flex; align-items: center; gap: 8px; }
+    .social-circle { width: 32px; height: 32px; border-radius: 50%; background: #F1F3F6; display: inline-flex; align-items: center; justify-content: center; flex: none; transition: background 0.15s ease; text-decoration: none; }
+    .social-circle:hover { background: #E3E6EA; }
+    .callback-button { min-height: 40px; padding: 10px 18px; border-radius: 100px; background: #1657C4; color: #fff; font-size: 14px; font-weight: 600; white-space: nowrap; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s ease; text-decoration: none; display: inline-flex; align-items: center; }
+    .callback-button:hover { background: #123F94; }
+    .site-header { position: sticky; top: 0; z-index: 100; background: #FFFFFF; border-bottom: 1px solid #E3E6EA; box-shadow: 0 4px 16px rgba(11,37,69,0.08); }
+    .header-inner { min-height: 74px; display: flex; align-items: center; gap: 20px; }
+    .brand { text-decoration: none; flex: none; }
+    .brand-name { color: #0B2545; font-size: 22px; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap; }
+    .catalog-button { display: inline-flex; align-items: center; background: #1657C4; color: #fff; padding: 12px 22px; border-radius: 100px; font-size: 15px; font-weight: 600; white-space: nowrap; flex: none; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s ease; }
+    .catalog-button:hover { background: #123F94; }
+    .header-search { flex: 1; min-width: 180px; }
+    .search-box { display: flex; align-items: center; gap: 10px; background: #fff; border: 1.5px solid #1657C4; border-radius: 100px; padding: 0 6px 0 20px; height: 46px; }
+    .search-box input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font-size: 14.5px; font-family: inherit; color: #14161A; }
+    .search-submit { width: 38px; height: 38px; border-radius: 50%; border: none; background: #1657C4; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex: none; transition: background 0.15s ease; }
+    .search-submit:hover { background: #123F94; }
+    .header-actions { display: flex; align-items: center; gap: 20px; flex: none; }
+    .header-link { display: inline-flex; align-items: center; gap: 7px; color: #14161A; font-size: 14.5px; font-weight: 500; white-space: nowrap; text-decoration: none; transition: color 0.15s ease; }
+    .header-link:hover { color: #0B2545; }
+    .header-count { min-width: 18px; height: 18px; padding: 0 6px; border-radius: 999px; background: #1657C4; color: #fff; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+    .account-menu { position: relative; flex: none; }
+    .account-menu-trigger { display: inline-flex; align-items: center; gap: 7px; border: none; background: transparent; padding: 0; color: #14161A; font-size: 14.5px; font-weight: 500; font-family: inherit; cursor: pointer; white-space: nowrap; }
+    .account-menu-trigger:hover { color: #0B2545; }
+    .account-menu-panel { position: absolute; top: calc(100% + 14px); right: 0; min-width: 220px; padding: 10px; border-radius: 16px; border: 1px solid #E3E6EA; background: #FFFFFF; box-shadow: 0 24px 48px -24px rgba(11,37,69,0.22); display: none; z-index: 130; }
+    .account-menu.is-open .account-menu-panel { display: block; }
+    .account-menu-item, .account-menu-logout { width: 100%; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 14px; border-radius: 12px; color: #14161A; text-decoration: none; background: #FFFFFF; font-size: 14px; font-weight: 600; transition: background 0.15s ease, color 0.15s ease; }
+    .account-menu-item:hover, .account-menu-logout:hover { background: #F4F7FB; color: #1657C4; }
+    .account-menu-logout { border: none; font-family: inherit; cursor: pointer; }
+    .account-menu-form { margin: 0; }
+    .proposal-modal { position: fixed; inset: 0; z-index: 500; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(11,37,69,0.46); }
+    .proposal-modal.is-open { display: flex; }
+    .proposal-modal-card { width: min(100%, 560px); border-radius: 22px; background: #FFFFFF; box-shadow: 0 32px 80px rgba(11,37,69,0.24); overflow: hidden; }
+    .proposal-modal-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 28px 28px 0; }
+    .proposal-modal-header h3 { margin: 0 0 8px; color: #0B2545; font-size: 28px; line-height: 1.1; }
+    .proposal-modal-header p { margin: 0; color: #5B6470; font-size: 15px; line-height: 1.6; }
+    .proposal-modal-close { width: 42px; height: 42px; border: 1px solid #D8DEE6; border-radius: 50%; background: #FFFFFF; color: #3A4048; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex: none; }
+    .proposal-modal-close:hover { background: #F5F7FB; }
+    .proposal-modal-form { display: grid; gap: 16px; padding: 24px 28px 28px; }
+    .proposal-modal-field { display: grid; gap: 8px; }
+    .proposal-modal-field label { color: #6A7381; font-size: 13px; font-weight: 700; letter-spacing: 0.2px; }
+    .proposal-modal-field input, .proposal-modal-field textarea { width: 100%; border: 1.5px solid #D6DAE0; border-radius: 12px; background: #FFFFFF; padding: 14px 16px; color: #14161A; font-size: 15px; font-family: inherit; outline: none; box-sizing: border-box; }
+    .proposal-modal-field textarea { min-height: 132px; resize: vertical; }
+    .proposal-modal-field input:focus, .proposal-modal-field textarea:focus { border-color: #1657C4; box-shadow: 0 0 0 4px rgba(22,87,196,0.12); }
+    .proposal-modal-submit { min-height: 52px; border-radius: 14px; background: #1657C4; color: #FFFFFF; font-size: 15px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+    .proposal-modal-submit:hover { background: #123F94; }
+    @media (max-width: 1400px) { .topbar-email { display: none; } }
+    @media (max-width: 980px) {
+        .topbar-inner, .header-inner { padding-top: 14px; padding-bottom: 14px; flex-wrap: wrap; }
+        .topbar-spacer { display: none; }
+        .header-actions { flex-wrap: wrap; }
+        .header-search { order: 10; width: 100%; flex-basis: 100%; }
+    }
+    @media (max-width: 760px) {
+        .container { padding-left: 16px; padding-right: 16px; }
+        .topbar-inner, .header-inner { gap: 14px; }
+    }
 
     .tab-btn {
       display: flex; align-items: center; gap: 10px;
@@ -104,13 +173,94 @@
   $company   = $user->company ?? '';
 @endphp
 
-<!-- HEADER -->
-<header style="background:#FFFFFF;border-bottom:1px solid #E3E6EA;">
-  <div style="max-width:1360px;margin:0 auto;padding:16px 32px;display:flex;align-items:center;gap:20px;">
-    <a href="{{ url('/') }}" style="font-size:22px;font-weight:700;color:#0B2545;letter-spacing:0.3px;">АЙТЕРОСС</a>
-    <div style="flex:1;"></div>
-    <a href="{{ route('catalog.index') }}" style="color:#14161A;font-size:14.5px;font-weight:500;transition:color 0.15s;" onmouseover="this.style.color='#1657C4'" onmouseout="this.style.color='#14161A'">Каталог</a>
-    <a href="{{ url('/') }}" style="color:#14161A;font-size:14.5px;font-weight:500;transition:color 0.15s;" onmouseover="this.style.color='#1657C4'" onmouseout="this.style.color='#14161A'">На главную</a>
+@php
+  $headerNav = [
+      ['label' => 'О компании',      'href' => '/#about'],
+      ['label' => 'Условия покупки', 'href' => '/#about'],
+      ['label' => 'Контакты',        'href' => '/#footer'],
+  ];
+@endphp
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="container topbar-inner">
+    <nav class="topbar-nav">
+      @foreach ($headerNav as $item)
+        <a href="{{ $item['href'] ?? '#' }}">{{ $item['label'] ?? '' }}</a>
+      @endforeach
+    </nav>
+
+    <div class="topbar-spacer"></div>
+
+    <a href="tel:+74951234567" class="topbar-phone">+7 (495) 123-45-67</a>
+    <a href="mailto:info@iteross.ru" class="topbar-email">info@iteross.ru</a>
+
+    <div class="social-row">
+      <a href="#" class="social-circle" aria-label="WhatsApp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#5B6470" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#5B6470"/></svg>
+      </a>
+      <a href="#" class="social-circle" aria-label="Telegram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#" class="social-circle" aria-label="Viber">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3.5c4.7 0 8.5 3.3 8.5 7.5 0 4.7-4 8.5-8.9 8.5-.7 0-1.5-.1-2.2-.3L5 20.5l1.4-3.6C4.9 15.6 3.5 13.4 3.5 11c0-4.2 3.8-7.5 8.5-7.5Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.4 8.7c.2-.4.5-.5.8-.5h.5c.2 0 .4 0 .6.4.2.5.6 1.6.7 1.7.1.2.1.4 0 .5-.1.2-.2.3-.4.4-.2.2-.3.3-.2.6.2.4.9 1.1 1.9 1.6.2.1.4.1.6-.1.2-.2.5-.6.7-.8.1-.2.3-.2.5-.1.2.1 1.2.6 1.4.7.2.1.3.2.3.4 0 .2 0 .8-.3 1.2-.3.4-1.1.6-1.9.4-1.3-.3-2.5-1.1-3.5-2.1-.8-.8-1.4-1.6-1.7-2.5-.2-.4-.1-.8 0-1.1Z" fill="#5B6470"/></svg>
+      </a>
+    </div>
+
+    <button type="button" class="callback-button" data-open-proposal-modal>Заказать обратный звонок</button>
+  </div>
+</div>
+
+<!-- Site header -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="{{ url('/') }}" class="brand">
+      <div class="brand-name">АЙТЕРОСС</div>
+    </a>
+
+    <a href="{{ route('catalog.index') }}" class="catalog-button">Каталог</a>
+
+    <div class="header-search">
+      <div class="search-box">
+        <input type="text" placeholder="Поиск товаров..." aria-label="Поиск товаров" autocomplete="off">
+        <button type="button" class="search-submit" aria-label="Найти">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="1.8"/><path d="M20 20L16.2 16.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <a href="{{ route('favorites.index') }}" class="header-link">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>
+        Избранное
+        @if ($favoriteCount > 0)
+          <span class="header-count">{{ $favoriteCount }}</span>
+        @endif
+      </a>
+      <a href="#cart" class="header-link">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 5h2l1.6 10.2a2 2 0 0 0 2 1.8h7.8a2 2 0 0 0 2-1.6L20.4 8H6.5" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20.5" r="1.4" fill="#1657C4"/><circle cx="17" cy="20.5" r="1.4" fill="#1657C4"/></svg>
+        Корзина
+      </a>
+      <div class="account-menu" data-account-menu>
+        <button type="button" class="account-menu-trigger" data-account-menu-trigger aria-expanded="false" aria-haspopup="true">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Личный кабинет
+        </button>
+        <div class="account-menu-panel" data-account-menu-panel>
+          <a href="{{ route('account') }}" class="account-menu-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="#1657C4" stroke-width="1.7"/><path d="M4.8 19.5c1.5-3.7 4.6-5.6 7.2-5.6 2.6 0 5.7 1.9 7.2 5.6" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Профиль
+          </a>
+          <form action="{{ route('logout') }}" method="post" class="account-menu-form">
+            @csrf
+            <button type="submit" class="account-menu-logout">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M10 6H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/><path d="M13 8l4 4-4 4M17 12H9" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Выйти
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -248,10 +398,36 @@
     <div class="tab-panel" id="panel-favorites">
       <h1 style="font-size:28px;font-weight:700;color:#14161A;margin:0 0 24px;">Избранное</h1>
 
-      <div id="fav-grid" class="fav-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
-        <!-- Cards rendered by JS -->
-      </div>
-      <div id="fav-empty" style="display:none;text-align:center;padding:48px 0;color:#8891A0;font-size:15px;">Список избранного пуст.</div>
+      @if($favorites->isEmpty())
+        <div style="text-align:center;padding:48px 0;color:#8891A0;font-size:15px;">Список избранного пуст.</div>
+      @else
+        <div id="fav-grid" class="fav-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+          @foreach($favorites as $product)
+            <div id="fav-{{ $product->id }}" style="position:relative;background:#fff;border:1px solid #E3E6EA;border-radius:12px;overflow:hidden;">
+              <button
+                class="fav-remove-btn"
+                onclick="removeFavorite({{ $product->id }}, '{{ route('favorites.toggle', $product) }}')"
+                aria-label="Убрать из избранного"
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="#1657C4"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>
+              </button>
+              <div style="aspect-ratio:1/1;background:#F7F8FA;display:flex;align-items:center;justify-content:center;padding:24px;">
+                @if($product->image)
+                  <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" style="width:100%;height:100%;object-fit:contain;">
+                @else
+                  <svg width="64" height="64" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#D6DAE0" stroke-width="1.2"/><path d="M7 12h10M12 7v10" stroke="#D6DAE0" stroke-width="1.2" stroke-linecap="round"/></svg>
+                @endif
+              </div>
+              <div style="padding:16px 18px 20px;">
+                <div style="font-size:15px;font-weight:700;color:#14161A;margin-bottom:6px;">{{ $product->name }}</div>
+                <div style="font-size:15px;color:#14161A;font-weight:600;margin-bottom:14px;">{{ number_format($product->price, 0, ',', ' ') }} ₽ / шт.</div>
+                <a href="{{ route('catalog.index') }}" class="fav-card-btn">Подробнее</a>
+              </div>
+            </div>
+          @endforeach
+        </div>
+        <div id="fav-empty" style="display:none;text-align:center;padding:48px 0;color:#8891A0;font-size:15px;">Список избранного пуст.</div>
+      @endif
     </div>
 
     <!-- ═══ PROFILE ═══ -->
@@ -386,48 +562,26 @@
     document.getElementById('order-detail').style.display = 'none';
   };
 
-  // ── Favorites ──
-  var FAVORITES_DATA = [
-    { id: 'cnmg', name: 'CNMG120408-GM',       price: '1 190 ₽ / шт.' },
-    { id: '16er', name: '16ER-AG60-GM',         price: '1 420 ₽ / шт.' },
-    { id: 'somt', name: 'Сверлильные SOMT',     price: '980 ₽ / шт.' },
-  ];
+  // ── Favorites: remove via real API ──
+  var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-  var favoriteIds = FAVORITES_DATA.map(function (f) { return f.id; });
-
-  function renderFavorites() {
-    var grid  = document.getElementById('fav-grid');
-    var empty = document.getElementById('fav-empty');
-    var items = FAVORITES_DATA.filter(function (f) { return favoriteIds.indexOf(f.id) !== -1; });
-
-    if (items.length === 0) {
-      grid.style.display  = 'none';
-      empty.style.display = 'block';
-      return;
-    }
-
-    grid.style.display  = 'grid';
-    empty.style.display = 'none';
-
-    grid.innerHTML = items.map(function (f) {
-      return '<div style="position:relative;background:#fff;border:1px solid #E3E6EA;border-radius:12px;overflow:hidden;">'
-        + '<button class="fav-remove-btn" onclick="removeFavorite(\'' + f.id + '\')" aria-label="Убрать из избранного">'
-        + '<svg width="17" height="17" viewBox="0 0 24 24" fill="#1657C4"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>'
-        + '</button>'
-        + '<div style="aspect-ratio:1/1;background:#F7F8FA;display:flex;align-items:center;justify-content:center;padding:24px;">'
-        + '<svg width="64" height="64" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#D6DAE0" stroke-width="1.2"/><path d="M7 12h10M12 7v10" stroke="#D6DAE0" stroke-width="1.2" stroke-linecap="round"/></svg>'
-        + '</div>'
-        + '<div style="padding:16px 18px 20px;">'
-        + '<div style="font-size:15px;font-weight:700;color:#14161A;margin-bottom:6px;">' + f.name + '</div>'
-        + '<div style="font-size:15px;color:#14161A;font-weight:600;margin-bottom:14px;">' + f.price + '</div>'
-        + '<a href="{{ route('catalog.index') }}" class="fav-card-btn">Подробнее</a>'
-        + '</div></div>';
-    }).join('');
-  }
-
-  window.removeFavorite = function (id) {
-    favoriteIds = favoriteIds.filter(function (x) { return x !== id; });
-    renderFavorites();
+  window.removeFavorite = function (productId, toggleUrl) {
+    fetch(toggleUrl, {
+      method: 'POST',
+      headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (!data.ok) return;
+      var card  = document.getElementById('fav-' + productId);
+      var grid  = document.getElementById('fav-grid');
+      var empty = document.getElementById('fav-empty');
+      if (card) card.remove();
+      if (grid && grid.children.length === 0) {
+        grid.style.display  = 'none';
+        if (empty) empty.style.display = 'block';
+      }
+    });
   };
 
   // ── Profile save ──
@@ -446,12 +600,80 @@
     setTimeout(function () { el.style.display = 'none'; }, 2500);
   };
 
-  // Init favorites on first render if tab is active
-  if (document.getElementById('panel-favorites').classList.contains('active')) {
-    renderFavorites();
-  }
+
+  // ── Account menu (same as home page) ──
+  (function () {
+    var menu    = document.querySelector('[data-account-menu]');
+    var trigger = document.querySelector('[data-account-menu-trigger]');
+    if (!menu || !trigger) return;
+
+    function openMenu()  { menu.classList.add('is-open');    trigger.setAttribute('aria-expanded', 'true'); }
+    function closeMenu() { menu.classList.remove('is-open'); trigger.setAttribute('aria-expanded', 'false'); }
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      menu.classList.contains('is-open') ? closeMenu() : openMenu();
+    });
+    document.addEventListener('click', function (e) {
+      if (!menu.contains(e.target)) closeMenu();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMenu();
+    });
+  })();
+
+  // ── Proposal modal ──
+  (function () {
+    var modal   = document.getElementById('proposalModal');
+    var closeBtn = modal ? modal.querySelector('[data-close-proposal-modal]') : null;
+    if (!modal) return;
+
+    function openModal()  { modal.classList.add('is-open');    document.body.style.overflow = 'hidden'; }
+    function closeModal() { modal.classList.remove('is-open'); document.body.style.overflow = ''; }
+
+    document.querySelectorAll('[data-open-proposal-modal]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+    });
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+  })();
 
 })();
 </script>
+
+<!-- Proposal modal -->
+<div class="proposal-modal" id="proposalModal" role="dialog" aria-modal="true" aria-label="Заказать обратный звонок">
+  <div class="proposal-modal-card">
+    <div class="proposal-modal-header">
+      <div>
+        <h3>Заказать<br>обратный звонок</h3>
+        <p>Оставьте свои контакты — мы перезвоним<br>в течение 30 минут</p>
+      </div>
+      <button class="proposal-modal-close" data-close-proposal-modal aria-label="Закрыть">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2L14 14M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <form class="proposal-modal-form" onsubmit="return false;">
+      <div class="proposal-modal-field">
+        <label>Имя</label>
+        <input type="text" placeholder="Ваше имя" autocomplete="name">
+      </div>
+      <div class="proposal-modal-field">
+        <label>Телефон</label>
+        <input type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel">
+      </div>
+      <div class="proposal-modal-field">
+        <label>Комментарий</label>
+        <textarea placeholder="Опишите вашу задачу или вопрос"></textarea>
+      </div>
+      <button type="submit" class="proposal-modal-submit">Отправить заявку</button>
+    </form>
+  </div>
+</div>
 </body>
 </html>
