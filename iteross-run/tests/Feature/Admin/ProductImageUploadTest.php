@@ -46,6 +46,37 @@ class ProductImageUploadTest extends TestCase
         Storage::disk('public')->assertExists(str_replace('/storage/', '', $product->image));
     }
 
+    public function test_admin_can_create_product_with_existing_uploaded_image(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('product-images/existing-product.jpg', 'fake-image-content');
+
+        $admin = User::factory()->create([
+            'role' => User::ROLE_ADMIN,
+        ]);
+
+        $response = $this
+            ->actingAs($admin)
+            ->post(route('admin.products.store'), [
+                'name' => 'Товар с готовым фото',
+                'sku' => 'TEST-SKU-EXISTING-001',
+                'description' => 'Описание товара',
+                'price' => 1500,
+                'stock_quantity' => 4,
+                'is_visible' => 1,
+                'existing_image' => '/storage/product-images/existing-product.jpg',
+            ]);
+
+        $response
+            ->assertRedirect(route('admin.dashboard', ['section' => 'products']))
+            ->assertSessionHas('status', 'РўРѕРІР°СЂ СЃРѕР·РґР°РЅ.');
+
+        $product = Product::query()->where('sku', 'TEST-SKU-EXISTING-001')->first();
+
+        $this->assertNotNull($product);
+        $this->assertSame('/storage/product-images/existing-product.jpg', $product->image);
+    }
+
     public function test_product_with_zero_stock_is_created_hidden_even_if_visibility_is_enabled(): void
     {
         Storage::fake('public');

@@ -11,7 +11,8 @@ class AccountController extends Controller
     public function __invoke(Request $request): View
     {
         return view('account.index', [
-            'user' => $request->user(),
+            'user'    => $request->user(),
+            'section' => $request->query('section', 'profile'),
         ]);
     }
 }

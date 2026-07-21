@@ -610,6 +610,61 @@
             line-height: 1.5;
             word-break: break-word;
         }
+        .image-library {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        .image-library-option {
+            position: relative;
+            display: block;
+            cursor: pointer;
+        }
+        .image-library-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .image-library-card,
+        .image-library-empty {
+            display: grid;
+            gap: 8px;
+            min-height: 100%;
+            border: 1.5px solid #D6DAE0;
+            border-radius: 14px;
+            background: #FFFFFF;
+            padding: 10px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+        .image-library-empty {
+            align-items: center;
+            justify-items: center;
+            text-align: center;
+            color: #5A6270;
+            font-size: 13px;
+            line-height: 1.4;
+            min-height: 156px;
+        }
+        .image-library-card img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 10px;
+            background: #F3F6FB;
+        }
+        .image-library-name {
+            color: #2A3140;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.35;
+            word-break: break-word;
+        }
+        .image-library-option input:checked + .image-library-card,
+        .image-library-option input:checked + .image-library-empty {
+            border-color: #1657C4;
+            box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
+            transform: translateY(-1px);
+        }
         .modal-actions {
             margin-top: 20px;
             display: flex;
@@ -896,6 +951,30 @@
                         <div class="field">
                             <label for="create-image">Фотография товара</label>
                             <input id="create-image" type="file" name="image" accept="image/*">
+                            <div class="field-note">Можно загрузить новый файл или выбрать уже загруженное изображение ниже.</div>
+                        </div>
+
+                        <div class="field field--full">
+                            <label>Библиотека загруженных изображений</label>
+                            @if ($productImageLibrary->isNotEmpty())
+                                <div class="image-library">
+                                    <label class="image-library-option">
+                                        <input type="radio" name="existing_image" value="" @checked(old('existing_image', '') === '')>
+                                        <span class="image-library-empty">Не выбирать из библиотеки</span>
+                                    </label>
+                                    @foreach ($productImageLibrary as $libraryImage)
+                                        <label class="image-library-option">
+                                            <input type="radio" name="existing_image" value="{{ $libraryImage['url'] }}" @checked(old('existing_image') === $libraryImage['url'])>
+                                            <span class="image-library-card">
+                                                <img src="{{ $libraryImage['url'] }}" alt="{{ $libraryImage['name'] }}">
+                                                <span class="image-library-name">{{ $libraryImage['name'] }}</span>
+                                            </span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="field-note">Пока нет загруженных изображений. Сначала загрузите хотя бы одну фотографию товара.</div>
+                            @endif
                         </div>
 
                         <div class="field field--full">
@@ -975,6 +1054,30 @@
                                 <input id="image-{{ $product->id }}" type="file" name="image" accept="image/*">
                                 @if ($product->image)
                                     <div class="field-note">Текущее изображение: {{ $product->image }}</div>
+                                @endif
+                                <div class="field-note">Можно загрузить новый файл или выбрать изображение из библиотеки ниже.</div>
+                            </div>
+
+                            <div class="field field--full">
+                                <label>Библиотека загруженных изображений</label>
+                                @if ($productImageLibrary->isNotEmpty())
+                                    <div class="image-library">
+                                        <label class="image-library-option">
+                                            <input type="radio" name="existing_image" value="" @checked(! $product->image || ! $productImageLibrary->contains(fn ($libraryImage) => $libraryImage['url'] === $product->image))>
+                                            <span class="image-library-empty">Оставить текущее изображение без замены</span>
+                                        </label>
+                                        @foreach ($productImageLibrary as $libraryImage)
+                                            <label class="image-library-option">
+                                                <input type="radio" name="existing_image" value="{{ $libraryImage['url'] }}" @checked($product->image === $libraryImage['url'])>
+                                                <span class="image-library-card">
+                                                    <img src="{{ $libraryImage['url'] }}" alt="{{ $libraryImage['name'] }}">
+                                                    <span class="image-library-name">{{ $libraryImage['name'] }}</span>
+                                                </span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="field-note">В библиотеке пока нет загруженных изображений.</div>
                                 @endif
                             </div>
 
@@ -1157,4 +1260,3 @@
     @endif
 </body>
 </html>
-

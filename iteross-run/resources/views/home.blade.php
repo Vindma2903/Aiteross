@@ -231,6 +231,72 @@
             white-space: nowrap;
             transition: color 0.15s ease;
         }
+        .account-menu {
+            position: relative;
+            flex: none;
+        }
+        .account-menu-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            color: #14161A;
+            font-size: 14.5px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .account-menu-trigger:hover {
+            color: #0B2545;
+        }
+        .account-menu-panel {
+            position: absolute;
+            top: calc(100% + 14px);
+            right: 0;
+            min-width: 220px;
+            padding: 10px;
+            border-radius: 16px;
+            border: 1px solid #E3E6EA;
+            background: #FFFFFF;
+            box-shadow: 0 24px 48px -24px rgba(11, 37, 69, 0.22);
+            display: none;
+            z-index: 130;
+        }
+        .account-menu.is-open .account-menu-panel {
+            display: block;
+        }
+        .account-menu-item,
+        .account-menu-logout {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 44px;
+            padding: 0 14px;
+            border-radius: 12px;
+            color: #14161A;
+            text-decoration: none;
+            background: #FFFFFF;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .account-menu-item:hover,
+        .account-menu-logout:hover {
+            background: #F4F7FB;
+            color: #1657C4;
+        }
+        .account-menu-logout {
+            border: none;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        .account-menu-form {
+            margin: 0;
+        }
         .header-count {
             min-width: 18px;
             height: 18px;
@@ -344,6 +410,108 @@
             bottom: 18px;
             color: rgba(255,255,255,0.4);
             font-size: 12.5px;
+        }
+        .proposal-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(11, 37, 69, 0.46);
+        }
+        .proposal-modal.is-open {
+            display: flex;
+        }
+        .proposal-modal-card {
+            width: min(100%, 560px);
+            border-radius: 22px;
+            background: #FFFFFF;
+            box-shadow: 0 32px 80px rgba(11, 37, 69, 0.24);
+            overflow: hidden;
+        }
+        .proposal-modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 28px 28px 0;
+        }
+        .proposal-modal-header h3 {
+            margin: 0 0 8px;
+            color: #0B2545;
+            font-size: 28px;
+            line-height: 1.1;
+        }
+        .proposal-modal-header p {
+            margin: 0;
+            color: #5B6470;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .proposal-modal-close {
+            width: 42px;
+            height: 42px;
+            border: 1px solid #D8DEE6;
+            border-radius: 50%;
+            background: #FFFFFF;
+            color: #3A4048;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex: none;
+        }
+        .proposal-modal-close:hover {
+            background: #F5F7FB;
+        }
+        .proposal-modal-form {
+            display: grid;
+            gap: 16px;
+            padding: 24px 28px 28px;
+        }
+        .proposal-modal-field {
+            display: grid;
+            gap: 8px;
+        }
+        .proposal-modal-field label {
+            color: #6A7381;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+        .proposal-modal-field input,
+        .proposal-modal-field textarea {
+            width: 100%;
+            border: 1.5px solid #D6DAE0;
+            border-radius: 12px;
+            background: #FFFFFF;
+            padding: 14px 16px;
+            color: #14161A;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+        }
+        .proposal-modal-field textarea {
+            min-height: 132px;
+            resize: vertical;
+        }
+        .proposal-modal-field input:focus,
+        .proposal-modal-field textarea:focus {
+            border-color: #1657C4;
+            box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
+        }
+        .proposal-modal-submit {
+            min-height: 52px;
+            border-radius: 14px;
+            background: #1657C4;
+            color: #FFFFFF;
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .proposal-modal-submit:hover {
+            background: #123F94;
         }
         .benefits {
             border-bottom: 1px solid #E3E6EA;
@@ -589,45 +757,75 @@
         }
         .lead-grid {
             display: grid;
-            grid-template-columns: minmax(0, 0.92fr) minmax(380px, 0.88fr);
-            gap: 24px;
+            grid-template-columns: minmax(0, 1fr) minmax(340px, 0.82fr);
+            gap: 20px;
             padding-top: 56px;
             padding-bottom: 64px;
         }
         .lead-copy {
-            background: #0B2545;
-            color: #fff;
-            border-radius: 18px;
-            padding: 36px 32px;
+            padding: 6px 0 0;
         }
         .lead-copy h2 {
-            margin: 0 0 18px;
-            font-size: 30px;
+            margin: 0;
+            max-width: 420px;
+            color: #14161A;
+            font-size: 31px;
             line-height: 1.2;
             font-weight: 700;
         }
         .lead-copy p {
             margin: 0 0 28px;
-            color: rgba(255,255,255,0.78);
+            color: #5B6470;
             line-height: 1.75;
+        }
+        .lead-copy-accent {
+            width: 56px;
+            height: 3px;
+            border-radius: 999px;
+            background: #1657C4;
+            margin: 18px 0 26px;
         }
         .lead-meta {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 22px;
+            gap: 2px;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #E8EDF5;
+            border: 1px solid #E4E9F1;
+            margin-bottom: 24px;
+        }
+        .lead-meta-item {
+            background: #F7F9FC;
+            padding: 22px 18px 20px;
         }
         .lead-meta-label {
             margin-bottom: 8px;
-            color: rgba(255,255,255,0.5);
-            font-size: 13px;
+            color: #8A96A8;
+            font-size: 12px;
             font-weight: 700;
             letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .lead-meta-value {
+            color: #14161A;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+        .lead-meta-subtext {
+            margin-top: 6px;
+            color: #94A0B2;
+            font-size: 13.5px;
+            line-height: 1.5;
         }
         .lead-form-panel {
             background: #F7F9FC;
             border: 1px solid #E3E6EA;
             border-radius: 18px;
             padding: 30px;
+            max-width: 540px;
+            width: 100%;
+            justify-self: end;
         }
         .lead-form {
             display: grid;
@@ -670,6 +868,44 @@
             color: #5B6470;
             font-size: 14px;
             line-height: 1.6;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+        }
+        .file-box:hover {
+            border-color: #1657C4;
+            background: #F8FBFF;
+        }
+        .file-box:focus-within {
+            border-color: #1657C4;
+            box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
+        }
+        .file-box input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .file-box strong {
+            display: block;
+            color: #1657C4;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .file-box span {
+            display: block;
+        }
+        .file-box-name {
+            margin-top: 10px;
+            color: #14161A;
+            font-weight: 600;
+            line-height: 1.5;
         }
         .lead-submit {
             min-height: 50px;
@@ -781,6 +1017,9 @@
             color: #fff;
             text-decoration: underline;
         }
+        .cookie-banner.is-hidden {
+            display: none;
+        }
         .cookie-button {
             min-height: 44px;
             padding: 0 28px;
@@ -852,7 +1091,6 @@
             .catalog-grid,
             .advantage-grid,
             .about-stats,
-            .lead-meta,
             .footer-grid {
                 grid-template-columns: 1fr;
             }
@@ -883,6 +1121,17 @@
                 margin-top: 18px;
                 padding-bottom: 24px;
                 padding-left: 16px;
+            }
+            .proposal-modal {
+                padding: 16px;
+            }
+            .proposal-modal-header,
+            .proposal-modal-form {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            .proposal-modal-header h3 {
+                font-size: 24px;
             }
             .lead-copy,
             .lead-form-panel {
@@ -959,6 +1208,9 @@
                 <a href="#" class="social-circle" aria-label="Telegram">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
                 </a>
+                <a href="#" class="social-circle" aria-label="Viber">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3.5c4.7 0 8.5 3.3 8.5 7.5 0 4.7-4 8.5-8.9 8.5-.7 0-1.5-.1-2.2-.3L5 20.5l1.4-3.6C4.9 15.6 3.5 13.4 3.5 11c0-4.2 3.8-7.5 8.5-7.5Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.4 8.7c.2-.4.5-.5.8-.5h.5c.2 0 .4 0 .6.4.2.5.6 1.6.7 1.7.1.2.1.4 0 .5-.1.2-.2.3-.4.4-.2.2-.3.3-.2.6.2.4.9 1.1 1.9 1.6.2.1.4.1.6-.1.2-.2.5-.6.7-.8.1-.2.3-.2.5-.1.2.1 1.2.6 1.4.7.2.1.3.2.3.4 0 .2 0 .8-.3 1.2-.3.4-1.1.6-1.9.4-1.3-.3-2.5-1.1-3.5-2.1-.8-.8-1.4-1.6-1.7-2.5-.2-.4-.1-.8 0-1.1Z" fill="#5B6470"/></svg>
+                </a>
             </div>
 
             <a href="#lead-form-section" class="callback-button">Заказать обратный звонок</a>
@@ -995,10 +1247,25 @@
                     Корзина
                 </a>
                 @auth
-                    <a href="{{ $accountUrl }}" class="header-link">
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
-                        {{ $accountLabel }}
-                    </a>
+                    <div class="account-menu" data-account-menu>
+                        <button type="button" class="account-menu-trigger" data-account-menu-trigger aria-expanded="false" aria-haspopup="true">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+                            {{ $accountLabel }}
+                        </button>
+                        <div class="account-menu-panel" data-account-menu-panel>
+                            <a href="{{ $accountUrl }}" class="account-menu-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="#1657C4" stroke-width="1.7"/><path d="M4.8 19.5c1.5-3.7 4.6-5.6 7.2-5.6 2.6 0 5.7 1.9 7.2 5.6" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+                                Профиль
+                            </a>
+                            <form action="{{ route('logout') }}" method="post" class="account-menu-form">
+                                @csrf
+                                <button type="submit" class="account-menu-logout">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M10 6H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/><path d="M13 8l4 4-4 4M17 12H9" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    Выйти
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 @else
                     <a href="{{ route('login') }}" class="header-link">
                         <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
@@ -1024,7 +1291,7 @@
                     <p class="hero-text">{{ $hero['description'] ?? '' }}</p>
 
                     <div class="hero-actions">
-                        <a href="#lead-form-section" class="hero-primary">{{ $hero['cta_text'] ?? 'Получить предложение' }}</a>
+                        <button type="button" class="hero-primary" data-open-proposal-modal>Заказать звонок</button>
                         <a href="{{ route('catalog.index') }}" class="hero-secondary">Смотреть каталог</a>
                     </div>
                 </div>
@@ -1133,29 +1400,30 @@
             <div class="lead-grid">
                 <div class="lead-copy">
                     <h2>Отправьте заявку на коммерческое предложение</h2>
-                    <p>Укажите артикулы, аналоги, объём партии и сроки поставки. Менеджер свяжется с вами и подготовит предложение под задачу.</p>
+                    <div class="lead-copy-accent"></div>
 
                     <div class="lead-meta">
-                        <div>
+                        <div class="lead-meta-item">
                             <div class="lead-meta-label">Телефон</div>
-                            <div><a href="tel:+74951234567" style="color: #fff; text-decoration: none;">+7 (495) 123-45-67</a></div>
-                            <div style="margin-top: 6px; color: rgba(255,255,255,0.55); font-size: 13.5px;">Пн–Пт, 9:00–18:00</div>
+                            <div class="lead-meta-value"><a href="tel:+74951234567" style="color: inherit; text-decoration: none;">+7 (495) 123-45-67</a></div>
+                            <div class="lead-meta-subtext">Пн–Пт: 9:00 – 18:00 (МСК)</div>
                         </div>
-                        <div>
+                        <div class="lead-meta-item">
                             <div class="lead-meta-label">Email</div>
-                            <div><a href="mailto:info@iteross.ru" style="color: #fff; text-decoration: none;">info@iteross.ru</a></div>
-                            <div style="margin-top: 6px; color: rgba(255,255,255,0.55); font-size: 13.5px;">Ответ в течение рабочего дня</div>
+                            <div class="lead-meta-value"><a href="mailto:info@iteross.ru" style="color: inherit; text-decoration: none;">info@iteross.ru</a></div>
+                            <div class="lead-meta-subtext">Ответ в течение рабочего дня</div>
                         </div>
-                        <div>
+                        <div class="lead-meta-item">
                             <div class="lead-meta-label">Адрес</div>
-                            <div>г. Москва, Дербеневская ул., 12, стр. 3</div>
+                            <div class="lead-meta-value">г. Москва, Дербеневская ул., 12, стр. 3</div>
                         </div>
-                        <div>
+                        <div class="lead-meta-item">
                             <div class="lead-meta-label">Реквизиты</div>
-                            <div>ООО «АЙТЕРОСС»</div>
-                            <div style="margin-top: 6px; color: rgba(255,255,255,0.55); font-size: 13.5px;">ИНН 7700000000 · ОГРН 1157700000000</div>
+                            <div class="lead-meta-value">ООО «АЙТЕРОСС»</div>
+                            <div class="lead-meta-subtext">ИНН 7700000000 · ОГРН 1157700000000</div>
                         </div>
                     </div>
+
                 </div>
 
                 <div class="lead-form-panel">
@@ -1176,10 +1444,12 @@
                             <label>Описание задачи</label>
                             <textarea placeholder="Артикул, аналог, объём партии, срок поставки..."></textarea>
                         </div>
-                        <div class="file-box">
-                            <strong>Прикрепите файл</strong><br>
-                            PDF, DOC, JPG — до 20 МБ
-                        </div>
+                        <label class="file-box">
+                            <input type="file" name="attachment" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                            <strong>Прикрепите файл</strong>
+                            <span>PDF, DOC, JPG — до 20 МБ</span>
+                            <span class="file-box-name" data-file-name>Файл не выбран</span>
+                        </label>
                         <button type="button" class="lead-submit">Получить предложение</button>
                         <p class="lead-disclaimer">Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</p>
                     </form>
@@ -1241,6 +1511,41 @@
         <div class="container footer-bottom">© 2026 ООО «АЙТЕРОСС». Все права защищены.</div>
     </footer>
 
+    <div class="proposal-modal" data-proposal-modal aria-hidden="true">
+        <div class="proposal-modal-card" role="dialog" aria-modal="true" aria-labelledby="proposal-modal-title">
+            <div class="proposal-modal-header">
+                <div>
+                    <h3 id="proposal-modal-title">Получить предложение</h3>
+                    <p>Оставьте контакты, и мы свяжемся с вами, чтобы обсудить задачу и подготовить предложение.</p>
+                </div>
+                <button type="button" class="proposal-modal-close" data-close-proposal-modal aria-label="Закрыть окно">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+
+            <form class="proposal-modal-form">
+                <div class="proposal-modal-field">
+                    <label for="proposal-name">Имя</label>
+                    <input id="proposal-name" type="text" name="name" placeholder="Иван Иванов" required>
+                </div>
+
+                <div class="proposal-modal-field">
+                    <label for="proposal-phone">Номер телефона</label>
+                    <input id="proposal-phone" type="tel" name="phone" placeholder="+7 (___) ___-__-__" required>
+                </div>
+
+                <div class="proposal-modal-field">
+                    <label for="proposal-description">Описание задачи</label>
+                    <textarea id="proposal-description" name="description" placeholder="Опишите задачу, если хотите"></textarea>
+                </div>
+
+                <button type="submit" class="proposal-modal-submit">Заказать звонок</button>
+            </form>
+        </div>
+    </div>
+
     <div class="cookie-banner" data-cookie-banner hidden>
         <p>Мы используем cookie для корректной работы сайта. Подробнее — в <a href="#">Политике конфиденциальности</a>.</p>
         <button type="button" class="cookie-button" data-cookie-accept>Ок</button>
@@ -1249,6 +1554,105 @@
 
 <script>
     (function () {
+        var menu = document.querySelector('[data-account-menu]');
+        var trigger = document.querySelector('[data-account-menu-trigger]');
+
+        if (!menu || !trigger) {
+            return;
+        }
+
+        function openMenu() {
+            menu.classList.add('is-open');
+            trigger.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMenu() {
+            menu.classList.remove('is-open');
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+
+        trigger.addEventListener('click', function (event) {
+            event.stopPropagation();
+
+            if (menu.classList.contains('is-open')) {
+                closeMenu();
+                return;
+            }
+
+            openMenu();
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!menu.contains(event.target)) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeMenu();
+            }
+        });
+    })();
+
+    (function () {
+        document.querySelectorAll('.file-box input[type="file"]').forEach(function (input) {
+            input.addEventListener('change', function () {
+                var fileNameElement = input.closest('.file-box')?.querySelector('[data-file-name]');
+                if (!fileNameElement) {
+                    return;
+                }
+
+                fileNameElement.textContent = input.files && input.files[0]
+                    ? input.files[0].name
+                    : 'Файл не выбран';
+            });
+        });
+    })();
+
+    (function () {
+        var modal = document.querySelector('[data-proposal-modal]');
+        var openButton = document.querySelector('[data-open-proposal-modal]');
+        var closeButton = document.querySelector('[data-close-proposal-modal]');
+
+        if (!modal || !openButton || !closeButton) {
+            return;
+        }
+
+        function openModal() {
+            modal.classList.add('is-open');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('is-open');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        openButton.addEventListener('click', function () {
+            openModal();
+        });
+
+        closeButton.addEventListener('click', function () {
+            closeModal();
+        });
+
+        modal.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+                closeModal();
+            }
+        });
+    })();
+
+    (function () {
         var banner = document.querySelector('[data-cookie-banner]');
         var acceptButton = document.querySelector('[data-cookie-accept]');
 
@@ -1256,12 +1660,24 @@
             return;
         }
 
+        function hideBanner() {
+            banner.hidden = true;
+            banner.classList.add('is-hidden');
+        }
+
+        function showBanner() {
+            banner.hidden = false;
+            banner.classList.remove('is-hidden');
+        }
+
         try {
             if (window.localStorage.getItem('iteross_cookie_ok') !== '1') {
-                banner.hidden = false;
+                showBanner();
+            } else {
+                hideBanner();
             }
         } catch (error) {
-            banner.hidden = false;
+            showBanner();
         }
 
         acceptButton.addEventListener('click', function () {
@@ -1269,7 +1685,7 @@
                 window.localStorage.setItem('iteross_cookie_ok', '1');
             } catch (error) {}
 
-            banner.hidden = true;
+            hideBanner();
         });
     })();
 </script>

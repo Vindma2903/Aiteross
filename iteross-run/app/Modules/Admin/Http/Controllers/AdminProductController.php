@@ -20,10 +20,14 @@ class AdminProductController extends Controller
     ): RedirectResponse {
         $data = $request->validated();
         $filterOptionIds = $data['filter_option_ids'] ?? [];
+        $existingImage = $data['existing_image'] ?? null;
         unset($data['filter_option_ids']);
+        unset($data['existing_image']);
 
         if ($request->hasFile('image')) {
             $data['image'] = $storeProductImage->handle($request->file('image'));
+        } elseif ($existingImage) {
+            $data['image'] = $existingImage;
         }
 
         $data['is_visible'] = $this->resolveVisibility($data);
@@ -44,10 +48,14 @@ class AdminProductController extends Controller
     ): RedirectResponse {
         $data = $request->validated();
         $filterOptionIds = $data['filter_option_ids'] ?? [];
+        $existingImage = $data['existing_image'] ?? null;
         unset($data['filter_option_ids']);
+        unset($data['existing_image']);
 
         if ($request->hasFile('image')) {
             $data['image'] = $storeProductImage->handle($request->file('image'), $product->image);
+        } elseif ($existingImage) {
+            $data['image'] = $existingImage;
         } else {
             unset($data['image']);
         }

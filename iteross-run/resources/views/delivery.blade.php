@@ -66,7 +66,7 @@
         }
 
         .topbar-nav { gap: 22px; }
-        .socials { gap: 10px; }
+        .socials { gap: 8px; }
         .header-actions { gap: 16px; }
 
         .topbar-contact {
@@ -95,14 +95,16 @@
         }
 
         .social-chip {
-            height: 34px;
-            min-width: 34px;
-            padding: 0 12px;
-            border: 1px solid var(--line);
-            background: #f7f9fc;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--navy);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f1f3f6;
+            color: #5b6470;
+            border: 0;
+        }
+
+        .social-chip:hover {
+            background: #e3e6ea;
         }
 
         .button,
@@ -150,9 +152,9 @@
 
         .brand {
             text-decoration: none;
-            font-size: 30px;
+            font-size: 22px;
             font-weight: 700;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.02em;
             color: var(--navy);
             white-space: nowrap;
         }
@@ -360,6 +362,13 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
+        .footer-legal {
+            padding: 24px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
         @media (max-width: 1100px) {
             .cards,
             .terms,
@@ -418,11 +427,17 @@
                 <a href="tel:+74951234567">+7 (495) 123-45-67</a>
                 <a href="mailto:info@iteross.ru">info@iteross.ru</a>
                 <div class="socials">
-                    <span class="social-chip">MAX</span>
-                    <span class="social-chip">TG</span>
-                    <span class="social-chip">WC</span>
+                    <a href="#" class="social-chip" aria-label="MAX">
+                        <span style="font-size: 12px; font-weight: 700;">MAX</span>
+                    </a>
+                    <a href="#" class="social-chip" aria-label="Telegram">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    </a>
+                    <a href="#" class="social-chip" aria-label="WeChat">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M9.5 3.5C5.4 3.5 2 6.3 2 9.8c0 2 1.1 3.7 2.8 4.9L4 17l2.4-1.2c.7.2 1.4.3 2.1.3h.3a5.9 5.9 0 0 1-.2-1.6c0-3.6 3.4-6.5 7.6-6.5h.2C15.7 5 12.9 3.5 9.5 3.5Z" stroke="#5B6470" stroke-width="1.4" stroke-linejoin="round"/><circle cx="7" cy="8.8" r="0.9" fill="#5B6470"/><circle cx="12" cy="8.8" r="0.9" fill="#5B6470"/><path d="M16.5 9.8c-3.6 0-6.5 2.4-6.5 5.4 0 3 2.9 5.4 6.5 5.4.6 0 1.2-.1 1.8-.2L20.5 21.5l-.7-2.3c1.5-1 2.4-2.4 2.4-4 0-3-2.9-5.4-6.5-5.4Z" stroke="#5B6470" stroke-width="1.4" stroke-linejoin="round"/><circle cx="14.3" cy="14.6" r="0.8" fill="#5B6470"/><circle cx="18.7" cy="14.6" r="0.8" fill="#5B6470"/></svg>
+                    </a>
                 </div>
-                <a class="ghost-button" href="{{ url('/#lead-form-section') }}">Заказать звонок</a>
+                <a class="ghost-button" href="{{ url('/#lead-form-section') }}">Заказать обратный звонок</a>
             </div>
         </div>
     </div>
@@ -433,12 +448,18 @@
             <a class="button" href="{{ route('catalog.index') }}">Каталог</a>
 
             <label class="header-search" aria-label="Поиск">
-                <input type="text" placeholder="Поиск товаров..." />
+                <input type="text" placeholder="Поиск товаров...">
             </label>
 
             <div class="header-actions">
                 <a class="header-link" href="{{ route('favorites.index') }}">Избранное</a>
-                <a class="header-link" href="{{ route('login') }}">Войти</a>
+                @auth
+                    <a class="header-link" href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('account') }}">
+                        {{ auth()->user()->role === 'admin' ? 'Админка' : 'Личный кабинет' }}
+                    </a>
+                @else
+                    <a class="header-link" href="{{ route('login') }}">Войти</a>
+                @endauth
             </div>
         </div>
     </header>
@@ -505,7 +526,7 @@
                 <div class="term-panel-body">
                     <div>г. Санкт-Петербург, Промышленная ул., 25</div>
                     <a href="tel:+74951234567">+7 (495) 123-45-67</a>
-                    <div style="color: rgba(255,255,255,0.55); font-size: 13.5px;">Пн-Пт, 9:00-18:00</div>
+                    <div style="color: rgba(255,255,255,0.55); font-size: 13.5px;">Пн–Пт, 9:00–18:00</div>
                 </div>
             </aside>
         </section>
@@ -527,8 +548,12 @@
                 <div style="margin-bottom: 16px; font-size: 18px; font-weight: 700; color: #fff;">АЙТЕРОСС</div>
                 <p class="footer-note">Поставка твердосплавного инструмента для металлообработки. Работаем с юридическими лицами по всей России.</p>
                 <div class="socials">
-                    <span class="social-chip">TG</span>
-                    <span class="social-chip">WA</span>
+                    <a href="#" class="social-chip" aria-label="Telegram">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    </a>
+                    <a href="#" class="social-chip" aria-label="WhatsApp">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#5B6470" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#5B6470"/></svg>
+                    </a>
                 </div>
             </div>
 
@@ -548,7 +573,7 @@
                     <a class="footer-link" href="tel:+74951234567">+7 (495) 123-45-67</a>
                     <a class="footer-link" href="mailto:info@iteross.ru">info@iteross.ru</a>
                     <div>г. Москва, Дербеневская ул., 12, стр. 3</div>
-                    <div style="color: rgba(255,255,255,0.5); font-size: 13.5px;">Пн-Пт, 9:00-18:00</div>
+                    <div style="color: rgba(255,255,255,0.5); font-size: 13.5px;">Пн–Пт, 9:00–18:00</div>
                 </div>
             </div>
 

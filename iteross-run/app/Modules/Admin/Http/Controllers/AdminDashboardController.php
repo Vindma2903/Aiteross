@@ -7,6 +7,7 @@ use App\Modules\Catalog\Application\UseCases\GetCatalogFilterGroups;
 use App\Modules\Catalog\Infrastructure\Persistence\Eloquent\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class AdminDashboardController
@@ -37,6 +38,19 @@ class AdminDashboardController
         $products = $selectedSection === 'products'
             ? $getAdminProducts->handle($productSearch, $productCategory)
             : new Collection();
+        $productImageLibrary = $selectedSection === 'products'
+            ? collect(Storage::disk('public')->files('product-images'))
+                ->map(function (string $path): array {
+                    return [
+                        'name' => basename($path),
+                        'path' => $path,
+                        'url' => Storage::url($path),
+                        'updated_at' => Storage::disk('public')->lastModified($path),
+                    ];
+                })
+                ->sortByDesc('updated_at')
+                ->values()
+            : new Collection();
 
         return view('admin.dashboard', [
             'user' => $request->user(),
@@ -44,6 +58,7 @@ class AdminDashboardController
             'selectedSection' => $selectedSection,
             'categories' => $categories,
             'products' => $products,
+            'productImageLibrary' => $productImageLibrary,
             'productSearch' => $productSearch,
             'productCategory' => $productCategory,
             'filterGroups' => $getCatalogFilterGroups->handle(false),
