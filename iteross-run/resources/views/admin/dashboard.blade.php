@@ -119,15 +119,73 @@
             padding: 36px 48px 44px;
             min-height: 690px;
         }
-        .status {
-            margin-bottom: 18px;
-            border-radius: 12px;
-            padding: 14px 16px;
-            background: #ECFDF5;
-            color: #166534;
-            border: 1px solid #86EFAC;
+        .toast-stack {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 3000;
+            display: grid;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .toast {
+            width: min(360px, calc(100vw - 32px));
+            padding: 16px 18px;
+            border-radius: 16px;
+            border: 1px solid #B9E7C9;
+            background: #FFFFFF;
+            box-shadow: 0 24px 48px -28px rgba(11, 37, 69, 0.35);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            pointer-events: auto;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .toast.is-hiding {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        .toast__accent {
+            width: 10px;
+            min-width: 10px;
+            align-self: stretch;
+            border-radius: 999px;
+            background: #22C55E;
+        }
+        .toast__body {
+            flex: 1;
+            min-width: 0;
+        }
+        .toast__title {
+            margin: 0 0 4px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
+            color: #14161A;
+        }
+        .toast__message {
+            margin: 0;
+            color: #526070;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .toast__close {
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: #7E8896;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toast__close:hover {
+            background: #F5F7FB;
+            color: #14161A;
         }
         .pages-grid {
             display: grid;
@@ -246,6 +304,20 @@
         .secondary-button:hover {
             background: #EAF1FB;
         }
+        .filter-reset-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 118px;
+            white-space: nowrap;
+            border-color: #D6DEE8;
+            color: #526070;
+        }
+        .filter-reset-button:hover {
+            background: #F5F7FB;
+            border-color: #C7D2DF;
+            color: #14161A;
+        }
         .danger-button {
             border: 1px solid #F0D7D7;
             background: #fff;
@@ -314,9 +386,72 @@
             color: #B26A1F;
         }
         .table-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            position: relative;
+            display: inline-flex;
+            justify-content: flex-end;
+        }
+        .table-actions form {
+            margin: 0;
+        }
+        .table-actions-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            z-index: 30;
+            min-width: 220px;
+            padding: 8px;
+            border: 1px solid #E3E6EA;
+            border-radius: 14px;
+            background: #FFFFFF;
+            box-shadow: 0 20px 40px -28px rgba(11, 37, 69, 0.4);
+            display: none;
+        }
+        .table-actions.is-open .table-actions-menu {
+            display: grid;
+            gap: 4px;
+        }
+        .table-actions-trigger {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            border: 1px solid #D9E1EA;
+            border-radius: 10px;
+            background: #FFFFFF;
+            color: #526070;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-actions-trigger:hover {
+            background: #F5F7FB;
+            color: #0B2545;
+        }
+        .table-action-item {
+            width: 100%;
+            min-height: 40px;
+            padding: 0 12px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: #14161A;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .table-action-item:hover {
+            background: #F5F7FB;
+        }
+        .table-action-item--danger {
+            color: #D34040;
+        }
+        .table-action-item--danger:hover {
+            background: #FDF4F4;
         }
         .link-button {
             border: none;
@@ -469,6 +604,12 @@
             min-height: 48px;
             flex-wrap: wrap;
         }
+        .field-note {
+            color: #6A7381;
+            font-size: 13px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
         .modal-actions {
             margin-top: 20px;
             display: flex;
@@ -510,6 +651,23 @@
     </style>
 </head>
 <body>
+    @if (session('status'))
+        <div class="toast-stack" data-toast-stack>
+            <div class="toast" data-toast>
+                <div class="toast__accent" aria-hidden="true"></div>
+                <div class="toast__body">
+                    <p class="toast__title">Готово</p>
+                    <p class="toast__message">{{ session('status') }}</p>
+                </div>
+                <button type="button" class="toast__close" data-toast-close aria-label="Закрыть уведомление">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    @endif
+
     <div class="shell">
         <aside class="sidebar">
             <div>
@@ -523,6 +681,8 @@
                 <div class="nav-title">УПРАВЛЕНИЕ</div>
                 <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link{{ $selectedSection === 'orders' ? ' nav-link--active' : '' }}">Заявки</a>
                 <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link{{ $selectedSection === 'products' ? ' nav-link--active' : '' }}">Товары</a>
+                <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'catalog' ? ' nav-link--active' : '' }}">Категории</a>
+                <a href="{{ route('admin.pages.editor', ['page' => 'home']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'home' ? ' nav-link--active' : '' }}">Главная</a>
             </nav>
 
             <div class="sidebar-footer">
@@ -550,13 +710,9 @@
             </section>
 
             <section class="content-card">
-                @if (session('status'))
-                    <div class="status">{{ session('status') }}</div>
-                @endif
-
                 @if ($selectedSection === 'pages')
                     <div class="pages-grid">
-                        @foreach (['home', 'catalog', 'delivery', 'product'] as $slug)
+                        @foreach (['delivery', 'product'] as $slug)
                             <a href="{{ route('admin.pages.editor', ['page' => $slug]) }}" class="page-tile">
                                 <div class="page-icon">
                                     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -600,14 +756,14 @@
                                 class="filter-input"
                                 placeholder="Поиск по названию или артикулу"
                             >
-                            <select name="category" class="filter-select">
+                            <select name="category" class="filter-select" data-product-category-filter>
                                 <option value="">Все категории</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}" @selected((string) $productCategory === (string) $category->id)>{{ $category->name }}</option>
                                 @endforeach
                             </select>
                             <button type="submit" class="primary-button">Найти</button>
-                            <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="secondary-button">Сбросить</a>
+                            <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="secondary-button filter-reset-button">Сбросить</a>
                         </form>
 
                         @if ($products->isEmpty())
@@ -645,13 +801,35 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div class="table-actions">
-                                                        <button type="button" class="link-button" data-open-edit-modal="edit-product-{{ $product->id }}">Редактировать</button>
-                                                        <form action="{{ route('admin.products.destroy', $product) }}" method="post">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="danger-button">Удалить</button>
-                                                        </form>
+                                                    <div class="table-actions" data-actions-menu>
+                                                        <button
+                                                            type="button"
+                                                            class="table-actions-trigger"
+                                                            data-actions-trigger
+                                                            aria-haspopup="true"
+                                                            aria-expanded="false"
+                                                            aria-label="Действия с товаром"
+                                                        >
+                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                                <circle cx="5" cy="12" r="1.8" fill="currentColor"/>
+                                                                <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
+                                                                <circle cx="19" cy="12" r="1.8" fill="currentColor"/>
+                                                            </svg>
+                                                        </button>
+                                                        <div class="table-actions-menu" role="menu">
+                                                            <button type="button" class="table-action-item" data-open-edit-modal="edit-product-{{ $product->id }}" role="menuitem">Редактировать</button>
+                                                            <form action="{{ route('admin.products.visibility', $product) }}" method="post">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <input type="hidden" name="is_visible" value="{{ $product->is_visible ? 0 : 1 }}">
+                                                                <button type="submit" class="table-action-item" role="menuitem">{{ $product->is_visible ? 'Скрыть в каталоге' : 'Показать в каталоге' }}</button>
+                                                            </form>
+                                                            <form action="{{ route('admin.products.destroy', $product) }}" method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="table-action-item table-action-item--danger" role="menuitem">Удалить</button>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -681,7 +859,7 @@
                     </button>
                 </div>
 
-                <form action="{{ route('admin.products.store') }}" method="post">
+                <form action="{{ route('admin.products.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
 
                     <div class="product-form-grid">
@@ -716,8 +894,8 @@
                         </div>
 
                         <div class="field">
-                            <label for="create-image">Ссылка на изображение</label>
-                            <input id="create-image" type="text" name="image" value="{{ old('image') }}" placeholder="https://...">
+                            <label for="create-image">Фотография товара</label>
+                            <input id="create-image" type="file" name="image" accept="image/*">
                         </div>
 
                         <div class="field field--full">
@@ -748,7 +926,7 @@
                     <div class="modal-header">
                         <div>
                             <h2 id="edit-product-title-{{ $product->id }}">Редактировать товар</h2>
-                            <p>Изменения сохранятся в базу и сразу отразятся в каталоге и в админке.</p>
+                            <p>зменения сохранятся в базу и сразу отразятся в каталоге и в админке.</p>
                         </div>
                         <button type="button" class="icon-button" data-close-edit-modal="edit-product-{{ $product->id }}" aria-label="Закрыть окно">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -757,7 +935,7 @@
                         </button>
                     </div>
 
-                    <form action="{{ route('admin.products.update', $product) }}" method="post">
+                    <form action="{{ route('admin.products.update', $product) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -793,8 +971,11 @@
                             </div>
 
                             <div class="field">
-                                <label for="image-{{ $product->id }}">Ссылка на изображение</label>
-                                <input id="image-{{ $product->id }}" type="text" name="image" value="{{ $product->image }}" placeholder="https://...">
+                                <label for="image-{{ $product->id }}">Новое фото товара</label>
+                                <input id="image-{{ $product->id }}" type="file" name="image" accept="image/*">
+                                @if ($product->image)
+                                    <div class="field-note">Текущее изображение: {{ $product->image }}</div>
+                                @endif
                             </div>
 
                             <div class="field field--full">
@@ -884,6 +1065,7 @@
                 document.querySelectorAll('[data-open-edit-modal]').forEach(function (button) {
                     button.addEventListener('click', function () {
                         openNamedModal(button.getAttribute('data-open-edit-modal'));
+                        closeAllActionMenus();
                     });
                 });
 
@@ -900,8 +1082,79 @@
                         }
                     });
                 });
+
+                function closeAllActionMenus() {
+                    document.querySelectorAll('[data-actions-menu].is-open').forEach(function (menu) {
+                        menu.classList.remove('is-open');
+                        var trigger = menu.querySelector('[data-actions-trigger]');
+                        if (trigger) {
+                            trigger.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                }
+
+                document.querySelectorAll('[data-actions-trigger]').forEach(function (button) {
+                    button.addEventListener('click', function (event) {
+                        event.stopPropagation();
+                        var menu = button.closest('[data-actions-menu]');
+                        var shouldOpen = menu && !menu.classList.contains('is-open');
+
+                        closeAllActionMenus();
+
+                        if (shouldOpen && menu) {
+                            menu.classList.add('is-open');
+                            button.setAttribute('aria-expanded', 'true');
+                        }
+                    });
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!event.target.closest('[data-actions-menu]')) {
+                        closeAllActionMenus();
+                    }
+                });
+
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') {
+                        closeAllActionMenus();
+                    }
+                });
+
+                var categoryFilter = document.querySelector('[data-product-category-filter]');
+                if (categoryFilter && categoryFilter.form) {
+                    categoryFilter.addEventListener('change', function () {
+                        categoryFilter.form.submit();
+                    });
+                }
+
+                var toast = document.querySelector('[data-toast]');
+                var toastClose = document.querySelector('[data-toast-close]');
+
+                function hideToast() {
+                    if (!toast || toast.classList.contains('is-hiding')) {
+                        return;
+                    }
+
+                    toast.classList.add('is-hiding');
+
+                    window.setTimeout(function () {
+                        var stack = document.querySelector('[data-toast-stack]');
+                        if (stack) {
+                            stack.remove();
+                        }
+                    }, 220);
+                }
+
+                if (toast) {
+                    window.setTimeout(hideToast, 3200);
+                }
+
+                if (toastClose) {
+                    toastClose.addEventListener('click', hideToast);
+                }
             })();
         </script>
     @endif
 </body>
 </html>
+

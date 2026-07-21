@@ -792,6 +792,7 @@
                 <div class="footer-label">Навигация</div>
                 <a href="{{ route('catalog.index') }}">Каталог</a>
                 <a href="/#about">О компании</a>
+                <a href="{{ route('delivery') }}">Доставка</a>
                 <a href="/#footer">Контакты</a>
             </div>
 

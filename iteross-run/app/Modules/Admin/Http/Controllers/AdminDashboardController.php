@@ -2,9 +2,9 @@
 
 namespace App\Modules\Admin\Http\Controllers;
 
+use App\Modules\Admin\Application\UseCases\GetAdminProducts;
 use App\Modules\Catalog\Application\UseCases\GetCatalogFilterGroups;
 use App\Modules\Catalog\Infrastructure\Persistence\Eloquent\Category;
-use App\Modules\Catalog\Infrastructure\Persistence\Eloquent\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -13,7 +13,11 @@ class AdminDashboardController
 {
     use Concerns\InteractsWithStaticAdminPages;
 
-    public function index(Request $request, GetCatalogFilterGroups $getCatalogFilterGroups): View
+    public function index(
+        Request $request,
+        GetCatalogFilterGroups $getCatalogFilterGroups,
+        GetAdminProducts $getAdminProducts,
+    ): View
     {
         $selectedSection = $request->query('section', 'pages');
         $allowedSections = ['pages', 'orders', 'products'];
@@ -31,22 +35,7 @@ class AdminDashboardController
             ->get();
 
         $products = $selectedSection === 'products'
-            ? Product::query()
-                ->with(['category', 'filterOptions.group'])
-                ->when(
-                    $productSearch !== '',
-                    fn ($query) => $query->where(function ($nestedQuery) use ($productSearch) {
-                        $nestedQuery
-                            ->where('name', 'like', '%'.$productSearch.'%')
-                            ->orWhere('sku', 'like', '%'.$productSearch.'%');
-                    }),
-                )
-                ->when(
-                    $productCategory !== '',
-                    fn ($query) => $query->where('category_id', (int) $productCategory),
-                )
-                ->orderByDesc('id')
-                ->get()
+            ? $getAdminProducts->handle($productSearch, $productCategory)
             : new Collection();
 
         return view('admin.dashboard', [

@@ -48,6 +48,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/catalog/filters', [AdminCatalogController::class, 'updateFilters'])->name('admin.catalog.filters.update');
     Route::post('/admin/products', [AdminProductController::class, 'store'])->name('admin.products.store');
     Route::put('/admin/products/{product}', [AdminProductController::class, 'update'])->name('admin.products.update');
+    Route::patch('/admin/products/{product}/visibility', [AdminProductController::class, 'updateVisibility'])->name('admin.products.visibility');
     Route::delete('/admin/products/{product}', [AdminProductController::class, 'destroy'])->name('admin.products.destroy');
     Route::get('/admin/legacy-products', [AdminPageController::class, 'legacyProducts'])->name('admin.legacy.products');
     Route::get('/admin/static-preview/{page}', [AdminPageController::class, 'preview'])->name('admin.static.preview');

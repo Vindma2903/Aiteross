@@ -20,7 +20,7 @@ class StoreProductRequest extends FormRequest
             'price' => ['required', 'integer', 'min:0'],
             'stock_quantity' => ['required', 'integer', 'min:0'],
             'category_id' => ['nullable', 'exists:categories,id'],
-            'image' => ['nullable', 'string', 'max:2048'],
+            'image' => ['nullable', 'file', 'image', 'max:5120'],
             'is_visible' => ['required', 'boolean'],
             'filter_option_ids' => ['nullable', 'array'],
             'filter_option_ids.*' => ['integer', 'exists:catalog_filter_options,id'],

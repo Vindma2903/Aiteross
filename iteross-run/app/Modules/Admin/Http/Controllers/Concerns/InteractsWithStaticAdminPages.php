@@ -9,7 +9,7 @@ trait InteractsWithStaticAdminPages
 {
     private const STATIC_PAGES = [
         'home' => ['label' => 'Главная', 'file' => 'Главная АЙТЕРОСС.dc.html'],
-        'catalog' => ['label' => 'Каталог', 'file' => 'Каталог.dc.html'],
+        'catalog' => ['label' => 'Категории', 'file' => 'Каталог.dc.html'],
         'delivery' => ['label' => 'Доставка', 'file' => 'Доставка.dc.html'],
         'product' => ['label' => 'Карточка товара', 'file' => 'Товар.dc.html'],
         'account' => ['label' => 'Личный кабинет', 'file' => 'Личный кабинет.dc.html'],

@@ -1,0 +1,564 @@
+@extends('layouts.app')
+
+@section('content')
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; }
+  ::selection { background: #0B2545; color: #fff; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+  [data-hover] { transition: all 0.15s ease; }
+
+  .hdr-topnav-link:hover { color: #0B2545 !important; }
+  .hdr-social-btn:hover  { background: #E3E6EA !important; }
+  .btn-callback:hover    { background: #123F94 !important; }
+  .hdr-catalog-btn:hover { background: #123F94 !important; }
+  .hdr-search-btn:hover  { background: #123F94 !important; }
+  .hdr-icon-link:hover   { color: #1657C4 !important; }
+  .hero-btn-primary:hover { background: #123F94 !important; }
+  .hero-btn-outline:hover { border-color: #fff !important; }
+  .catalog-card:hover    { box-shadow: 0 16px 32px -16px rgba(11,37,69,0.2) !important; }
+  .works-card:hover      { box-shadow: 0 16px 32px -16px rgba(11,37,69,0.2) !important; }
+  .lead-file-label:hover { border-color: #1657C4 !important; }
+  .lead-submit-btn:hover { background: #123F94 !important; }
+  .footer-social-btn:hover { background: rgba(255,255,255,0.2) !important; }
+  .footer-nav-link:hover { color: #fff !important; }
+  .cookie-ok-btn:hover   { background: #000 !important; }
+
+  @media (max-width: 1400px) { [data-hdr-subtitle] { display: none; } }
+  @media (max-width: 1180px) { [data-hdr-phone-label] { display: none; } }
+</style>
+
+<div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14161A; background: #FFFFFF; min-height: 100vh; width: 100%;">
+
+  <!-- ============ HEADER ============ -->
+  <header id="site-header" style="position: sticky; top: 0; z-index: 100; background: #FFFFFF; transition: box-shadow 0.15s ease; border-bottom: 1px solid #E3E6EA;">
+
+    <!-- Top bar -->
+    <div style="border-bottom: 1px solid #EDEFF2;">
+      <div style="max-width: 1360px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 28px;">
+        <nav style="display: flex; align-items: center; gap: 22px;">
+          <a href="#about" class="hdr-topnav-link" style="text-decoration: none; color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap;">О компании</a>
+          <a href="#about" class="hdr-topnav-link" style="text-decoration: none; color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap;">Условия покупки</a>
+          <a href="#footer" class="hdr-topnav-link" style="text-decoration: none; color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap;">Контакты</a>
+        </nav>
+
+        <div style="flex: 1;"></div>
+
+        <a href="tel:+74951234567" style="text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 600; white-space: nowrap;">+7 (495) 123-45-67</a>
+        <a href="mailto:info@iteross.ru" class="hdr-topnav-link" style="text-decoration: none; color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap;">info@iteross.ru</a>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <a href="#" aria-label="WhatsApp" class="hdr-social-btn" style="width: 32px; height: 32px; border-radius: 50%; background: #F1F3F6; display: flex; align-items: center; justify-content: center; flex: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#5B6470" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#5B6470"/></svg>
+          </a>
+          <a href="#" aria-label="Telegram" class="hdr-social-btn" style="width: 32px; height: 32px; border-radius: 50%; background: #F1F3F6; display: flex; align-items: center; justify-content: center; flex: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <button onclick="openLeadForm()" class="btn-callback" style="background: #1657C4; color: #fff; border: none; padding: 10px 18px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; font-family: inherit;">Заказать обратный звонок</button>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div style="max-width: 1360px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 20px;">
+      <a href="#top" style="text-decoration: none; flex: none;">
+        <div style="font-size: 22px; font-weight: 700; color: #0B2545; letter-spacing: 0.3px; white-space: nowrap;">АЙТЕРОСС</div>
+      </a>
+
+      <a href="#catalog" class="hdr-catalog-btn" style="display: flex; align-items: center; background: #1657C4; color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 100px; font-size: 15px; font-weight: 600; white-space: nowrap; flex: none;">Каталог</a>
+
+      <div style="flex: 1;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #fff; border: 1.5px solid #1657C4; border-radius: 100px; padding: 0 6px 0 20px; height: 46px;">
+          <input placeholder="Поиск товаров..." style="flex: 1; border: none; background: transparent; outline: none; font-size: 14.5px; font-family: inherit; color: #14161A;"/>
+          <button aria-label="Найти" class="hdr-search-btn" style="width: 38px; height: 38px; border-radius: 50%; border: none; background: #1657C4; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="1.8"/><path d="M20 20 L16.2 16.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <a href="#wish" class="hdr-icon-link" style="display: flex; align-items: center; gap: 7px; text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500; white-space: nowrap; flex: none;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>
+        Избранное
+      </a>
+
+      <a href="#cart" class="hdr-icon-link" style="display: flex; align-items: center; gap: 7px; text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500; white-space: nowrap; flex: none;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 5h2l1.6 10.2a2 2 0 0 0 2 1.8h7.8a2 2 0 0 0 2-1.6L20.4 8H6.5" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20.5" r="1.4" fill="#1657C4"/><circle cx="17" cy="20.5" r="1.4" fill="#1657C4"/></svg>
+        Корзина
+      </a>
+
+      @auth
+      <form method="POST" action="{{ route('logout') }}" style="margin:0;padding:0;">
+        @csrf
+        <button type="submit" class="hdr-icon-link" style="display: flex; align-items: center; gap: 7px; text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500; white-space: nowrap; flex: none; background: none; border: none; cursor: pointer; padding: 0; font-family: inherit;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Выйти
+        </button>
+      </form>
+      @else
+      <a href="{{ route('login') }}" class="hdr-icon-link" style="display: flex; align-items: center; gap: 7px; text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500; white-space: nowrap; flex: none;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Войти
+      </a>
+      @endauth
+    </div>
+
+  </header>
+
+  <a id="top"></a>
+
+  <!-- ============ HERO ============ -->
+  <section style="position: relative; width: 100%; overflow: hidden;">
+    <div style="position: relative; min-height: 560px; background: linear-gradient(115deg, #0B2545 0%, #123A63 55%, #1B4A7A 100%);">
+      <img src="https://images.unsplash.com/photo-1776090188130-26c7253ff423?fm=jpg&q=80&w=1600&auto=format&fit=crop" alt="" crossorigin="anonymous" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; mix-blend-mode: luminosity;"/>
+      <div style="position: absolute; inset: 0; background: linear-gradient(100deg, rgba(11,37,69,0.94) 0%, rgba(11,37,69,0.82) 38%, rgba(11,37,69,0.35) 68%, rgba(11,37,69,0.1) 100%);"></div>
+
+      <div style="position: relative; max-width: 1360px; margin: 0 auto; padding: 88px 32px; display: flex; align-items: center; min-height: 560px;">
+        <div style="max-width: 620px; animation: fadeUp 0.5s ease;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); color: #fff; padding: 7px 14px; border-radius: 100px; font-size: 13.5px; font-weight: 600; margin-bottom: 22px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.8 L6 22 L8 14.5 L2 9.5 L9.5 9 Z" fill="#fff"/></svg>
+            Официальный производитель твердосплавного инструмента
+          </div>
+          <h1 style="font-size: 50px; line-height: 1.12; font-weight: 700; color: #fff; margin: 0 0 20px; letter-spacing: -0.5px;">Твердосплавные пластины для станков с ЧПУ</h1>
+          <p style="font-size: 18px; line-height: 1.6; color: rgba(255,255,255,0.82); margin: 0 0 32px; max-width: 540px;">Прямые поставки, подбор аналогов и стабильные партии от 10 штук — для производств, которым важна предсказуемость.</p>
+
+          <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button onclick="openLeadForm()" class="hero-btn-primary" style="background: #1657C4; color: #fff; border: none; padding: 18px 32px; border-radius: 10px; font-size: 17px; font-weight: 600; cursor: pointer; font-family: inherit;">Получить предложение</button>
+            <a href="#catalog" class="hero-btn-outline" style="display: flex; align-items: center; gap: 10px; padding: 18px 26px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.4); text-decoration: none; color: #fff; font-size: 17px; font-weight: 600;">Смотреть каталог</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="position: absolute; bottom: 18px; right: 32px; font-size: 12.5px; color: rgba(255,255,255,0.4);">Фото: сменные пластины крупным планом — заглушка</div>
+    </div>
+  </section>
+
+  <!-- ============ HERO BENEFITS ============ -->
+  <section style="background: #FFFFFF; border-bottom: 1px solid #E3E6EA;">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 48px 32px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 28px;">
+
+      @php
+      $s = '#1657C4';
+      $heroBenefits = [
+        ['text' => 'Линейка продукции на все задачи',
+         'icon' => '<svg width="44" height="44" viewBox="0 0 24 24" fill="none"><rect x="6" y="3" width="13" height="13" rx="2" stroke="'.$s.'" stroke-width="1.5"/><path d="M3 8v11a2 2 0 0 0 2 2h11" stroke="'.$s.'" stroke-width="1.5" stroke-linecap="round"/></svg>'],
+        ['text' => 'Низкая цена',
+         'icon' => '<svg width="44" height="44" viewBox="0 0 24 24" fill="none"><path d="M3 11.5V5a2 2 0 0 1 2-2h6.5L21 11.5a2 2 0 0 1 0 2.8l-6.7 6.7a2 2 0 0 1-2.8 0L3 12.8Z" stroke="'.$s.'" stroke-width="1.5" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.4" fill="'.$s.'"/></svg>'],
+        ['text' => 'Склад и офис продаж в Москве',
+         'icon' => '<svg width="44" height="44" viewBox="0 0 24 24" fill="none"><path d="M4 21V11M20 21V11M2 11l2.5-7h15L22 11M2 11h20M8 21v-5h8v5" stroke="'.$s.'" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 4v3" stroke="'.$s.'" stroke-width="1.4"/></svg>'],
+        ['text' => 'Оперативная доставка',
+         'icon' => '<svg width="44" height="44" viewBox="0 0 24 24" fill="none"><path d="M12 3 L21 8 V16 L12 21 L3 16 V8 Z" stroke="'.$s.'" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 8l9 5 9-5M12 13v8" stroke="'.$s.'" stroke-width="1.5" stroke-linejoin="round"/></svg>'],
+        ['text' => 'Инженер-технолог для проработки сложных задач',
+         'icon' => '<svg width="44" height="44" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="'.$s.'" stroke-width="1.5"/><path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6M18.4 18.4l-1.6-1.6M7.2 7.2 5.6 5.6" stroke="'.$s.'" stroke-width="1.5" stroke-linecap="round"/></svg>'],
+      ];
+      @endphp
+
+      @foreach($heroBenefits as $b)
+      <div style="background: #EEF1FA; border-radius: 16px; padding: 24px 22px; aspect-ratio: 4/3.4; display: flex; flex-direction: column;">
+        <div style="height: 40px; display: flex; align-items: flex-start; margin-bottom: 40px; flex: none;">{!! $b['icon'] !!}</div>
+        <span style="font-size: 16px; color: #14161A; font-weight: 600; line-height: 1.4;">{{ $b['text'] }}</span>
+      </div>
+      @endforeach
+
+    </div>
+  </section>
+
+  <!-- ============ TOOL CATALOG GRID ============ -->
+  <section id="catalog" style="background: #FFFFFF; border-bottom: 1px solid #E3E6EA;">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 56px 32px 64px;">
+      <h2 style="font-size: 28px; font-weight: 700; color: #14161A; margin: 0 0 28px;">Каталог металлорежущего инструмента</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+
+        @php
+        $catalogItems = [
+          'Абразивный инструмент',
+          'Пластины твердосплавные сменные',
+          'Пластины из сверхтвердых материалов',
+          'Фрезы',
+          'Державки токарные',
+          'Метчики',
+          'Сверла твердосплавные',
+        ];
+        @endphp
+
+        @foreach($catalogItems as $item)
+        <a href="#" class="catalog-card" style="text-decoration: none; background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="aspect-ratio: 4/3; background: #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 32px;">
+            <img src="/assets/carbide-insert.jpg" alt="{{ $item }}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'"/>
+          </div>
+          <div style="padding: 22px 24px 26px; display: flex; flex-direction: column; flex: 1;">
+            <div style="font-size: 13px; color: #8891A0; margin-bottom: 6px;">Металлорежущий инструмент</div>
+            <div style="font-size: 17px; font-weight: 700; color: #14161A; line-height: 1.35;">{{ $item }}</div>
+          </div>
+        </a>
+        @endforeach
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY US ============ -->
+  <section style="background: #FFFFFF; border-top: 1px solid #E3E6EA; border-bottom: 1px solid #E3E6EA;">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 80px 32px;">
+      <div style="max-width: 640px; margin: 0 0 48px;">
+        <h2 style="font-size: 36px; font-weight: 700; color: #14161A; margin: 0 0 14px; letter-spacing: -0.3px;">Почему выбирают «Айтеросс»</h2>
+        <p style="font-size: 17px; color: #4B535E; margin: 0; line-height: 1.6;">Работаем как производитель, на которого можно положиться в производственном цикле.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+
+        @php
+        $sn = '#0B2545';
+        $advantages = [
+          ['title' => 'Только юридическим лицам',
+           'desc'  => 'Работаем по договору и счёту, с закрывающими документами для бухгалтерии.',
+           'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14H7z" stroke="'.$sn.'" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v4h4M9 12h6M9 16h6" stroke="'.$sn.'" stroke-width="1.6" stroke-linecap="round"/></svg>'],
+          ['title' => 'Партии от 10 шт.',
+           'desc'  => 'Минимальный порог ниже, чем у большинства дистрибьюторов — удобно для тестовых закупок.',
+           'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 8l9-5 9 5-9 5-9-5z" stroke="'.$sn.'" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 8v8l9 5 9-5V8M12 13v8" stroke="'.$sn.'" stroke-width="1.6" stroke-linejoin="round"/></svg>'],
+          ['title' => 'Подбор аналогов',
+           'desc'  => 'Поможем подобрать замену пластине от Sandvik, ISCAR, Walter или Kennametal.',
+           'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="'.$sn.'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'],
+          ['title' => 'Поставка по всей России',
+           'desc'  => 'Отгружаем транспортными компаниями в любой регион, сроки — от 2 дней.',
+           'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2 6h11v10H2zM13 10h5l3 3v3h-8z" stroke="'.$sn.'" stroke-width="1.6" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="1.7" stroke="'.$sn.'" stroke-width="1.6"/><circle cx="17" cy="18" r="1.7" stroke="'.$sn.'" stroke-width="1.6"/></svg>'],
+          ['title' => 'Техническая консультация',
+           'desc'  => 'Инженер поможет с выбором геометрии, покрытия и марки сплава под задачу.',
+           'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="'.$sn.'" stroke-width="1.6"/><circle cx="12" cy="12" r="3.4" stroke="'.$sn.'" stroke-width="1.6"/><path d="M5.5 5.5l3 3M18.5 5.5l-3 3M5.5 18.5l3-3M18.5 18.5l-3-3" stroke="'.$sn.'" stroke-width="1.6"/></svg>'],
+          ['title' => 'Стабильное наличие',
+           'desc'  => 'Держим складской запас ходовых позиций, чтобы не срывать сроки производства.',
+           'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z" stroke="'.$sn.'" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="'.$sn.'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'],
+        ];
+        @endphp
+
+        @foreach($advantages as $a)
+        <div style="background: #FFFFFF; border: 1px solid #E3E6EA; border-radius: 16px; padding: 32px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="width: 52px; height: 52px; border-radius: 12px; background: #EAF1FB; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">{!! $a['icon'] !!}</div>
+          <h3 style="font-size: 18.5px; font-weight: 700; color: #14161A; margin: 0 0 8px;">{{ $a['title'] }}</h3>
+          <p style="font-size: 15px; color: #5B6470; margin: 0; line-height: 1.55;">{{ $a['desc'] }}</p>
+        </div>
+        @endforeach
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TYPES OF WORK ============ -->
+  <section style="max-width: 1360px; margin: 0 auto; padding: 80px 32px;">
+    <div style="max-width: 640px; margin-bottom: 16px;">
+      <h2 style="font-size: 36px; font-weight: 700; color: #14161A; margin: 0 0 14px; letter-spacing: -0.3px;">Виды производимых работ</h2>
+      <div style="width: 64px; height: 3px; background: #1657C4; margin-bottom: 18px;"></div>
+      <p style="font-size: 17px; color: #4B535E; margin: 0; line-height: 1.6;">Твердосплавные сменные пластины по типу обработки на станках с ЧПУ.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 40px;">
+
+      @php
+      $worksItems = [
+        ['title' => 'Токарные пластины',
+         'desc'  => 'Точение валов, втулок и тел вращения на станках с ЧПУ. Подбор геометрии под черновую и чистовую обработку.',
+         'img'   => 'https://images.unsplash.com/photo-1666618090858-fbcee636bd3e?fm=jpg&q=80&w=1200&auto=format&fit=crop'],
+        ['title' => 'Фрезерные пластины',
+         'desc'  => 'Торцевое и концевое фрезерование корпусных деталей, плоскостей и пазов.',
+         'img'   => 'https://images.unsplash.com/photo-1570207344214-c60ad57f3c00?fm=jpg&q=80&w=1200&auto=format&fit=crop'],
+        ['title' => 'Канавочные пластины',
+         'desc'  => 'Протачивание канавок, отрезка и обработка узких пазов с высокой точностью.',
+         'img'   => 'https://images.unsplash.com/photo-1776090188130-26c7253ff423?fm=jpg&q=80&w=1200&auto=format&fit=crop'],
+        ['title' => 'Резьбовые пластины',
+         'desc'  => 'Нарезание наружной и внутренней резьбы различного профиля и шага.',
+         'img'   => 'https://images.unsplash.com/photo-1666618090858-fbcee636bd3e?fm=jpg&q=80&w=1200&auto=format&fit=crop'],
+        ['title' => 'Сверлильные пластины',
+         'desc'  => 'Сверление отверстий в стали, чугуне и нержавеющих сталях.',
+         'img'   => 'https://images.unsplash.com/photo-1570207344214-c60ad57f3c00?fm=jpg&q=80&w=1200&auto=format&fit=crop'],
+        ['title' => 'Обработка нержавеющих и жаропрочных сталей',
+         'desc'  => 'Подбор пластин и режимов резания для труднообрабатываемых материалов и легированных сталей.',
+         'img'   => 'https://images.unsplash.com/photo-1776090188130-26c7253ff423?fm=jpg&q=80&w=1200&auto=format&fit=crop'],
+      ];
+      @endphp
+
+      @foreach($worksItems as $w)
+      <a href="#" class="works-card" style="text-decoration: none; background: #fff; border: 1px solid #E3E6EA; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="aspect-ratio: 16/10; background-color: #EEF0F2; overflow: hidden;">
+          <img src="{{ $w['img'] }}" alt="{{ $w['title'] }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"/>
+        </div>
+        <div style="padding: 24px 26px 28px; display: flex; flex-direction: column; flex: 1;">
+          <h3 style="font-size: 18px; font-weight: 700; color: #14161A; margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.2px; line-height: 1.35;">{{ $w['title'] }}</h3>
+          <p style="font-size: 14.5px; color: #6B7480; margin: 0; line-height: 1.55; flex: 1;">{{ $w['desc'] }}</p>
+        </div>
+      </a>
+      @endforeach
+
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" style="background: #FFFFFF; border-top: 1px solid #E3E6EA; border-bottom: 1px solid #E3E6EA;">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 80px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;">
+      <div>
+        <h2 style="font-size: 36px; font-weight: 700; color: #14161A; margin: 0 0 20px; letter-spacing: -0.3px;">О компании</h2>
+        <p style="font-size: 17px; line-height: 1.7; color: #3A4048; margin: 0 0 16px;">«Айтеросс» производит твердосплавный инструмент для металлообработки: сменные пластины для токарных, фрезерных, канавочных, резьбовых и сверлильных операций.</p>
+        <p style="font-size: 17px; line-height: 1.7; color: #3A4048; margin: 0 0 28px;">Работаем только с юридическими лицами, отгружаем от 10 пластин в партии и помогаем подобрать аналог, если нужной позиции нет в наличии у текущего поставщика.</p>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding-top: 8px; border-top: 1px solid #E3E6EA;">
+          <div>
+            <div style="font-size: 28px; font-weight: 700; color: #14161A;">300+</div>
+            <div style="font-size: 13.5px; color: #8891A0; margin-top: 4px;">позиций в каталоге</div>
+          </div>
+          <div>
+            <div style="font-size: 28px; font-weight: 700; color: #14161A;">10 шт.</div>
+            <div style="font-size: 13.5px; color: #8891A0; margin-top: 4px;">минимальная партия</div>
+          </div>
+          <div>
+            <div style="font-size: 28px; font-weight: 700; color: #14161A;">2–5 дн.</div>
+            <div style="font-size: 13.5px; color: #8891A0; margin-top: 4px;">доставка по РФ</div>
+          </div>
+        </div>
+      </div>
+      <div style="aspect-ratio: 4/3; border-radius: 18px; overflow: hidden; background: #EEF0F2;">
+        <img src="https://images.unsplash.com/photo-1570207344214-c60ad57f3c00?fm=jpg&q=80&w=1200&auto=format&fit=crop" alt="Производство" crossorigin="anonymous" style="width: 100%; height: 100%; object-fit: cover;"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section style="max-width: 920px; margin: 0 auto; padding: 80px 32px;">
+    <div style="margin: 0 0 40px;">
+      <h2 style="font-size: 36px; font-weight: 700; color: #14161A; margin: 0 0 14px; letter-spacing: -0.3px; text-align: center;">Частые вопросы</h2>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+
+      @php
+      $faqItems = [
+        ['q' => 'Какая минимальная партия заказа?',
+         'a' => 'Минимальная партия — 10 пластин по одному артикулу. Меньшими партиями, к сожалению, не отгружаем.'],
+        ['q' => 'Как оформить заказ?',
+         'a' => 'Выбираете нужные позиции в каталоге и отправляете заявку через форму на сайте. Менеджер свяжется с вами, уточнит детали и подготовит счёт — оплата на сайте не производится.'],
+        ['q' => 'Есть ли доставка по России?',
+         'a' => 'Да, отгружаем транспортными компаниями в любой регион России. Сроки — обычно от 2 до 5 рабочих дней в зависимости от города.'],
+        ['q' => 'Как подобрать аналог пластины?',
+         'a' => 'Укажите артикул текущего поставщика (Sandvik, ISCAR, Walter, Kennametal и др.) в комментарии к заявке — инженер подберёт аналог по геометрии, покрытию и марке сплава.'],
+      ];
+      @endphp
+
+      @foreach($faqItems as $i => $f)
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 14px; overflow: hidden;">
+        <button onclick="toggleFaq({{ $i }})" style="width: 100%; background: none; border: none; cursor: pointer; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; text-align: left; font-family: inherit;">
+          <span style="font-size: 16.5px; font-weight: 600; color: #14161A;">{{ $f['q'] }}</span>
+          <span id="faq-icon-{{ $i }}" style="flex: none; width: 28px; height: 28px; border-radius: 50%; background: #F1F3F6; display: flex; align-items: center; justify-content: center; transform: rotate(0deg); transition: transform 0.15s ease;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="#0B2545" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div id="faq-answer-{{ $i }}" style="display: none; padding: 0 24px 22px; font-size: 15px; color: #5B6470; line-height: 1.65;">{{ $f['a'] }}</div>
+      </div>
+      @endforeach
+
+    </div>
+  </section>
+
+  <!-- ============ LEAD FORM ============ -->
+  <section id="lead-form-section" style="background: #FFFFFF; border-top: 1px solid #E3E6EA;">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 80px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start;">
+
+      <div>
+        <h2 style="font-size: 36px; font-weight: 700; color: #14161A; margin: 0 0 14px; letter-spacing: -0.3px;">Отправьте заявку на коммерческое предложение</h2>
+        <div style="width: 64px; height: 3px; background: #1657C4; margin-bottom: 28px;"></div>
+
+        <div style="display: flex; flex-direction: column; gap: 2px; margin-bottom: 28px;">
+          <div style="background: #F7F8FA; padding: 18px 22px; border-radius: 10px 10px 0 0;">
+            <div style="font-size: 12px; font-weight: 700; color: #8891A0; letter-spacing: 0.5px; margin-bottom: 6px;">ТЕЛЕФОН</div>
+            <a href="tel:+74951234567" style="font-size: 18px; font-weight: 700; color: #14161A; text-decoration: none;">+7 (495) 123-45-67</a>
+            <div style="font-size: 13px; color: #8891A0; margin-top: 4px;">Пн–Пт: 9:00 — 18:00 (МСК)</div>
+          </div>
+          <div style="background: #F7F8FA; padding: 18px 22px;">
+            <div style="font-size: 12px; font-weight: 700; color: #8891A0; letter-spacing: 0.5px; margin-bottom: 6px;">EMAIL</div>
+            <a href="mailto:info@iteross.ru" style="font-size: 18px; font-weight: 700; color: #14161A; text-decoration: none;">info@iteross.ru</a>
+            <div style="font-size: 13px; color: #8891A0; margin-top: 4px;">Ответ в течение рабочего дня</div>
+          </div>
+          <div style="background: #F7F8FA; padding: 18px 22px;">
+            <div style="font-size: 12px; font-weight: 700; color: #8891A0; letter-spacing: 0.5px; margin-bottom: 6px;">АДРЕС</div>
+            <div style="font-size: 18px; font-weight: 700; color: #14161A;">г. Москва, Дербеневская ул., 12, стр. 3</div>
+          </div>
+          <div style="background: #F7F8FA; padding: 18px 22px; border-radius: 0 0 10px 10px;">
+            <div style="font-size: 12px; font-weight: 700; color: #8891A0; letter-spacing: 0.5px; margin-bottom: 6px;">РЕКВИЗИТЫ</div>
+            <div style="font-size: 18px; font-weight: 700; color: #14161A;">ООО «АЙТЕРОСС»</div>
+            <div style="font-size: 13px; color: #8891A0; margin-top: 4px;">ИНН 7700000000 · ОГРН 1157700000000</div>
+          </div>
+        </div>
+
+        <div style="aspect-ratio: 16/9; border-radius: 12px; background: #EEF0F2; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+          <svg width="100%" height="100%" viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; opacity: 0.5;"><defs><pattern id="mapgrid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#C7D3E0" stroke-width="1"/></pattern></defs><rect width="400" height="225" fill="url(#mapgrid)"/></svg>
+          <div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-7.5 7-12.5A7 7 0 0 0 5 9.5C5 14.5 12 22 12 22Z" stroke="#1657C4" stroke-width="1.8"/><circle cx="12" cy="9.5" r="2.6" fill="#1657C4"/></svg>
+            <span style="font-size: 13px; color: #6B7480; font-weight: 500;">Карта проезда — заглушка</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid #E3E6EA; border-radius: 16px; box-shadow: 0 24px 48px -20px rgba(11,37,69,0.15); overflow: hidden;">
+        <div style="height: 6px; background: #1657C4;"></div>
+        <div style="padding: 40px;">
+
+          <div id="form-success" style="display: none; text-align: center; padding: 40px 0;">
+            <div style="width: 64px; height: 64px; border-radius: 50%; background: #EAF1FB; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 L9.5 18 L20 6" stroke="#0B2545" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 style="font-size: 22px; font-weight: 700; color: #14161A; margin: 0 0 10px;">Заявка отправлена</h3>
+            <p style="font-size: 16px; color: #5B6470; margin: 0;">Спасибо! Мы свяжемся с вами в ближайшее рабочее время.</p>
+          </div>
+
+          <form id="lead-form" onsubmit="submitLeadForm(event)">
+            @csrf
+            <div style="margin-bottom: 20px;">
+              <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ИМЯ И КОМПАНИЯ</label>
+              <input required name="name" placeholder="Иван Иванов, ООО «Компания»" style="width: 100%; height: 52px; border: 1.5px solid #D6DAE0; border-radius: 10px; padding: 0 16px; font-size: 16px; font-family: inherit; outline: none;" onfocus="this.style.borderColor='#1657C4'" onblur="this.style.borderColor='#D6DAE0'"/>
+            </div>
+            <div style="margin-bottom: 20px;">
+              <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ТЕЛЕФОН</label>
+              <input required name="phone" placeholder="+7 (___) ___-__-__" style="width: 100%; height: 52px; border: 1.5px solid #D6DAE0; border-radius: 10px; padding: 0 16px; font-size: 16px; font-family: inherit; outline: none;" onfocus="this.style.borderColor='#1657C4'" onblur="this.style.borderColor='#D6DAE0'"/>
+            </div>
+            <div style="margin-bottom: 20px;">
+              <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">EMAIL</label>
+              <input type="email" name="email" placeholder="you@company.ru" style="width: 100%; height: 52px; border: 1.5px solid #D6DAE0; border-radius: 10px; padding: 0 16px; font-size: 16px; font-family: inherit; outline: none;" onfocus="this.style.borderColor='#1657C4'" onblur="this.style.borderColor='#D6DAE0'"/>
+            </div>
+            <div style="margin-bottom: 20px;">
+              <label style="display: block; font-size: 13px; font-weight: 700; color: #8891A0; letter-spacing: 0.3px; margin-bottom: 8px;">ОПИСАНИЕ ЗАДАЧИ</label>
+              <textarea name="comment" placeholder="Артикул, аналог, объём партии, срок поставки..." rows="4" style="width: 100%; border: 1.5px solid #D6DAE0; border-radius: 10px; padding: 14px 16px; font-size: 16px; font-family: inherit; outline: none; resize: vertical;" onfocus="this.style.borderColor='#1657C4'" onblur="this.style.borderColor='#D6DAE0'"></textarea>
+            </div>
+            <div style="margin-bottom: 28px;">
+              <label class="lead-file-label" style="display: flex; flex-direction: column; align-items: center; gap: 8px; border: 1.5px dashed #D6DAE0; border-radius: 10px; padding: 22px 16px; cursor: pointer; text-align: center;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 15V3M7 8l5-5 5 5M5 21h14" stroke="#1657C4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span id="file-label-text" style="font-size: 14.5px; color: #1657C4; font-weight: 700;">Прикрепите файл</span>
+                <span style="font-size: 12.5px; color: #8891A0;">PDF, DOC, JPG — до 20 МБ</span>
+                <input type="file" name="file" onchange="updateFileName(this)" style="display: none;"/>
+              </label>
+            </div>
+            <button type="submit" class="lead-submit-btn" style="width: 100%; background: #1657C4; color: #fff; border: none; padding: 18px; border-radius: 10px; font-size: 15.5px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; cursor: pointer; font-family: inherit;">Получить предложение</button>
+            <p style="font-size: 12.5px; color: #8891A0; text-align: center; margin: 16px 0 0;">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer id="footer" style="background: #33363C;">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 64px 32px 32px; display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 40px;">
+      <div>
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 18px; font-weight: 700; color: #fff;">АЙТЕРОСС</div>
+        </div>
+        <p style="font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6; margin: 0 0 20px; max-width: 280px;">Поставка твердосплавного инструмента для металлообработки. Работаем с юридическими лицами по всей России.</p>
+        <div style="display: flex; gap: 10px;">
+          <a href="#" aria-label="Telegram" class="footer-social-btn" style="width: 38px; height: 38px; border-radius: 9px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 4L3 11l6 2 2 6 3-4 5 3z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#" aria-label="WhatsApp" class="footer-social-btn" style="width: 38px; height: 38px; border-radius: 9px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 20l1.4-4.2A8 8 0 1112 20a8 8 0 01-4-1z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#" aria-label="VK" class="footer-social-btn" style="width: 38px; height: 38px; border-radius: 9px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6c.3 8 4 13 11 13h1v-4l3 4h2c0-3-2-4-2-6 0-1 2-2 2-7h-3c0 3-2 6-3 6-1 0-1-3-1-6H8c0 3 1 6 0 6-1 0-2-3-2-6H4z" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-bottom: 18px;">НАВИГАЦИЯ</div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <a href="#about" class="footer-nav-link" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;">О компании</a>
+          <a href="#about" class="footer-nav-link" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;">Доставка</a>
+          <a href="#footer" class="footer-nav-link" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;">Контакты</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-bottom: 18px;">КОНТАКТЫ</div>
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px; color: rgba(255,255,255,0.8);">
+          <a href="tel:+74951234567" class="footer-nav-link" style="color: inherit; text-decoration: none;">+7 (495) 123-45-67</a>
+          <a href="mailto:info@iteross.ru" class="footer-nav-link" style="color: inherit; text-decoration: none;">info@iteross.ru</a>
+          <div>г. Москва, Дербеневская ул., 12, стр. 3</div>
+          <div style="color: rgba(255,255,255,0.5); font-size: 13.5px;">Пн–Пт, 9:00–18:00</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-bottom: 18px;">РЕКВИЗИТЫ</div>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; color: rgba(255,255,255,0.6); line-height: 1.6;">
+          <div>ООО «АЙТЕРОСС»</div>
+          <div>ИНН 7700000000</div>
+          <div>ОГРН 1157700000000</div>
+          <div>КПП 770001001</div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width: 1360px; margin: 0 auto; padding: 24px 32px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: rgba(255,255,255,0.4);">© 2026 ООО «АЙТЕРОСС». Все права защищены.</div>
+  </footer>
+
+  <!-- Cookie banner -->
+  <div id="cookie-banner" style="position: fixed; right: 24px; bottom: 24px; z-index: 300; width: min(92vw, 560px); background: #1657C4; border-radius: 14px; box-shadow: 0 20px 48px -12px rgba(11,37,69,0.4); padding: 20px 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+    <p style="flex: 1; min-width: 220px; margin: 0; font-size: 14.5px; color: #fff; line-height: 1.5;">Мы используем cookie для корректной работы сайта. Подробнее — в <a href="#" style="color: #fff; text-decoration: underline;">Политике конфиденциальности</a>.</p>
+    <button onclick="acceptCookies()" class="cookie-ok-btn" style="background: #14161A; color: #fff; border: none; padding: 12px 28px; border-radius: 9px; font-size: 14.5px; font-weight: 700; cursor: pointer; flex: none; white-space: nowrap; font-family: inherit;">Ок</button>
+  </div>
+
+</div>
+
+<script>
+  // Header scroll shadow
+  (function() {
+    var hdr = document.getElementById('site-header');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 8) {
+        hdr.style.boxShadow = '0 4px 16px rgba(11,37,69,0.08)';
+        hdr.style.borderBottomColor = 'transparent';
+      } else {
+        hdr.style.boxShadow = 'none';
+        hdr.style.borderBottomColor = '#E3E6EA';
+      }
+    }, { passive: true });
+  })();
+
+  // Scroll to lead form
+  function openLeadForm() {
+    document.getElementById('lead-form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // FAQ toggle
+  var openFaqIndex = -1;
+  function toggleFaq(i) {
+    var answer = document.getElementById('faq-answer-' + i);
+    var icon   = document.getElementById('faq-icon-' + i);
+    if (openFaqIndex === i) {
+      answer.style.display = 'none';
+      icon.style.transform = 'rotate(0deg)';
+      openFaqIndex = -1;
+    } else {
+      if (openFaqIndex !== -1) {
+        document.getElementById('faq-answer-' + openFaqIndex).style.display = 'none';
+        document.getElementById('faq-icon-'   + openFaqIndex).style.transform = 'rotate(0deg)';
+      }
+      answer.style.display = 'block';
+      icon.style.transform  = 'rotate(45deg)';
+      openFaqIndex = i;
+    }
+  }
+
+  // File upload label
+  function updateFileName(input) {
+    document.getElementById('file-label-text').textContent =
+      (input.files && input.files[0]) ? input.files[0].name : 'Прикрепите файл';
+  }
+
+  // Lead form submit
+  function submitLeadForm(e) {
+    e.preventDefault();
+    document.getElementById('lead-form').style.display    = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }
+
+  // Cookie banner
+  if (localStorage.getItem('iteross_cookie_ok') === '1') {
+    document.getElementById('cookie-banner').style.display = 'none';
+  }
+  function acceptCookies() {
+    try { localStorage.setItem('iteross_cookie_ok', '1'); } catch(e) {}
+    document.getElementById('cookie-banner').style.display = 'none';
+  }
+</script>
+@endsection

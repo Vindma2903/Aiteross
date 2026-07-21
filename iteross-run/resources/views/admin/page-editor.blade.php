@@ -20,14 +20,157 @@
 
         * { box-sizing: border-box; }
         body { margin: 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); }
-        .main { max-width: 1440px; margin: 0 auto; padding: 32px; }
+        .shell { min-height: 100vh; display: flex; }
+        .sidebar {
+            width: 320px;
+            flex: none;
+            padding: 34px 24px;
+            background: #fff;
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: #0B2545;
+        }
+        .sidebar-subtitle {
+            margin: 6px 0 0;
+            color: #8891A0;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .nav-title {
+            padding: 18px 14px 8px;
+            margin-top: 8px;
+            border-top: 1px solid var(--line);
+            color: #8891A0;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            min-height: 52px;
+            padding: 0 14px;
+            border-radius: 14px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .nav-link:hover {
+            background: #F5F7FB;
+        }
+        .nav-link--active {
+            background: #EAF1FB;
+            color: #1657C4;
+        }
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
+        }
+        .logout-button {
+            width: 100%;
+            min-height: 52px;
+            border: 1px solid #F0D7D7;
+            border-radius: 14px;
+            background: transparent;
+            color: #D34040;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .logout-button:hover {
+            background: #FDF4F4;
+        }
+        .main { flex: 1; min-width: 0; padding: 32px; }
+        .editor-wrap { max-width: 1440px; margin: 0 auto; }
         .hero, .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); }
         .hero { padding: 28px; margin-bottom: 24px; }
         .hero h1 { margin: 0 0 10px; font-size: 32px; }
         .hero p { margin: 0; color: var(--muted); line-height: 1.6; max-width: 920px; }
         .card { padding: 24px; }
         .back-link { display: inline-flex; gap: 8px; align-items: center; color: var(--blue); text-decoration: none; font-weight: 600; margin-bottom: 16px; }
-        .status { margin-bottom: 18px; padding: 14px 16px; border-radius: 12px; background: #edf4ff; color: #123f94; font-weight: 600; }
+        .toast-stack {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 3000;
+            display: grid;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .toast {
+            width: min(360px, calc(100vw - 32px));
+            padding: 16px 18px;
+            border-radius: 16px;
+            border: 1px solid #b9e7c9;
+            background: #fff;
+            box-shadow: 0 24px 48px -28px rgba(11, 37, 69, 0.35);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            pointer-events: auto;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .toast.is-hiding {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        .toast__accent {
+            width: 10px;
+            min-width: 10px;
+            align-self: stretch;
+            border-radius: 999px;
+            background: #22c55e;
+        }
+        .toast__body {
+            flex: 1;
+            min-width: 0;
+        }
+        .toast__title {
+            margin: 0 0 4px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #14161a;
+        }
+        .toast__message {
+            margin: 0;
+            color: #526070;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .toast__close {
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: #7e8896;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toast__close:hover {
+            background: #f5f7fb;
+            color: #14161a;
+        }
         .panel-list { display: grid; gap: 20px; }
         .panel { border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
         .panel--home {
@@ -122,12 +265,35 @@
         }
 
         @media (max-width: 960px) {
+            .shell { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--line);
+            }
             .main { padding: 20px; }
             .field-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+@if (session('status'))
+    <div class="toast-stack" data-toast-stack>
+        <div class="toast" data-toast>
+            <div class="toast__accent" aria-hidden="true"></div>
+            <div class="toast__body">
+                <p class="toast__title">Готово</p>
+                <p class="toast__message">{{ session('status') }}</p>
+            </div>
+            <button type="button" class="toast__close" data-toast-close aria-label="Закрыть уведомление">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+@endif
+
 @php
     $homeIcons = \App\Modules\Admin\Domain\HomePageContent::ICON_OPTIONS;
     $homeWorkTypeItems = collect($catalogCategories ?? [])->map(function ($category) use ($homePageContent) {
@@ -143,7 +309,33 @@
     })->values();
 @endphp
 
+<div class="shell">
+    <aside class="sidebar">
+        <div>
+            <div class="brand">АЙТЕРОСС</div>
+            <p class="sidebar-subtitle">Панель администратора</p>
+        </div>
+
+        <nav class="nav">
+            <a href="{{ route('admin.dashboard', ['section' => 'pages']) }}" class="nav-link{{ $selectedSection === 'pages' ? ' nav-link--active' : '' }}">Страницы</a>
+
+            <div class="nav-title">УПРАВЛЕНИЕ</div>
+            <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link">Заявки</a>
+            <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link">Товары</a>
+            <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link{{ $selectedEditor === 'catalog' ? ' nav-link--active' : '' }}">Категории</a>
+            <a href="{{ route('admin.pages.editor', ['page' => 'home']) }}" class="nav-link{{ $selectedEditor === 'home' ? ' nav-link--active' : '' }}">Главная</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <form action="{{ route('logout') }}" method="post">
+                @csrf
+                <button type="submit" class="logout-button">Выйти</button>
+            </form>
+        </div>
+    </aside>
+
 <main class="main">
+    <div class="editor-wrap">
     <section class="hero">
         <h1>Редактор: {{ $selectedEditorMeta['label'] }}</h1>
         <p>
@@ -158,10 +350,8 @@
     </section>
 
     <section class="card">
-        <a href="{{ route('admin.dashboard', ['section' => 'pages']) }}" class="back-link">← К выбору страниц</a>
-
-        @if (session('status'))
-            <div class="status">{{ session('status') }}</div>
+        @if ($selectedEditor !== 'home')
+            <a href="{{ route('admin.dashboard', ['section' => 'pages']) }}" class="back-link">← К выбору страниц</a>
         @endif
 
         @if ($selectedEditor === 'home')
@@ -523,7 +713,9 @@
             </div>
         @endif
     </section>
+    </div>
 </main>
+</div>
 
 <template id="tpl-header-nav">
     <div class="repeater-item" data-repeater-item>
@@ -720,6 +912,32 @@
 
     document.querySelectorAll('[data-category-remove]').forEach(bindCategoryRemove);
     bindRemoveButtons();
+
+    const toast = document.querySelector('[data-toast]');
+    const toastClose = document.querySelector('[data-toast-close]');
+
+    function hideToast() {
+        if (!toast || toast.classList.contains('is-hiding')) {
+            return;
+        }
+
+        toast.classList.add('is-hiding');
+
+        window.setTimeout(() => {
+            const stack = document.querySelector('[data-toast-stack]');
+            if (stack) {
+                stack.remove();
+            }
+        }, 220);
+    }
+
+    if (toast) {
+        window.setTimeout(hideToast, 3200);
+    }
+
+    if (toastClose) {
+        toastClose.addEventListener('click', hideToast);
+    }
 </script>
 </body>
 </html>

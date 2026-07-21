@@ -7,6 +7,8 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\UserAuthController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', fn() => view('home'))->name('home');
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [UserAuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [UserAuthController::class, 'login'])->name('login.store');
