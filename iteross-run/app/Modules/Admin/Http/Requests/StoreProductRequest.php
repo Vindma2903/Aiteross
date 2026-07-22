@@ -4,6 +4,7 @@ namespace App\Modules\Admin\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Modules\Catalog\Infrastructure\Persistence\Eloquent\Product;
 
 class StoreProductRequest extends FormRequest
 {
@@ -20,6 +21,8 @@ class StoreProductRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'price' => ['required', 'integer', 'min:0'],
             'stock_quantity' => ['required', 'integer', 'min:0'],
+            'unit_mode' => ['nullable', 'string', 'in:'.Product::UNIT_MODE_PIECES.','.Product::UNIT_MODE_PACKS],
+            'unit_multiplier' => ['nullable', 'integer', 'min:1'],
             'category_id' => ['nullable', 'exists:categories,id'],
             'image' => ['nullable', 'file', 'image', 'max:5120'],
             'existing_image' => [

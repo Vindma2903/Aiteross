@@ -8,10 +8,6 @@ class UpdateProductVisibility
 {
     public function handle(Product $product, bool $isVisible): bool
     {
-        if ($product->stock_quantity <= 0) {
-            $isVisible = false;
-        }
-
         $product->update([
             'is_visible' => $isVisible,
         ]);

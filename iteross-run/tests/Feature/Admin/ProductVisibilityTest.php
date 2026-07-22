@@ -6,6 +6,7 @@ use App\Modules\Catalog\Infrastructure\Persistence\Eloquent\Category;
 use App\Modules\Catalog\Infrastructure\Persistence\Eloquent\Product;
 use App\Modules\Identity\Infrastructure\Persistence\Eloquent\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class ProductVisibilityTest extends TestCase
@@ -14,8 +15,15 @@ class ProductVisibilityTest extends TestCase
 
     public function test_admin_can_toggle_product_visibility_from_products_list(): void
     {
-        $admin = User::factory()->create([
+        $admin = User::query()->create([
+            'name' => 'Admin User',
+            'first_name' => 'Admin',
+            'last_name' => 'User',
+            'company' => 'Iteross',
+            'phone' => '+79000000011',
             'role' => User::ROLE_ADMIN,
+            'email' => 'admin-visibility-1@example.com',
+            'password' => Hash::make('password'),
         ]);
 
         $product = Product::query()->create([
@@ -43,8 +51,15 @@ class ProductVisibilityTest extends TestCase
 
     public function test_regular_user_cannot_toggle_product_visibility(): void
     {
-        $user = User::factory()->create([
+        $user = User::query()->create([
+            'name' => 'Regular User',
+            'first_name' => 'Regular',
+            'last_name' => 'User',
+            'company' => 'Iteross',
+            'phone' => '+79000000012',
             'role' => User::ROLE_USER,
+            'email' => 'user-visibility@example.com',
+            'password' => Hash::make('password'),
         ]);
 
         $product = Product::query()->create([
@@ -67,10 +82,17 @@ class ProductVisibilityTest extends TestCase
         $this->assertTrue($product->fresh()->is_visible);
     }
 
-    public function test_out_of_stock_product_cannot_be_made_visible_from_products_list(): void
+    public function test_out_of_stock_product_can_be_made_visible_from_products_list(): void
     {
-        $admin = User::factory()->create([
+        $admin = User::query()->create([
+            'name' => 'Admin User',
+            'first_name' => 'Admin',
+            'last_name' => 'User',
+            'company' => 'Iteross',
+            'phone' => '+79000000013',
             'role' => User::ROLE_ADMIN,
+            'email' => 'admin-visibility-2@example.com',
+            'password' => Hash::make('password'),
         ]);
 
         $product = Product::query()->create([
@@ -91,9 +113,9 @@ class ProductVisibilityTest extends TestCase
 
         $response
             ->assertRedirect(route('admin.dashboard', ['section' => 'products']))
-            ->assertSessionHas('status', 'Товар скрыт из каталога.');
+            ->assertSessionHas('status', 'Товар показывается в каталоге.');
 
-        $this->assertFalse($product->fresh()->is_visible);
+        $this->assertTrue($product->fresh()->is_visible);
     }
 
     public function test_catalog_shows_only_visible_products(): void

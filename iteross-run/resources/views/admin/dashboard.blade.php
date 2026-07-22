@@ -262,6 +262,12 @@
             gap: 16px;
             flex-wrap: wrap;
         }
+        .toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
         .products-filters {
             display: flex;
             gap: 12px;
@@ -358,6 +364,34 @@
             font-size: 15px;
             font-weight: 700;
             margin-bottom: 6px;
+        }
+        .table-product-cell {
+            display: grid;
+            grid-template-columns: 72px minmax(0, 1fr);
+            gap: 14px;
+            align-items: start;
+        }
+        .table-product-image,
+        .table-product-placeholder {
+            width: 72px;
+            height: 72px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #E3E6EA;
+            background: #F5F7FB;
+            flex: none;
+        }
+        .table-product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .table-product-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #98A2B3;
         }
         .table-product-desc {
             color: #6A7381;
@@ -534,10 +568,14 @@
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 16px;
+            align-items: start;
         }
         .field {
-            display: grid;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
             gap: 8px;
+            align-self: start;
         }
         .field--full {
             grid-column: 1 / -1;
@@ -547,6 +585,8 @@
             font-weight: 700;
             color: #8891A0;
             letter-spacing: 0.3px;
+            line-height: 1.25;
+            margin: 0;
         }
         .field input,
         .field select,
@@ -567,6 +607,12 @@
         .field textarea {
             min-height: 110px;
             resize: vertical;
+        }
+        .field input[type="file"] {
+            min-height: 62px;
+            padding: 11px 14px;
+            display: flex;
+            align-items: center;
         }
         .field input:focus,
         .field select:focus,
@@ -609,6 +655,22 @@
             font-size: 13px;
             line-height: 1.5;
             word-break: break-word;
+        }
+        .field-error {
+            color: #D34040;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        .import-format {
+            margin: 0;
+            padding-left: 18px;
+            color: #5B6470;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .import-format strong {
+            color: #14161A;
         }
         .image-library {
             display: grid;
@@ -671,6 +733,112 @@
             justify-content: flex-end;
             gap: 12px;
             flex-wrap: wrap;
+        }
+        @media (max-width: 1440px) {
+            .sidebar {
+                width: 284px;
+                padding: 30px 18px;
+            }
+            .main {
+                padding: 28px 32px;
+            }
+            .content-card {
+                padding: 28px 30px 34px;
+            }
+            .products-filters {
+                padding: 16px;
+            }
+            .filter-input {
+                min-width: 220px;
+            }
+            .filter-select {
+                min-width: 180px;
+            }
+            .products-table {
+                min-width: 920px;
+            }
+            .products-table th,
+            .products-table td {
+                padding: 14px 14px;
+            }
+            .table-product-cell {
+                grid-template-columns: 60px minmax(0, 1fr);
+                gap: 12px;
+            }
+            .table-product-image,
+            .table-product-placeholder {
+                width: 60px;
+                height: 60px;
+                border-radius: 14px;
+            }
+            .table-product-desc {
+                max-width: 250px;
+            }
+            .modal-backdrop {
+                padding: 18px;
+            }
+            .product-modal-card {
+                max-width: 680px;
+                max-height: calc(100vh - 36px);
+                padding: 24px;
+                border-radius: 20px;
+            }
+            .modal-header {
+                gap: 14px;
+                margin-bottom: 18px;
+            }
+            .modal-header h2 {
+                font-size: 22px;
+                margin-bottom: 6px;
+            }
+            .modal-header p {
+                font-size: 13px;
+            }
+            .icon-button {
+                width: 38px;
+                height: 38px;
+            }
+            .product-form-grid {
+                gap: 14px;
+            }
+            .field label,
+            .field-note {
+                font-size: 12px;
+            }
+            .field input,
+            .field select,
+            .field textarea {
+                padding: 11px 13px;
+                font-size: 14px;
+            }
+            .field input,
+            .field select,
+            .toggle-row {
+                min-height: 44px;
+            }
+            .field input[type="file"] {
+                min-height: 58px;
+                padding: 10px 12px;
+            }
+            .field textarea {
+                min-height: 96px;
+            }
+            .image-library {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+            }
+            .image-library-card,
+            .image-library-empty {
+                padding: 9px;
+                border-radius: 12px;
+            }
+            .image-library-empty {
+                min-height: 138px;
+            }
+            .modal-actions {
+                margin-top: 18px;
+                gap: 10px;
+            }
         }
         @media (max-width: 1100px) {
             .pages-grid {
@@ -735,8 +903,8 @@
 
                 <div class="nav-title">УПРАВЛЕНИЕ</div>
                 <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link{{ $selectedSection === 'orders' ? ' nav-link--active' : '' }}">Заявки</a>
-                <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link{{ $selectedSection === 'products' ? ' nav-link--active' : '' }}">Товары</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'catalog' ? ' nav-link--active' : '' }}">Категории</a>
+                <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link{{ $selectedSection === 'products' ? ' nav-link--active' : '' }}">Товары</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'home']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'home' ? ' nav-link--active' : '' }}">Главная</a>
             </nav>
 
@@ -799,7 +967,10 @@
                     <div class="products-shell">
                         <div class="products-toolbar">
                             <h2 class="products-title">Список товаров</h2>
-                            <button type="button" class="primary-button" data-open-create-modal>Создать товар</button>
+                            <div class="toolbar-actions">
+                                <button type="button" class="secondary-button" data-open-import-modal>Импорт из Excel</button>
+                                <button type="button" class="primary-button" data-open-create-modal>Создать товар</button>
+                            </div>
                         </div>
 
                         <form method="get" action="{{ route('admin.dashboard') }}" class="products-filters">
@@ -828,8 +999,8 @@
                                 <table class="products-table">
                                     <thead>
                                         <tr>
-                                            <th>Артикул</th>
                                             <th>Товар</th>
+                                            <th>Артикул</th>
                                             <th>Категория</th>
                                             <th>Цена</th>
                                             <th>Остаток</th>
@@ -840,14 +1011,36 @@
                                     <tbody>
                                         @foreach ($products as $product)
                                             <tr>
-                                                <td><strong>{{ $product->sku }}</strong></td>
                                                 <td>
-                                                    <div class="table-product-name">{{ $product->name }}</div>
-                                                    <div class="table-product-desc">{{ $product->description ?: 'Без описания' }}</div>
+                                                    <div class="table-product-cell">
+                                                        @if ($product->image)
+                                                            <div class="table-product-image">
+                                                                <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                                                            </div>
+                                                        @else
+                                                            <div class="table-product-placeholder" aria-hidden="true">
+                                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                    <rect x="4" y="5" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.6"/>
+                                                                    <circle cx="9" cy="10" r="1.5" fill="currentColor"/>
+                                                                    <path d="M7 16l3.2-3.2a1 1 0 0 1 1.4 0L14 15l1.6-1.6a1 1 0 0 1 1.4 0L19 15.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                </svg>
+                                                            </div>
+                                                        @endif
+                                                        <div>
+                                                            <div class="table-product-name">{{ $product->name }}</div>
+                                                            <div class="table-product-desc">{{ $product->description ?: 'Без описания' }}</div>
+                                                        </div>
+                                                    </div>
                                                 </td>
+                                                <td><strong>{{ $product->sku }}</strong></td>
                                                 <td>{{ $product->category?->name ?? 'Без категории' }}</td>
-                                                <td>{{ number_format($product->price, 0, ',', ' ') }} ₽</td>
-                                                <td>{{ $product->stock_quantity }}</td>
+                                                <td>{{ number_format($product->price, 0, ',', ' ') }} ₽ / {{ $product->unitShortLabel() }}</td>
+                                                <td>
+                                                    {{ $product->stockLabel() }}
+                                                    @if ($product->unitDetailsLabel())
+                                                        <div class="table-product-desc">{{ $product->unitDetailsLabel() }}</div>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <div class="table-chips">
                                                         <span class="table-chip{{ $product->is_visible ? '' : ' table-chip--hidden' }}">
@@ -900,8 +1093,54 @@
     </div>
 
     @if ($selectedSection === 'products')
+        <div class="modal-backdrop" id="import-products-modal" aria-hidden="true">
+            <div class="modal-card product-modal-card" role="dialog" aria-modal="true" aria-labelledby="import-products-title">
+                <div class="modal-header">
+                    <div>
+                        <h2 id="import-products-title">Импорт товаров</h2>
+                        <p>Загрузите Excel или CSV-файл. Если товар с таким артикулом уже есть, он обновится, а новая позиция создастся автоматически.</p>
+                    </div>
+                    <button type="button" class="icon-button" data-close-import-modal aria-label="Закрыть окно">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M5 5L19 19M19 5L5 19" stroke="#3A4048" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <form action="{{ route('admin.products.import') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="product-form-grid">
+                        <div class="field field--full">
+                            <label for="import-file">Файл</label>
+                            <input id="import-file" type="file" name="file" accept=".xlsx,.csv,.txt" required>
+                            <div class="field-note">Поддерживаются файлы `.xlsx`, `.csv`, `.txt` до 10 МБ.</div>
+                            @if ($errors->importProducts->has('file'))
+                                <div class="field-error">{{ $errors->importProducts->first('file') }}</div>
+                            @endif
+                        </div>
+
+                        <div class="field field--full">
+                            <label>Поддерживаемые колонки</label>
+                            <ul class="import-format">
+                                <li><strong>Обязательные:</strong> Название, Артикул</li>
+                                <li><strong>Дополнительные:</strong> Категория, Цена, Остаток, Единица, Множитель, Описание, Видимость, Фото</li>
+                                <li><strong>Для колонки Фото:</strong> можно указать `https://...`, `/storage/product-images/file.jpg`, `product-images/file.jpg` или просто `file.jpg`</li>
+                                <li><strong>Можно и на английском:</strong> `name`, `sku`, `category`, `price`, `stock_quantity`, `unit`, `unit_mode`, `unit_multiplier`, `multiplier`, `description`, `is_visible`, `image`, `photo`</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="secondary-button" data-close-import-modal>Отмена</button>
+                        <button type="submit" class="primary-button">Загрузить файл</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="modal-backdrop" id="create-product-modal" aria-hidden="true">
-            <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="create-product-title">
+            <div class="modal-card product-modal-card" role="dialog" aria-modal="true" aria-labelledby="create-product-title">
                 <div class="modal-header">
                     <div>
                         <h2 id="create-product-title">Создать товар</h2>
@@ -946,6 +1185,20 @@
                         <div class="field">
                             <label for="create-stock">Остаток</label>
                             <input id="create-stock" type="number" min="0" name="stock_quantity" value="{{ old('stock_quantity', 0) }}" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="create-unit-mode">Единица продажи</label>
+                            <select id="create-unit-mode" name="unit_mode">
+                                <option value="pieces" @selected(old('unit_mode', 'pieces') === 'pieces')>Штуки</option>
+                                <option value="packs" @selected(old('unit_mode') === 'packs')>Упаковки</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="create-unit-multiplier">Множитель</label>
+                            <input id="create-unit-multiplier" type="number" min="1" name="unit_multiplier" value="{{ old('unit_multiplier', 1) }}" required>
+                            <div class="field-note">Если выбраны упаковки, укажите сколько штук в одной упаковке. Для штук оставьте `1`.</div>
                         </div>
 
                         <div class="field">
@@ -1001,7 +1254,7 @@
 
         @foreach ($products as $product)
             <div class="modal-backdrop" id="edit-product-{{ $product->id }}" aria-hidden="true">
-                <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="edit-product-title-{{ $product->id }}">
+                <div class="modal-card product-modal-card" role="dialog" aria-modal="true" aria-labelledby="edit-product-title-{{ $product->id }}">
                     <div class="modal-header">
                         <div>
                             <h2 id="edit-product-title-{{ $product->id }}">Редактировать товар</h2>
@@ -1047,6 +1300,20 @@
                             <div class="field">
                                 <label for="stock-{{ $product->id }}">Остаток</label>
                                 <input id="stock-{{ $product->id }}" type="number" min="0" name="stock_quantity" value="{{ $product->stock_quantity }}" required>
+                            </div>
+
+                            <div class="field">
+                                <label for="unit-mode-{{ $product->id }}">Единица продажи</label>
+                                <select id="unit-mode-{{ $product->id }}" name="unit_mode">
+                                    <option value="pieces" @selected($product->unit_mode === 'pieces')>Штуки</option>
+                                    <option value="packs" @selected($product->unit_mode === 'packs')>Упаковки</option>
+                                </select>
+                            </div>
+
+                            <div class="field">
+                                <label for="unit-multiplier-{{ $product->id }}">Множитель</label>
+                                <input id="unit-multiplier-{{ $product->id }}" type="number" min="1" name="unit_multiplier" value="{{ $product->unit_multiplier }}" required>
+                                <div class="field-note">Если выбраны упаковки, укажите сколько штук в одной упаковке. Для штук оставьте `1`.</div>
                             </div>
 
                             <div class="field">
@@ -1110,6 +1377,8 @@
             (function () {
                 var modal = document.getElementById('create-product-modal');
                 var openButton = document.querySelector('[data-open-create-modal]');
+                var importModal = document.getElementById('import-products-modal');
+                var importOpenButton = document.querySelector('[data-open-import-modal]');
 
                 function openModal() {
                     if (!modal) {
@@ -1129,18 +1398,52 @@
                     modal.setAttribute('aria-hidden', 'true');
                 }
 
+                function openImportModal() {
+                    if (!importModal) {
+                        return;
+                    }
+
+                    importModal.classList.add('is-open');
+                    importModal.setAttribute('aria-hidden', 'false');
+                }
+
+                function closeImportModal() {
+                    if (!importModal) {
+                        return;
+                    }
+
+                    importModal.classList.remove('is-open');
+                    importModal.setAttribute('aria-hidden', 'true');
+                }
+
                 if (openButton) {
                     openButton.addEventListener('click', openModal);
+                }
+
+                if (importOpenButton) {
+                    importOpenButton.addEventListener('click', openImportModal);
                 }
 
                 document.querySelectorAll('[data-close-create-modal]').forEach(function (button) {
                     button.addEventListener('click', closeModal);
                 });
 
+                document.querySelectorAll('[data-close-import-modal]').forEach(function (button) {
+                    button.addEventListener('click', closeImportModal);
+                });
+
                 if (modal) {
                     modal.addEventListener('click', function (event) {
                         if (event.target === modal) {
                             closeModal();
+                        }
+                    });
+                }
+
+                if (importModal) {
+                    importModal.addEventListener('click', function (event) {
+                        if (event.target === importModal) {
+                            closeImportModal();
                         }
                     });
                 }
@@ -1255,8 +1558,13 @@
                 if (toastClose) {
                     toastClose.addEventListener('click', hideToast);
                 }
+
+                if ({{ old('_open_import_modal') === '1' || $errors->importProducts->isNotEmpty() ? 'true' : 'false' }}) {
+                    openImportModal();
+                }
             })();
         </script>
     @endif
 </body>
 </html>
+

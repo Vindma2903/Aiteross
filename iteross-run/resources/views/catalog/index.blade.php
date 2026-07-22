@@ -525,6 +525,24 @@
             flex-direction: column;
             box-shadow: var(--shadow);
         }
+        .product-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            min-height: 32px;
+            padding: 0 12px;
+            border-radius: 999px;
+            border: 1px solid #ffd5b0;
+            background: #fff3e8;
+            color: #b85a00;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            box-shadow: 0 8px 18px -14px rgba(184, 90, 0, 0.45);
+        }
 
         .wish-form {
             position: absolute;
@@ -1048,6 +1066,9 @@
                         @foreach ($products as $product)
                             @php($isFavorite = in_array($product->id, $favoriteProductIds, true))
                             <article class="product-card">
+                                @if ($product->stock_quantity <= 0)
+                                    <div class="product-badge">Позиция под заказ</div>
+                                @endif
                                 <form action="{{ route('favorites.toggle', $product) }}" method="post" class="wish-form" data-favorite-form data-product-id="{{ $product->id }}">
                                     @csrf
                                     <button type="submit" class="wish-button {{ $isFavorite ? 'wish-button--active' : '' }}" data-favorite-button aria-label="{{ $isFavorite ? 'Убрать из избранного' : 'Добавить в избранное' }}">
@@ -1070,7 +1091,10 @@
                                             @endif
                                             {{ \Illuminate\Support\Str::limit($product->description ?? '', 80) }}
                                         </div>
-                                        <div class="product-price">{{ number_format($product->price, 0, ',', ' ') }} ₽ / шт.</div>
+                                        <div class="product-price">{{ number_format($product->price, 0, ',', ' ') }} ₽ / {{ $product->unitShortLabel() }}</div>
+                                        @if ($product->unitDetailsLabel())
+                                            <div class="product-meta" style="margin-top: 8px;">{{ $product->unitDetailsLabel() }}</div>
+                                        @endif
                                     </div>
                                 </a>
 

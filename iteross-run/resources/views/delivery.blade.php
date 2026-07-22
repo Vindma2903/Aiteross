@@ -473,7 +473,7 @@
             </div>
 
             <h1>Доставка</h1>
-            <p class="lead">Отгружаем твердосплавные пластины юридическим лицам по Санкт-Петербургу и всей России. Подберем удобный способ поставки, согласуем сроки и подготовим комплект закрывающих документов.</p>
+            <p class="lead">Доставка осуществляется только транспортными компаниями СДЭК, ПЭК и Деловые линии. Самовывоза пока нет. Минимальная партия упаковки — 10 штук.</p>
         </section>
 
         <section class="cards">
@@ -481,16 +481,16 @@
                 <div class="card-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 12l4-7h10l4 7M3 12v6a1 1 0 0 0 1 1h1m14-7v6a1 1 0 0 1-1 1h-1" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="19" r="1.6" stroke="#1657C4" stroke-width="1.5"/><circle cx="16" cy="19" r="1.6" stroke="#1657C4" stroke-width="1.5"/></svg>
                 </div>
-                <h2>По Санкт-Петербургу</h2>
-                <p>Доставляем собственным транспортом в день или на следующий день после подтверждения заказа. Возможна доставка на склад, в офис или прямо в цех.</p>
+                <h2>Транспортные компании</h2>
+                <p>Доставка осуществляется только через СДЭК, ПЭК и Деловые линии. Подходящую транспортную компанию согласовываем при оформлении заказа.</p>
             </article>
 
             <article class="card">
                 <div class="card-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 17h1a2 2 0 0 0 4 0h6a2 2 0 0 0 4 0h1v-5l-3-5h-4v10M4 17V8h9v9" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
-                <h2>По России</h2>
-                <p>Отправляем транспортными компаниями в любой регион. Стоимость и сроки доставки рассчитываются по тарифам перевозчика после подтверждения состава партии.</p>
+                <h2>Отправка по России</h2>
+                <p>Отправляем заказы по России только транспортными компаниями. Стоимость и сроки доставки зависят от перевозчика и города получателя.</p>
             </article>
 
             <article class="card">
@@ -498,7 +498,7 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
                 <h2>Самовывоз</h2>
-                <p>Можно забрать заказ со склада по предварительному согласованию с менеджером. Подготовим отгрузку ко времени приезда и передадим документы на месте.</p>
+                <p>Самовывоза пока нет.</p>
             </article>
         </section>
 
@@ -508,7 +508,7 @@
                 <div class="term-list">
                     <div class="term-item">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="#5FA8FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <span>Минимальная партия для оформления отгрузки согласовывается менеджером по наличию и составу заказа.</span>
+                        <span>Минимальная партия упаковки — 10 штук.</span>
                     </div>
                     <div class="term-item">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="#5FA8FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
