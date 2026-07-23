@@ -251,6 +251,216 @@
             margin: 0;
             padding-left: 20px;
         }
+        .orders-shell {
+            display: grid;
+            grid-template-columns: 360px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+        .orders-list,
+        .order-workspace {
+            display: grid;
+            gap: 16px;
+        }
+        .orders-list-card,
+        .order-detail-card,
+        .order-summary-card {
+            background: #fff;
+            border: 1px solid #E3E6EA;
+            border-radius: 18px;
+            padding: 22px;
+        }
+        .orders-list-title,
+        .order-section-title {
+            margin: 0 0 14px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .orders-stack {
+            display: grid;
+            gap: 12px;
+        }
+        .order-card {
+            width: 100%;
+            padding: 16px 18px;
+            border: 1.5px solid #D6DAE0;
+            border-radius: 16px;
+            background: #FFFFFF;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+        }
+        .order-card:hover {
+            border-color: #1657C4;
+            box-shadow: 0 12px 28px -18px rgba(11, 37, 69, 0.28);
+            transform: translateY(-1px);
+        }
+        .order-card.is-active {
+            border-color: #1657C4;
+            background: #F8FBFF;
+            box-shadow: 0 16px 30px -22px rgba(22, 87, 196, 0.34);
+        }
+        .order-card-top,
+        .order-card-bottom,
+        .order-customer-head,
+        .order-summary-row,
+        .product-preview-head,
+        .product-preview-price {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .order-card-id {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1657C4;
+            letter-spacing: 0.3px;
+        }
+        .order-card-date,
+        .order-card-note,
+        .order-meta,
+        .order-summary-hint,
+        .product-preview-desc,
+        .product-preview-unit {
+            color: #6A7381;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .order-card-company,
+        .order-summary-main,
+        .order-customer-title,
+        .product-preview-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #14161A;
+        }
+        .order-card-contact {
+            color: #14161A;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            padding: 0 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .status-pill--new {
+            background: #EAF1FB;
+            color: #1657C4;
+        }
+        .status-pill--progress {
+            background: #FFF3E8;
+            color: #B26A1F;
+        }
+        .status-pill--done {
+            background: #EAF7EE;
+            color: #227A44;
+        }
+        .order-pane {
+            display: none;
+        }
+        .order-pane.is-active {
+            display: grid;
+            gap: 16px;
+        }
+        .order-customer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .order-customer-card {
+            border: 1px solid #E3E6EA;
+            border-radius: 16px;
+            padding: 16px;
+            background: #FBFCFE;
+        }
+        .order-meta {
+            margin-top: 4px;
+        }
+        .order-processing-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) 320px;
+            gap: 16px;
+            align-items: start;
+        }
+        .order-product-panel {
+            border: 1px solid #E3E6EA;
+            border-radius: 18px;
+            padding: 18px;
+            background: #fff;
+            display: grid;
+            gap: 16px;
+        }
+        .product-preview {
+            border: 1px solid #E3E6EA;
+            border-radius: 16px;
+            padding: 16px;
+            background: #F9FBFD;
+            display: grid;
+            grid-template-columns: 108px minmax(0, 1fr);
+            gap: 14px;
+            align-items: start;
+        }
+        .product-preview-image,
+        .product-preview-placeholder {
+            width: 108px;
+            height: 108px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid #E3E6EA;
+            background: #FFFFFF;
+        }
+        .product-preview-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .product-preview-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #98A2B3;
+        }
+        .product-preview-info {
+            display: grid;
+            gap: 10px;
+        }
+        .product-preview-price strong {
+            font-size: 20px;
+            color: #14161A;
+        }
+        .order-summary-card {
+            position: sticky;
+            top: 24px;
+        }
+        .order-summary-stack {
+            display: grid;
+            gap: 14px;
+        }
+        .order-summary-row {
+            align-items: start;
+        }
+        .order-summary-label {
+            color: #8891A0;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+        .order-summary-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
         .products-shell {
             display: grid;
             gap: 20px;
@@ -841,6 +1051,16 @@
             }
         }
         @media (max-width: 1100px) {
+            .orders-shell,
+            .order-processing-grid {
+                grid-template-columns: 1fr;
+            }
+            .order-summary-card {
+                position: static;
+            }
+            .order-customer-grid {
+                grid-template-columns: 1fr;
+            }
             .pages-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -924,7 +1144,7 @@
                         <p>Выберите страницу, для которой нужно открыть отдельную полноценную страницу редактора.</p>
                     @elseif ($selectedSection === 'orders')
                         <h1>Заявки</h1>
-                        <p>Раздел подготовлен под просмотр входящих заявок. Сейчас здесь можно закрепить будущую таблицу, фильтры и карточки обращений.</p>
+                        <p>В этом разделе администратор создаёт и ведёт заявки. Сейчас доступен фронтовый прототип с кнопкой создания и таблицей заявок со статусами.</p>
                     @else
                         <h1>Товары</h1>
                         <p>На этой странице есть таблица товаров и pop-up окно для создания новой позиции.</p>
@@ -948,19 +1168,192 @@
                         @endforeach
                     </div>
                 @elseif ($selectedSection === 'orders')
-                    <div class="placeholder-panel">
-                        <div class="placeholder-box">
-                            <h2>Заявки пока не подключены</h2>
-                            <p>Сюда можно вывести таблицу входящих заявок из формы сайта, фильтры по статусу и карточку детали обращения.</p>
+                    @php
+                        $catalogOptions = $products->values();
+                        $mockOrders = collect([
+                            [
+                                'id' => 'ORD-240723-01',
+                                'created_at' => '23 июля 2026, 10:15',
+                                'customer' => 'ООО «Техмаш»',
+                                'manager' => 'Иван Петров',
+                                'product_id' => $catalogOptions->get(0)?->id,
+                                'quantity' => 1,
+                                'status' => 'Новая',
+                                'status_class' => 'new',
+                            ],
+                            [
+                                'id' => 'ORD-240723-02',
+                                'created_at' => '23 июля 2026, 11:40',
+                                'customer' => 'АО «Промдеталь»',
+                                'manager' => 'Анна Козлова',
+                                'product_id' => $catalogOptions->get(1)?->id ?? $catalogOptions->get(0)?->id,
+                                'quantity' => 2,
+                                'status' => 'В работе',
+                                'status_class' => 'progress',
+                            ],
+                            [
+                                'id' => 'ORD-240723-03',
+                                'created_at' => '23 июля 2026, 13:05',
+                                'customer' => 'ООО «СтанкоСервис»',
+                                'manager' => 'Максим Орлов',
+                                'product_id' => $catalogOptions->get(2)?->id ?? $catalogOptions->get(0)?->id,
+                                'quantity' => 3,
+                                'status' => 'Подтверждена',
+                                'status_class' => 'done',
+                            ],
+                        ])->filter(fn (array $order): bool => $order['product_id'] !== null)->values();
+                    @endphp
+
+                    <div class="products-shell">
+                        <div class="products-toolbar">
+                            <h2 class="products-title">Список заявок</h2>
+                            <div class="toolbar-actions">
+                                <button type="button" class="primary-button" data-open-order-modal>Создать заявку</button>
+                            </div>
                         </div>
-                        <div class="placeholder-box">
-                            <h2>Что уже можно показать дальше</h2>
-                            <ul>
-                                <li>имя клиента и компания</li>
-                                <li>телефон и email</li>
-                                <li>комментарий к заявке</li>
-                                <li>дата создания и статус обработки</li>
-                            </ul>
+
+                        @if ($mockOrders->isEmpty())
+                            <div class="empty-box">Пока нет заявок для отображения. Нажмите `Создать заявку`, чтобы показать первую запись в интерфейсе.</div>
+                        @else
+                            <div class="products-table-wrap">
+                                <table class="products-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Номер</th>
+                                            <th>Клиент</th>
+                                            <th>Товар</th>
+                                            <th>Количество</th>
+                                            <th>Создана</th>
+                                            <th>Статус</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($mockOrders as $order)
+                                            @php
+                                                $product = $catalogOptions->firstWhere('id', $order['product_id']);
+                                            @endphp
+                                            <tr>
+                                                <td>
+                                                    <div class="table-product-name">{{ $order['id'] }}</div>
+                                                    <div class="table-product-desc">Черновик фронта</div>
+                                                </td>
+                                                <td>
+                                                    <div class="table-product-name">{{ $order['customer'] }}</div>
+                                                    <div class="table-product-desc">{{ $order['manager'] }}</div>
+                                                </td>
+                                                <td>
+                                                    <div class="table-product-cell">
+                                                        @if ($product && $product->image)
+                                                            <div class="table-product-image">
+                                                                <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                                                            </div>
+                                                        @else
+                                                            <div class="table-product-placeholder">
+                                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                                    <path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.5"/>
+                                                                    <path d="M7 15l3-3 2 2 4-4 2 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                </svg>
+                                                            </div>
+                                                        @endif
+                                                        <div>
+                                                            <div class="table-product-name">{{ $product?->name ?? 'Товар не выбран' }}</div>
+                                                            <div class="table-product-desc">{{ $product?->description ?: 'Описание товара появится после подключения бэкенда.' }}</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>{{ $order['quantity'] }} {{ $product?->unit_mode === 'packs' ? 'упаковок' : 'шт.' }}</td>
+                                                <td>{{ $order['created_at'] }}</td>
+                                                <td><span class="status-pill status-pill--{{ $order['status_class'] }}">{{ $order['status'] }}</span></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="modal-backdrop" id="create-order-modal" aria-hidden="true">
+                        <div class="modal-card product-modal-card" role="dialog" aria-modal="true" aria-labelledby="create-order-title">
+                            <div class="modal-header">
+                                <div>
+                                    <h2 id="create-order-title">Создать заявку</h2>
+                                    <p>Фронтовая форма для создания заявки в админке. Сохранение пока не подключено.</p>
+                                </div>
+                                <button type="button" class="icon-button" data-close-order-modal aria-label="Закрыть окно">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M5 5L19 19M19 5L5 19" stroke="#3A4048" stroke-width="1.8" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <form>
+                                <div class="product-form-grid">
+                                    <div class="field">
+                                        <label for="order-customer-manager">Контактное лицо</label>
+                                        <select id="order-customer-manager">
+                                            <option value="ivan-ivanov">Иван Иванов</option>
+                                            <option value="anna-petrova">Анна Петрова</option>
+                                            <option value="maksim-orlov">Максим Орлов</option>
+                                            <option value="olga-smirnova">Ольга Смирнова</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="field field--full">
+                                        <label for="order-product-select">Товар</label>
+                                        <select id="order-product-select" data-create-order-product-select>
+                                            @foreach ($catalogOptions as $product)
+                                                <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-image="{{ $product->image ?? '' }}" data-description="{{ $product->description ?? '' }}" data-price="{{ number_format($product->price, 0, ',', ' ') }} ₽" data-unit-label="{{ $product->unit_mode === 'packs' ? 'упаковок' : 'шт.' }}" data-unit-details="{{ $product->unitDetailsLabel() ?? '' }}">{{ $product->name }} · {{ $product->sku }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="field">
+                                        <label for="order-quantity">Количество</label>
+                                        <select id="order-quantity">
+                                            @for ($qty = 1; $qty <= 10; $qty++)
+                                                <option value="{{ $qty }}">{{ $qty }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+
+                                    <div class="field">
+                                        <label for="order-status">Статус</label>
+                                        <select id="order-status">
+                                            <option value="new">Новая заявка</option>
+                                            <option value="approved">Согласовано</option>
+                                            <option value="processing">В работе</option>
+                                            <option value="invoice">Ожидает оплату</option>
+                                            <option value="shipping">Готовится к отгрузке</option>
+                                            <option value="done">Завершено</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="field field--full">
+                                        <label>Предпросмотр товара</label>
+                                        <div class="product-preview" data-create-order-preview>
+                                            <div class="product-preview-placeholder" data-create-order-image-wrap>
+                                                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.5"/>
+                                                    <path d="M7 15l3-3 2 2 4-4 2 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </div>
+                                            <div class="product-preview-info">
+                                                <div class="product-preview-name" data-create-order-name>Выберите товар</div>
+                                                <div class="product-preview-desc" data-create-order-description>Описание и цена подтягиваются автоматически из каталога.</div>
+                                                <div class="product-preview-price">
+                                                    <strong data-create-order-price>—</strong>
+                                                </div>
+                                                <div class="product-preview-unit" data-create-order-unit>Количество и единица измерения будут указаны в заявке.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-actions">
+                                    <button type="button" class="secondary-button" data-close-order-modal>Отмена</button>
+                                    <button type="button" class="primary-button">Создать заявку</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 @else
@@ -1372,6 +1765,98 @@
         @endforeach
     @endif
 
+    @if ($selectedSection === 'orders')
+        <script>
+            (function () {
+                var modal = document.getElementById('create-order-modal');
+                var openButton = document.querySelector('[data-open-order-modal]');
+                var productSelect = document.querySelector('[data-create-order-product-select]');
+
+                if (!modal || !openButton || !productSelect) {
+                    return;
+                }
+
+                function openModal() {
+                    modal.classList.add('is-open');
+                    modal.setAttribute('aria-hidden', 'false');
+                }
+
+                function closeModal() {
+                    modal.classList.remove('is-open');
+                    modal.setAttribute('aria-hidden', 'true');
+                }
+
+                function updateProductPreview() {
+                    var selectedOption = productSelect.options[productSelect.selectedIndex];
+                    var imageWrap = document.querySelector('[data-create-order-image-wrap]');
+                    var nameNode = document.querySelector('[data-create-order-name]');
+                    var descNode = document.querySelector('[data-create-order-description]');
+                    var priceNode = document.querySelector('[data-create-order-price]');
+                    var unitNode = document.querySelector('[data-create-order-unit]');
+
+                    var image = selectedOption.dataset.image || '';
+                    var name = selectedOption.dataset.name || '';
+                    var description = selectedOption.dataset.description || 'Описание товара появится после выбора позиции.';
+                    var price = selectedOption.dataset.price || '—';
+                    var unitLabel = selectedOption.dataset.unitLabel || 'шт.';
+                    var unitDetails = selectedOption.dataset.unitDetails || 'Можно выбрать количество ниже.';
+
+                    if (imageWrap) {
+                        imageWrap.innerHTML = image
+                            ? '<img src="' + image + '" alt="' + name.replace(/"/g, '&quot;') + '">'
+                            : '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.5"/><path d="M7 15l3-3 2 2 4-4 2 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                        imageWrap.className = image ? 'product-preview-image' : 'product-preview-placeholder';
+                        imageWrap.setAttribute('data-product-preview-image-wrap', '');
+                    }
+
+                    if (nameNode) nameNode.textContent = name;
+                    if (descNode) descNode.textContent = description;
+                    if (priceNode) priceNode.textContent = price;
+                    if (unitNode) unitNode.textContent = unitDetails || ('Единица продажи: ' + unitLabel);
+                }
+
+                openButton.addEventListener('click', openModal);
+
+                document.querySelectorAll('[data-close-order-modal]').forEach(function (button) {
+                    button.addEventListener('click', closeModal);
+                });
+
+                modal.addEventListener('click', function (event) {
+                    if (event.target === modal) {
+                        closeModal();
+                    }
+                });
+
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+                        closeModal();
+                    }
+                });
+
+                productSelect.addEventListener('change', updateProductPreview);
+                updateProductPreview();
+
+                modal.querySelectorAll('button.secondary-button, button.primary-button').forEach(function (button) {
+                    if (!button.hasAttribute('data-close-order-modal')) {
+                        button.addEventListener('click', function (event) {
+                            if (button.type === 'button' && button.textContent.indexOf('Создать заявку') !== -1) {
+                                event.preventDefault();
+                            }
+                        });
+                    }
+                });
+
+                document.querySelectorAll('.products-table tbody tr').forEach(function (row) {
+                    row.addEventListener('click', function () {
+                        if (openButton) {
+                            openModal();
+                        }
+                    });
+                });
+            })();
+        </script>
+    @endif
+
     @if ($selectedSection === 'products')
         <script>
             (function () {
@@ -1567,4 +2052,3 @@
     @endif
 </body>
 </html>
-

@@ -11,10 +11,12 @@ use App\Modules\Identity\Http\Controllers\AccountController;
 use App\Modules\Identity\Http\Controllers\AdminLoginController;
 use App\Modules\Identity\Http\Controllers\LoginController;
 use App\Modules\Identity\Http\Controllers\RegisterController;
+use App\Modules\LeadRequests\Http\Controllers\CallbackRequestController;
 use App\Modules\LeadRequests\Http\Controllers\LeadRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class);
+Route::post('/callback-requests', [CallbackRequestController::class, 'store'])->name('callback-requests.store');
 Route::post('/lead-requests', [LeadRequestController::class, 'store'])->name('lead-requests.store');
 Route::view('/delivery', 'delivery')->name('delivery');
 Route::get('/catalog/{categorySlug?}', [CatalogController::class, 'index'])->name('catalog.index');

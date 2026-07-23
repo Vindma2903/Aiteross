@@ -35,8 +35,13 @@ class AdminDashboardController
             ->orderBy('name')
             ->get();
 
-        $products = $selectedSection === 'products'
-            ? $getAdminProducts->handle($productSearch, $productCategory)
+        $shouldLoadProducts = in_array($selectedSection, ['orders', 'products'], true);
+
+        $products = $shouldLoadProducts
+            ? $getAdminProducts->handle(
+                $selectedSection === 'products' ? $productSearch : '',
+                $selectedSection === 'products' ? $productCategory : '',
+            )
             : new Collection();
         $productImageLibrary = $selectedSection === 'products'
             ? collect(Storage::disk('public')->files('product-images'))

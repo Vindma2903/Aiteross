@@ -502,6 +502,11 @@
             border-color: #1657C4;
             box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
         }
+        .proposal-modal-field input.is-invalid,
+        .proposal-modal-field textarea.is-invalid {
+            border-color: #D05353;
+            box-shadow: 0 0 0 4px rgba(208, 83, 83, 0.12);
+        }
         .proposal-modal-submit {
             min-height: 52px;
             border-radius: 14px;
@@ -1612,21 +1617,76 @@
                 </button>
             </div>
 
-            <form class="proposal-modal-form">
+            <form class="proposal-modal-form" method="POST" action="{{ route('callback-requests.store') }}" enctype="multipart/form-data">
+                @csrf
+                @if (session('callback_status'))
+                    <div class="lead-form-feedback lead-form-feedback--success">{{ session('callback_status') }}</div>
+                @endif
+
+                @if ($errors->callbackRequest->any())
+                    <div class="lead-form-feedback lead-form-feedback--error">
+                        <ul>
+                            @foreach ($errors->callbackRequest->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="proposal-modal-field">
                     <label for="proposal-name">Имя</label>
-                    <input id="proposal-name" type="text" name="name" placeholder="Иван Иванов" required>
+                    <input
+                        id="proposal-name"
+                        type="text"
+                        name="name"
+                        value="{{ old('name') }}"
+                        placeholder="Иван Иванов"
+                        required
+                        class="@if($errors->callbackRequest->has('name')) is-invalid @endif"
+                    >
+                    @if ($errors->callbackRequest->has('name'))
+                        <div class="field-error">{{ $errors->callbackRequest->first('name') }}</div>
+                    @endif
                 </div>
 
                 <div class="proposal-modal-field">
                     <label for="proposal-phone">Номер телефона</label>
-                    <input id="proposal-phone" type="tel" name="phone" placeholder="+7 (___) ___-__-__" required>
+                    <input
+                        id="proposal-phone"
+                        type="tel"
+                        name="phone"
+                        value="{{ old('phone') }}"
+                        placeholder="+7 (___) ___-__-__"
+                        required
+                        class="@if($errors->callbackRequest->has('phone')) is-invalid @endif"
+                    >
+                    @if ($errors->callbackRequest->has('phone'))
+                        <div class="field-error">{{ $errors->callbackRequest->first('phone') }}</div>
+                    @endif
                 </div>
 
                 <div class="proposal-modal-field">
                     <label for="proposal-description">Описание задачи</label>
-                    <textarea id="proposal-description" name="description" placeholder="Опишите задачу, если хотите"></textarea>
+                    <textarea
+                        id="proposal-description"
+                        name="description"
+                        placeholder="Опишите задачу, если хотите"
+                        class="@if($errors->callbackRequest->has('description')) is-invalid @endif"
+                    >{{ old('description') }}</textarea>
+                    @if ($errors->callbackRequest->has('description'))
+                        <div class="field-error">{{ $errors->callbackRequest->first('description') }}</div>
+                    @endif
                 </div>
+
+                <label class="file-box @if($errors->callbackRequest->has('attachment')) is-invalid @endif">
+                    <input type="file" name="attachment" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                    <strong>Прикрепите файл</strong>
+                    <span>PDF, DOC, JPG — до 20 МБ</span>
+                    <span class="file-box-name" data-file-name>Файл не выбран</span>
+                </label>
+                @if ($errors->callbackRequest->has('attachment'))
+                    <div class="field-error">{{ $errors->callbackRequest->first('attachment') }}</div>
+                @endif
 
                 <button type="submit" class="proposal-modal-submit">Заказать звонок</button>
             </form>
@@ -1701,6 +1761,7 @@
         var modal = document.querySelector('[data-proposal-modal]');
         var openButton = document.querySelector('[data-open-proposal-modal]');
         var closeButton = document.querySelector('[data-close-proposal-modal]');
+        var shouldOpenModal = @json(session('open_callback_modal') || $errors->callbackRequest->any());
 
         if (!modal || !openButton || !closeButton) {
             return;
@@ -1737,6 +1798,10 @@
                 closeModal();
             }
         });
+
+        if (shouldOpenModal) {
+            openModal();
+        }
     })();
 
     (function () {
