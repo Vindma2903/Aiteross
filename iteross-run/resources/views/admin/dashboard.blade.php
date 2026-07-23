@@ -461,6 +461,22 @@
             flex-wrap: wrap;
             margin-top: 8px;
         }
+        .status-select {
+            width: 100%;
+            min-width: 180px;
+            min-height: 42px;
+            border: 1.5px solid #D6DAE0;
+            border-radius: 10px;
+            padding: 0 12px;
+            font: inherit;
+            color: #14161A;
+            background: #fff;
+            outline: none;
+        }
+        .status-select:focus {
+            border-color: #1657C4;
+            box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
+        }
         .products-shell {
             display: grid;
             gap: 20px;
@@ -1170,82 +1186,50 @@
                 @elseif ($selectedSection === 'orders')
                     @php
                         $catalogOptions = $products->values();
-                        $mockOrders = collect([
-                            [
-                                'id' => 'ORD-240723-01',
-                                'created_at' => '23 июля 2026, 10:15',
-                                'customer' => 'ООО «Техмаш»',
-                                'manager' => 'Иван Петров',
-                                'product_id' => $catalogOptions->get(0)?->id,
-                                'quantity' => 1,
-                                'status' => 'Новая',
-                                'status_class' => 'new',
-                            ],
-                            [
-                                'id' => 'ORD-240723-02',
-                                'created_at' => '23 июля 2026, 11:40',
-                                'customer' => 'АО «Промдеталь»',
-                                'manager' => 'Анна Козлова',
-                                'product_id' => $catalogOptions->get(1)?->id ?? $catalogOptions->get(0)?->id,
-                                'quantity' => 2,
-                                'status' => 'В работе',
-                                'status_class' => 'progress',
-                            ],
-                            [
-                                'id' => 'ORD-240723-03',
-                                'created_at' => '23 июля 2026, 13:05',
-                                'customer' => 'ООО «СтанкоСервис»',
-                                'manager' => 'Максим Орлов',
-                                'product_id' => $catalogOptions->get(2)?->id ?? $catalogOptions->get(0)?->id,
-                                'quantity' => 3,
-                                'status' => 'Подтверждена',
-                                'status_class' => 'done',
-                            ],
-                        ])->filter(fn (array $order): bool => $order['product_id'] !== null)->values();
+                        $canCreateOrders = $catalogOptions->isNotEmpty() && $orderContacts->isNotEmpty();
                     @endphp
 
                     <div class="products-shell">
                         <div class="products-toolbar">
                             <h2 class="products-title">Список заявок</h2>
                             <div class="toolbar-actions">
-                                <button type="button" class="primary-button" data-open-order-modal>Создать заявку</button>
+                                <button type="button" class="primary-button" data-open-order-modal @disabled(! $canCreateOrders)>Создать заявку</button>
                             </div>
                         </div>
 
-                        @if ($mockOrders->isEmpty())
-                            <div class="empty-box">Пока нет заявок для отображения. Нажмите `Создать заявку`, чтобы показать первую запись в интерфейсе.</div>
+                        @if (! $canCreateOrders)
+                            <div class="empty-box">Для создания заявок нужен хотя бы один товар в каталоге и хотя бы один пользователь с ролью клиента.</div>
+                        @elseif ($orders->isEmpty())
+                            <div class="empty-box">Пока нет заявок для отображения. Нажмите `Создать заявку`, чтобы добавить первую запись.</div>
                         @else
                             <div class="products-table-wrap">
                                 <table class="products-table">
                                     <thead>
                                         <tr>
+                                            <th>Товар</th>
                                             <th>Номер</th>
                                             <th>Клиент</th>
-                                            <th>Товар</th>
                                             <th>Количество</th>
                                             <th>Создана</th>
                                             <th>Статус</th>
+                                            <th>Действия</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($mockOrders as $order)
-                                            @php
-                                                $product = $catalogOptions->firstWhere('id', $order['product_id']);
-                                            @endphp
-                                            <tr>
-                                                <td>
-                                                    <div class="table-product-name">{{ $order['id'] }}</div>
-                                                    <div class="table-product-desc">Черновик фронта</div>
-                                                </td>
-                                                <td>
-                                                    <div class="table-product-name">{{ $order['customer'] }}</div>
-                                                    <div class="table-product-desc">{{ $order['manager'] }}</div>
-                                                </td>
+                                        @foreach ($orders as $order)
+                                            <tr
+                                                data-order-row
+                                                data-order-id="{{ $order->order_number }}"
+                                                data-order-manager="{{ $order->user_id }}"
+                                                data-order-product-id="{{ $order->product_id }}"
+                                                data-order-quantity="{{ $order->quantity }}"
+                                                data-order-status="{{ $order->status }}"
+                                            >
                                                 <td>
                                                     <div class="table-product-cell">
-                                                        @if ($product && $product->image)
+                                                        @if ($order->product_image)
                                                             <div class="table-product-image">
-                                                                <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                                                                <img src="{{ $order->product_image }}" alt="{{ $order->product_name }}">
                                                             </div>
                                                         @else
                                                             <div class="table-product-placeholder">
@@ -1256,14 +1240,50 @@
                                                             </div>
                                                         @endif
                                                         <div>
-                                                            <div class="table-product-name">{{ $product?->name ?? 'Товар не выбран' }}</div>
-                                                            <div class="table-product-desc">{{ $product?->description ?: 'Описание товара появится после подключения бэкенда.' }}</div>
+                                                            <div class="table-product-name">{{ $order->product_name }}</div>
+                                                            <div class="table-product-desc">{{ $order->product_description ?: 'Описание товара не указано.' }}</div>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>{{ $order['quantity'] }} {{ $product?->unit_mode === 'packs' ? 'упаковок' : 'шт.' }}</td>
-                                                <td>{{ $order['created_at'] }}</td>
-                                                <td><span class="status-pill status-pill--{{ $order['status_class'] }}">{{ $order['status'] }}</span></td>
+                                                <td>
+                                                    <div class="table-product-name">{{ $order->order_number }}</div>
+                                                    <div class="table-product-desc">Создана администратором</div>
+                                                </td>
+                                                <td>
+                                                    <div class="table-product-name">{{ $order->user?->company ?: 'Компания не указана' }}</div>
+                                                    <div class="table-product-desc">{{ $order->user?->name ?: 'Контакт не указан' }}</div>
+                                                </td>
+                                                <td>{{ $order->quantityLabel() }}</td>
+                                                <td>{{ $order->created_at?->format('d.m.Y H:i') }}</td>
+                                                <td>
+                                                    <select class="status-select" data-order-status-control>
+                                                        <option value="forming" @selected($order->status === 'forming')>Формируем заказ</option>
+                                                        <option value="shipping" @selected($order->status === 'shipping')>В доставке</option>
+                                                        <option value="delivered" @selected($order->status === 'delivered')>Доставлено</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <div class="table-actions" data-actions-menu>
+                                                        <button
+                                                            type="button"
+                                                            class="table-actions-trigger"
+                                                            data-actions-trigger
+                                                            aria-haspopup="true"
+                                                            aria-expanded="false"
+                                                            aria-label="Действия с заявкой"
+                                                        >
+                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                                <circle cx="5" cy="12" r="1.8" fill="currentColor"/>
+                                                                <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
+                                                                <circle cx="19" cy="12" r="1.8" fill="currentColor"/>
+                                                            </svg>
+                                                        </button>
+                                                        <div class="table-actions-menu" role="menu">
+                                                            <button type="button" class="table-action-item" data-edit-order role="menuitem">Редактировать</button>
+                                                            <button type="button" class="table-action-item table-action-item--danger" role="menuitem">Удалить</button>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -1276,8 +1296,8 @@
                         <div class="modal-card product-modal-card" role="dialog" aria-modal="true" aria-labelledby="create-order-title">
                             <div class="modal-header">
                                 <div>
-                                    <h2 id="create-order-title">Создать заявку</h2>
-                                    <p>Фронтовая форма для создания заявки в админке. Сохранение пока не подключено.</p>
+                                    <h2 id="create-order-title" data-order-modal-title>Создать заявку</h2>
+                                    <p data-order-modal-description>Создайте заявку, выберите клиента, товар, количество и статус заказа.</p>
                                 </div>
                                 <button type="button" class="icon-button" data-close-order-modal aria-label="Закрыть окно">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1286,46 +1306,62 @@
                                 </button>
                             </div>
 
-                            <form>
+                            <form action="{{ route('admin.orders.store') }}" method="post" data-order-form>
+                                @csrf
                                 <div class="product-form-grid">
                                     <div class="field">
+                                        <label for="order-id">Номер заявки</label>
+                                        <input id="order-id" type="text" data-order-id-input placeholder="Будет присвоен после создания" readonly>
+                                    </div>
+
+                                    <div class="field">
                                         <label for="order-customer-manager">Контактное лицо</label>
-                                        <select id="order-customer-manager">
-                                            <option value="ivan-ivanov">Иван Иванов</option>
-                                            <option value="anna-petrova">Анна Петрова</option>
-                                            <option value="maksim-orlov">Максим Орлов</option>
-                                            <option value="olga-smirnova">Ольга Смирнова</option>
+                                        <select id="order-customer-manager" name="user_id" data-order-manager-select required>
+                                            @foreach ($orderContacts as $contact)
+                                                <option value="{{ $contact->id }}" @selected((string) old('user_id') === (string) $contact->id)>
+                                                    {{ $contact->name }}{{ $contact->company ? ' — '.$contact->company : '' }}
+                                                </option>
+                                            @endforeach
                                         </select>
+                                        @if ($errors->createOrder->has('user_id'))
+                                            <div class="field-error">{{ $errors->createOrder->first('user_id') }}</div>
+                                        @endif
                                     </div>
 
                                     <div class="field field--full">
                                         <label for="order-product-select">Товар</label>
-                                        <select id="order-product-select" data-create-order-product-select>
+                                        <select id="order-product-select" name="product_id" data-create-order-product-select required>
                                             @foreach ($catalogOptions as $product)
-                                                <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-image="{{ $product->image ?? '' }}" data-description="{{ $product->description ?? '' }}" data-price="{{ number_format($product->price, 0, ',', ' ') }} ₽" data-unit-label="{{ $product->unit_mode === 'packs' ? 'упаковок' : 'шт.' }}" data-unit-details="{{ $product->unitDetailsLabel() ?? '' }}">{{ $product->name }} · {{ $product->sku }}</option>
+                                                <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-image="{{ $product->image ?? '' }}" data-description="{{ $product->description ?? '' }}" data-price="{{ number_format($product->price, 0, ',', ' ') }} ₽" data-unit-label="{{ $product->unit_mode === 'packs' ? 'упаковок' : 'шт.' }}" data-unit-details="{{ $product->unitDetailsLabel() ?? '' }}" @selected((string) old('product_id') === (string) $product->id)>{{ $product->name }} · {{ $product->sku }}</option>
                                             @endforeach
                                         </select>
+                                        @if ($errors->createOrder->has('product_id'))
+                                            <div class="field-error">{{ $errors->createOrder->first('product_id') }}</div>
+                                        @endif
                                     </div>
 
                                     <div class="field">
                                         <label for="order-quantity">Количество</label>
-                                        <select id="order-quantity">
+                                        <select id="order-quantity" name="quantity" data-order-quantity-select required>
                                             @for ($qty = 1; $qty <= 10; $qty++)
-                                                <option value="{{ $qty }}">{{ $qty }}</option>
+                                                <option value="{{ $qty }}" @selected((string) old('quantity', '1') === (string) $qty)>{{ $qty }}</option>
                                             @endfor
                                         </select>
+                                        @if ($errors->createOrder->has('quantity'))
+                                            <div class="field-error">{{ $errors->createOrder->first('quantity') }}</div>
+                                        @endif
                                     </div>
 
                                     <div class="field">
                                         <label for="order-status">Статус</label>
-                                        <select id="order-status">
-                                            <option value="new">Новая заявка</option>
-                                            <option value="approved">Согласовано</option>
-                                            <option value="processing">В работе</option>
-                                            <option value="invoice">Ожидает оплату</option>
-                                            <option value="shipping">Готовится к отгрузке</option>
-                                            <option value="done">Завершено</option>
+                                        <select id="order-status" name="status" data-order-modal-status-select required>
+                                            <option value="forming" @selected(old('status', 'forming') === 'forming')>Формируем заказ</option>
+                                            <option value="shipping" @selected(old('status') === 'shipping')>В доставке</option>
+                                            <option value="delivered" @selected(old('status') === 'delivered')>Доставлено</option>
                                         </select>
+                                        @if ($errors->createOrder->has('status'))
+                                            <div class="field-error">{{ $errors->createOrder->first('status') }}</div>
+                                        @endif
                                     </div>
 
                                     <div class="field field--full">
@@ -1351,7 +1387,7 @@
 
                                 <div class="modal-actions">
                                     <button type="button" class="secondary-button" data-close-order-modal>Отмена</button>
-                                    <button type="button" class="primary-button">Создать заявку</button>
+                                    <button type="submit" class="primary-button" data-order-submit-button>Создать заявку</button>
                                 </div>
                             </form>
                         </div>
@@ -1771,8 +1807,16 @@
                 var modal = document.getElementById('create-order-modal');
                 var openButton = document.querySelector('[data-open-order-modal]');
                 var productSelect = document.querySelector('[data-create-order-product-select]');
+                var managerSelect = document.querySelector('[data-order-manager-select]');
+                var quantitySelect = document.querySelector('[data-order-quantity-select]');
+                var statusSelect = document.querySelector('[data-order-modal-status-select]');
+                var orderIdInput = document.querySelector('[data-order-id-input]');
+                var modalTitle = document.querySelector('[data-order-modal-title]');
+                var modalDescription = document.querySelector('[data-order-modal-description]');
+                var submitButton = document.querySelector('[data-order-submit-button]');
+                var orderForm = document.querySelector('[data-order-form]');
 
-                if (!modal || !openButton || !productSelect) {
+                if (!modal || !openButton || !productSelect || !managerSelect || !quantitySelect || !statusSelect || !orderIdInput || !modalTitle || !modalDescription || !submitButton || !orderForm) {
                     return;
                 }
 
@@ -1815,7 +1859,47 @@
                     if (unitNode) unitNode.textContent = unitDetails || ('Единица продажи: ' + unitLabel);
                 }
 
-                openButton.addEventListener('click', openModal);
+                function fillCreateMode() {
+                    orderForm.dataset.mode = 'create';
+                    modalTitle.textContent = 'Создать заявку';
+                    modalDescription.textContent = 'Создайте заявку, выберите клиента, товар, количество и статус заказа.';
+                    submitButton.textContent = 'Создать заявку';
+                    orderIdInput.value = '';
+                    orderIdInput.placeholder = 'Будет присвоен после создания';
+                    managerSelect.selectedIndex = 0;
+                    productSelect.selectedIndex = 0;
+                    quantitySelect.value = '1';
+                    statusSelect.value = 'forming';
+                    updateProductPreview();
+                }
+
+                function fillEditMode(row) {
+                    orderForm.dataset.mode = 'edit';
+                    modalTitle.textContent = 'Редактировать заявку';
+                    modalDescription.textContent = 'Измените параметры заявки. Сохранение изменений будет подключено следующим шагом.';
+                    submitButton.textContent = 'Сохранить изменения';
+                    orderIdInput.value = row.dataset.orderId || '';
+                    managerSelect.value = row.dataset.orderManager || managerSelect.options[0].value;
+                    productSelect.value = row.dataset.orderProductId || productSelect.options[0].value;
+                    quantitySelect.value = row.dataset.orderQuantity || '1';
+                    statusSelect.value = row.dataset.orderStatus || 'forming';
+                    updateProductPreview();
+                }
+
+                function closeAllActionMenus() {
+                    document.querySelectorAll('[data-actions-menu].is-open').forEach(function (menu) {
+                        menu.classList.remove('is-open');
+                        var trigger = menu.querySelector('[data-actions-trigger]');
+                        if (trigger) {
+                            trigger.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                }
+
+                openButton.addEventListener('click', function () {
+                    fillCreateMode();
+                    openModal();
+                });
 
                 document.querySelectorAll('[data-close-order-modal]').forEach(function (button) {
                     button.addEventListener('click', closeModal);
@@ -1831,28 +1915,75 @@
                     if (event.key === 'Escape' && modal.classList.contains('is-open')) {
                         closeModal();
                     }
+
+                    if (event.key === 'Escape') {
+                        closeAllActionMenus();
+                    }
                 });
 
                 productSelect.addEventListener('change', updateProductPreview);
                 updateProductPreview();
 
-                modal.querySelectorAll('button.secondary-button, button.primary-button').forEach(function (button) {
-                    if (!button.hasAttribute('data-close-order-modal')) {
-                        button.addEventListener('click', function (event) {
-                            if (button.type === 'button' && button.textContent.indexOf('Создать заявку') !== -1) {
-                                event.preventDefault();
-                            }
-                        });
-                    }
-                });
+                document.querySelectorAll('[data-actions-trigger]').forEach(function (button) {
+                    button.addEventListener('click', function (event) {
+                        event.stopPropagation();
+                        var menu = button.closest('[data-actions-menu]');
+                        var shouldOpen = menu && !menu.classList.contains('is-open');
 
-                document.querySelectorAll('.products-table tbody tr').forEach(function (row) {
-                    row.addEventListener('click', function () {
-                        if (openButton) {
-                            openModal();
+                        closeAllActionMenus();
+
+                        if (shouldOpen && menu) {
+                            menu.classList.add('is-open');
+                            button.setAttribute('aria-expanded', 'true');
                         }
                     });
                 });
+
+                document.addEventListener('click', function (event) {
+                    if (!event.target.closest('[data-actions-menu]')) {
+                        closeAllActionMenus();
+                    }
+                });
+
+                orderForm.addEventListener('submit', function (event) {
+                    if (orderForm.dataset.mode === 'edit') {
+                        event.preventDefault();
+                    }
+                });
+
+                document.querySelectorAll('[data-edit-order]').forEach(function (button) {
+                    button.addEventListener('click', function (event) {
+                        event.stopPropagation();
+                        var row = button.closest('tr[data-order-row]');
+                        closeAllActionMenus();
+                        if (!row) {
+                            return;
+                        }
+
+                        fillEditMode(row);
+                        openModal();
+                    });
+                });
+
+                document.querySelectorAll('.products-table tbody tr').forEach(function (row) {
+                    row.addEventListener('click', function (event) {
+                        if (event.target.closest('[data-actions-menu]') || event.target.closest('[data-order-status-control]')) {
+                            return;
+                        }
+
+                        fillEditMode(row);
+                        openModal();
+                    });
+                });
+
+                if ({{ $errors->createOrder->isNotEmpty() ? 'true' : 'false' }}) {
+                    orderForm.dataset.mode = 'create';
+                    modalTitle.textContent = 'Создать заявку';
+                    modalDescription.textContent = 'Исправьте ошибки в форме и отправьте заявку снова.';
+                    submitButton.textContent = 'Создать заявку';
+                    openModal();
+                    updateProductPreview();
+                }
             })();
         </script>
     @endif

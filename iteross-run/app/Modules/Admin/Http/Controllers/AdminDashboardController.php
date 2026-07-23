@@ -5,6 +5,8 @@ namespace App\Modules\Admin\Http\Controllers;
 use App\Modules\Admin\Application\UseCases\GetAdminProducts;
 use App\Modules\Catalog\Application\UseCases\GetCatalogFilterGroups;
 use App\Modules\Catalog\Infrastructure\Persistence\Eloquent\Category;
+use App\Modules\Identity\Infrastructure\Persistence\Eloquent\User;
+use App\Modules\Orders\Application\UseCases\GetAdminOrders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +20,7 @@ class AdminDashboardController
         Request $request,
         GetCatalogFilterGroups $getCatalogFilterGroups,
         GetAdminProducts $getAdminProducts,
+        GetAdminOrders $getAdminOrders,
     ): View
     {
         $selectedSection = $request->query('section', 'pages');
@@ -56,6 +59,15 @@ class AdminDashboardController
                 ->sortByDesc('updated_at')
                 ->values()
             : new Collection();
+        $orders = $selectedSection === 'orders'
+            ? $getAdminOrders->handle()
+            : new Collection();
+        $orderContacts = $selectedSection === 'orders'
+            ? User::query()
+                ->where('role', User::ROLE_USER)
+                ->orderBy('name')
+                ->get(['id', 'name', 'company'])
+            : new Collection();
 
         return view('admin.dashboard', [
             'user' => $request->user(),
@@ -67,6 +79,8 @@ class AdminDashboardController
             'productSearch' => $productSearch,
             'productCategory' => $productCategory,
             'filterGroups' => $getCatalogFilterGroups->handle(false),
+            'orders' => $orders,
+            'orderContacts' => $orderContacts,
         ]);
     }
 }
