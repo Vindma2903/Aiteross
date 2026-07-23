@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'lead_requests' => [
+        'recipient' => env('LEAD_REQUESTS_RECIPIENT', env('MAIL_FROM_ADDRESS', 'info@iteross.ru')),
+        'disk' => env('LEAD_REQUESTS_DISK', 'local'),
+        'directory' => env('LEAD_REQUESTS_DIRECTORY', 'lead-requests'),
+    ],
+
 ];

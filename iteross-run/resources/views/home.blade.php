@@ -831,6 +831,26 @@
             display: grid;
             gap: 14px;
         }
+        .lead-form-feedback {
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .lead-form-feedback--success {
+            background: #EAF7EE;
+            border: 1px solid #B7DFC0;
+            color: #1F6B33;
+        }
+        .lead-form-feedback--error {
+            background: #FFF3F3;
+            border: 1px solid #F2CACA;
+            color: #A33A3A;
+        }
+        .lead-form-feedback ul {
+            margin: 0;
+            padding-left: 18px;
+        }
         .field label {
             display: block;
             margin-bottom: 8px;
@@ -859,6 +879,17 @@
         .field textarea:focus {
             border-color: #1657C4;
             box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
+        }
+        .field input.is-invalid,
+        .field textarea.is-invalid {
+            border-color: #D05353;
+            box-shadow: 0 0 0 4px rgba(208, 83, 83, 0.12);
+        }
+        .field-error {
+            margin-top: 8px;
+            color: #B03D3D;
+            font-size: 13px;
+            line-height: 1.5;
         }
         .file-box {
             border: 1.5px dashed #C9D3E0;
@@ -906,6 +937,10 @@
             color: #14161A;
             font-weight: 600;
             line-height: 1.5;
+        }
+        .file-box.is-invalid {
+            border-color: #D05353;
+            box-shadow: 0 0 0 4px rgba(208, 83, 83, 0.12);
         }
         .lead-submit {
             min-height: 50px;
@@ -1427,30 +1462,82 @@
                 </div>
 
                 <div class="lead-form-panel">
-                    <form class="lead-form">
+                    <form class="lead-form" method="POST" action="{{ route('lead-requests.store') }}" enctype="multipart/form-data">
+                        @csrf
+                        @if (session('status'))
+                            <div class="lead-form-feedback lead-form-feedback--success">{{ session('status') }}</div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="lead-form-feedback lead-form-feedback--error">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="field">
                             <label>Имя и компания</label>
-                            <input type="text" placeholder="Иван Иванов, ООО «Компания»">
+                            <input
+                                type="text"
+                                name="company_name"
+                                value="{{ old('company_name') }}"
+                                placeholder="Иван Иванов, ООО «Компания»"
+                                class="@error('company_name') is-invalid @enderror"
+                            >
+                            @error('company_name')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="field">
                             <label>Телефон</label>
-                            <input type="tel" placeholder="+7 (___) ___-__-__">
+                            <input
+                                type="tel"
+                                name="phone"
+                                value="{{ old('phone') }}"
+                                placeholder="+7 (___) ___-__-__"
+                                class="@error('phone') is-invalid @enderror"
+                            >
+                            @error('phone')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="field">
                             <label>Email</label>
-                            <input type="email" placeholder="you@company.ru">
+                            <input
+                                type="email"
+                                name="email"
+                                value="{{ old('email') }}"
+                                placeholder="you@company.ru"
+                                class="@error('email') is-invalid @enderror"
+                            >
+                            @error('email')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="field">
                             <label>Описание задачи</label>
-                            <textarea placeholder="Артикул, аналог, объём партии, срок поставки..."></textarea>
+                            <textarea
+                                name="task_description"
+                                placeholder="Артикул, аналог, объём партии, срок поставки..."
+                                class="@error('task_description') is-invalid @enderror"
+                            >{{ old('task_description') }}</textarea>
+                            @error('task_description')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <label class="file-box">
+                        <label class="file-box @error('attachment') is-invalid @enderror">
                             <input type="file" name="attachment" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                             <strong>Прикрепите файл</strong>
                             <span>PDF, DOC, JPG — до 20 МБ</span>
                             <span class="file-box-name" data-file-name>Файл не выбран</span>
                         </label>
-                        <button type="button" class="lead-submit">Получить предложение</button>
+                        @error('attachment')
+                            <div class="field-error">{{ $message }}</div>
+                        @enderror
+                        <button type="submit" class="lead-submit">Получить предложение</button>
                         <p class="lead-disclaimer">Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</p>
                     </form>
                 </div>
