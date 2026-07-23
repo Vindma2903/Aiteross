@@ -31,6 +31,14 @@ class UpdateProductRequest extends FormRequest
             'stock_quantity' => ['required', 'integer', 'min:0'],
             'unit_mode' => ['nullable', 'string', 'in:'.CatalogProduct::UNIT_MODE_PIECES.','.CatalogProduct::UNIT_MODE_PACKS],
             'unit_multiplier' => ['nullable', 'integer', 'min:1'],
+            'analog_mode' => ['nullable', 'string', 'in:'.CatalogProduct::ANALOG_MODE_AUTOMATIC.','.CatalogProduct::ANALOG_MODE_MANUAL],
+            'manual_analog_ids' => ['nullable', 'array', 'max:10'],
+            'manual_analog_ids.*' => [
+                'integer',
+                'distinct',
+                'exists:products,id',
+                Rule::notIn([$product?->id]),
+            ],
             'category_id' => ['nullable', 'exists:categories,id'],
             'image' => ['nullable', 'file', 'image', 'max:5120'],
             'existing_image' => [

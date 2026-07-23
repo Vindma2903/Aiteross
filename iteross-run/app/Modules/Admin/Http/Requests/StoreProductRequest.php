@@ -23,6 +23,9 @@ class StoreProductRequest extends FormRequest
             'stock_quantity' => ['required', 'integer', 'min:0'],
             'unit_mode' => ['nullable', 'string', 'in:'.Product::UNIT_MODE_PIECES.','.Product::UNIT_MODE_PACKS],
             'unit_multiplier' => ['nullable', 'integer', 'min:1'],
+            'analog_mode' => ['nullable', 'string', 'in:'.Product::ANALOG_MODE_AUTOMATIC.','.Product::ANALOG_MODE_MANUAL],
+            'manual_analog_ids' => ['nullable', 'array', 'max:10'],
+            'manual_analog_ids.*' => ['integer', 'distinct', 'exists:products,id'],
             'category_id' => ['nullable', 'exists:categories,id'],
             'image' => ['nullable', 'file', 'image', 'max:5120'],
             'existing_image' => [

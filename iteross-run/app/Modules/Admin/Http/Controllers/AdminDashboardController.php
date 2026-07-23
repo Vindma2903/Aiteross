@@ -5,6 +5,7 @@ namespace App\Modules\Admin\Http\Controllers;
 use App\Modules\Admin\Application\UseCases\GetAdminProducts;
 use App\Modules\Catalog\Application\UseCases\GetCatalogFilterGroups;
 use App\Modules\Catalog\Infrastructure\Persistence\Eloquent\Category;
+use App\Modules\Catalog\Infrastructure\Persistence\Eloquent\Product;
 use App\Modules\Identity\Infrastructure\Persistence\Eloquent\User;
 use App\Modules\Orders\Application\UseCases\GetAdminOrders;
 use Illuminate\Http\Request;
@@ -46,6 +47,23 @@ class AdminDashboardController
                 $selectedSection === 'products' ? $productCategory : '',
             )
             : new Collection();
+        $catalogOptions = $shouldLoadProducts
+            ? Product::query()
+                ->orderBy('name')
+                ->get([
+                    'id',
+                    'name',
+                    'sku',
+                    'image',
+                    'description',
+                    'price',
+                    'unit_mode',
+                    'unit_multiplier',
+                    'stock_quantity',
+                    'analog_mode',
+                    'category_id',
+                ])
+            : new Collection();
         $productImageLibrary = $selectedSection === 'products'
             ? collect(Storage::disk('public')->files('product-images'))
                 ->map(function (string $path): array {
@@ -75,6 +93,7 @@ class AdminDashboardController
             'selectedSection' => $selectedSection,
             'categories' => $categories,
             'products' => $products,
+            'catalogOptions' => $catalogOptions,
             'productImageLibrary' => $productImageLibrary,
             'productSearch' => $productSearch,
             'productCategory' => $productCategory,

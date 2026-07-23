@@ -17,7 +17,7 @@ class ProductController extends Controller
         GetFavoriteProductIdsForRequest $getFavoriteProductIdsForRequest,
     ): View {
         $product = Product::query()
-            ->with(['category', 'filterOptions.group'])
+            ->with(['category', 'filterOptions.group', 'manualAnalogs.category'])
             ->where('slug', $slug)
             ->where('is_visible', true)
             ->firstOrFail();
@@ -31,17 +31,23 @@ class ProductController extends Controller
                 : asset('storage/'.$product->image);
         }
 
-        $analogProducts = Product::query()
-            ->with('category')
-            ->where('is_visible', true)
-            ->whereKeyNot($product->id)
-            ->when(
-                $product->category_id,
-                fn ($query) => $query->where('category_id', $product->category_id),
-                fn ($query) => $query->whereNotNull('id'),
-            )
-            ->orderBy('name')
-            ->limit(6)
+        $analogProductsQuery = $product->analog_mode === Product::ANALOG_MODE_MANUAL
+            ? $product->manualAnalogs()
+                ->where('products.is_visible', true)
+                ->with('category')
+            : Product::query()
+                ->with('category')
+                ->where('is_visible', true)
+                ->whereKeyNot($product->id)
+                ->when(
+                    $product->category_id,
+                    fn ($query) => $query->where('category_id', $product->category_id),
+                    fn ($query) => $query->whereNotNull('id'),
+                )
+                ->orderBy('name');
+
+        $analogProducts = $analogProductsQuery
+            ->limit($product->analog_mode === Product::ANALOG_MODE_MANUAL ? 10 : 6)
             ->get()
             ->map(function (Product $analogProduct) {
                 $analogImageUrl = null;

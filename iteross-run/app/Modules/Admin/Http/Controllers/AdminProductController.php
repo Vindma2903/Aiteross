@@ -4,6 +4,7 @@ namespace App\Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Admin\Application\UseCases\ImportProductsFromSpreadsheet;
+use App\Modules\Admin\Application\UseCases\SyncProductAnalogs;
 use App\Modules\Admin\Application\UseCases\StoreProductImage;
 use App\Modules\Admin\Application\UseCases\UpdateProductVisibility;
 use App\Modules\Admin\Http\Requests\ImportProductsRequest;
@@ -20,11 +21,13 @@ class AdminProductController extends Controller
     public function store(
         StoreProductRequest $request,
         StoreProductImage $storeProductImage,
+        SyncProductAnalogs $syncProductAnalogs,
     ): RedirectResponse {
         $data = $request->validated();
         $filterOptionIds = $data['filter_option_ids'] ?? [];
+        $manualAnalogIds = $data['manual_analog_ids'] ?? [];
         $existingImage = $data['existing_image'] ?? null;
-        unset($data['filter_option_ids'], $data['existing_image']);
+        unset($data['filter_option_ids'], $data['manual_analog_ids'], $data['existing_image']);
 
         if ($request->hasFile('image')) {
             $data['image'] = $storeProductImage->handle($request->file('image'));
@@ -38,6 +41,7 @@ class AdminProductController extends Controller
 
         $product = Product::query()->create($data);
         $product->filterOptions()->sync($filterOptionIds);
+        $syncProductAnalogs->handle($product, $data['analog_mode'] ?? Product::ANALOG_MODE_AUTOMATIC, $manualAnalogIds);
 
         return redirect()
             ->route('admin.dashboard', ['section' => 'products'])
@@ -48,11 +52,13 @@ class AdminProductController extends Controller
         UpdateProductRequest $request,
         Product $product,
         StoreProductImage $storeProductImage,
+        SyncProductAnalogs $syncProductAnalogs,
     ): RedirectResponse {
         $data = $request->validated();
         $filterOptionIds = $data['filter_option_ids'] ?? [];
+        $manualAnalogIds = $data['manual_analog_ids'] ?? [];
         $existingImage = $data['existing_image'] ?? null;
-        unset($data['filter_option_ids'], $data['existing_image']);
+        unset($data['filter_option_ids'], $data['manual_analog_ids'], $data['existing_image']);
 
         if ($request->hasFile('image')) {
             $data['image'] = $storeProductImage->handle($request->file('image'), $product->image);
@@ -68,6 +74,7 @@ class AdminProductController extends Controller
 
         $product->update($data);
         $product->filterOptions()->sync($filterOptionIds);
+        $syncProductAnalogs->handle($product, $data['analog_mode'] ?? Product::ANALOG_MODE_AUTOMATIC, $manualAnalogIds);
 
         return redirect()
             ->route('admin.dashboard', ['section' => 'products'])

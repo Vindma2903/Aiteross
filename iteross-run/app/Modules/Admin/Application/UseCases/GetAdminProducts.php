@@ -10,7 +10,7 @@ class GetAdminProducts
     public function handle(string $search = '', string $category = ''): Collection
     {
         return Product::query()
-            ->with(['category', 'filterOptions.group'])
+            ->with(['category', 'filterOptions.group', 'manualAnalogs'])
             ->when(
                 $search !== '',
                 fn ($query) => $query->where(function ($nestedQuery) use ($search) {

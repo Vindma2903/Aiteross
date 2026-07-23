@@ -591,6 +591,9 @@
         .products-table tr:last-child td {
             border-bottom: none;
         }
+        .products-table tbody tr[data-edit-modal-id] {
+            cursor: pointer;
+        }
         .table-product-name {
             font-size: 15px;
             font-weight: 700;
@@ -887,6 +890,113 @@
             line-height: 1.5;
             word-break: break-word;
         }
+        .analog-settings {
+            display: grid;
+            gap: 16px;
+            padding: 18px;
+            border: 1px solid #E3E6EA;
+            border-radius: 16px;
+            background: #F8FAFD;
+        }
+        .analog-mode-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .analog-mode-row label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #14161A;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .analog-manual-panel {
+            display: grid;
+            gap: 14px;
+            padding-top: 4px;
+        }
+        .analog-manual-panel[hidden] {
+            display: none;
+        }
+        .analog-search-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 220px auto;
+            gap: 12px;
+            align-items: end;
+        }
+        .analog-selected-list {
+            display: grid;
+            gap: 10px;
+        }
+        .analog-selected-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: center;
+            padding: 12px 14px;
+            border: 1px solid #D6DAE0;
+            border-radius: 12px;
+            background: #FFFFFF;
+        }
+        .analog-selected-main {
+            min-width: 0;
+        }
+        .analog-selected-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #14161A;
+            line-height: 1.4;
+        }
+        .analog-selected-meta {
+            margin-top: 3px;
+            font-size: 13px;
+            color: #6A7381;
+        }
+        .analog-selected-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .analog-chip-button {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 12px;
+            border: 1px solid #D6DAE0;
+            border-radius: 10px;
+            background: #fff;
+            color: #14161A;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .analog-chip-button:hover {
+            border-color: #1657C4;
+            background: #F5F8FF;
+        }
+        .analog-chip-button:disabled {
+            opacity: 0.45;
+            cursor: default;
+            background: #F5F7FB;
+        }
+        .analog-empty {
+            display: none !important;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px dashed #C9D3DF;
+            color: #6A7381;
+            font-size: 14px;
+            background: #FFFFFF;
+        }
+        .analog-limit {
+            font-size: 13px;
+            color: #6A7381;
+        }
+        .analog-limit.is-danger {
+            color: #D34040;
+        }
         .field-error {
             color: #D34040;
             font-size: 13px;
@@ -905,13 +1015,15 @@
         }
         .image-library {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+            grid-auto-rows: 118px;
             gap: 12px;
         }
         .image-library-option {
             position: relative;
             display: block;
             cursor: pointer;
+            height: 118px;
         }
         .image-library-option input {
             position: absolute;
@@ -920,37 +1032,35 @@
         }
         .image-library-card,
         .image-library-empty {
-            display: grid;
-            gap: 8px;
-            min-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
             border: 1.5px solid #D6DAE0;
             border-radius: 14px;
             background: #FFFFFF;
-            padding: 10px;
+            padding: 8px;
             transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
         }
         .image-library-empty {
-            align-items: center;
-            justify-items: center;
             text-align: center;
             color: #5A6270;
-            font-size: 13px;
-            line-height: 1.4;
-            min-height: 156px;
+            font-size: 12px;
+            line-height: 1.25;
+            overflow: hidden;
         }
         .image-library-card img {
             width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
             border-radius: 10px;
             background: #F3F6FB;
+            padding: 6px;
         }
         .image-library-name {
-            color: #2A3140;
-            font-size: 12px;
-            font-weight: 600;
-            line-height: 1.35;
-            word-break: break-word;
+            display: none;
         }
         .image-library-option input:checked + .image-library-card,
         .image-library-option input:checked + .image-library-empty {
@@ -1055,8 +1165,12 @@
                 min-height: 96px;
             }
             .image-library {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+                grid-auto-rows: 108px;
                 gap: 10px;
+            }
+            .image-library-option {
+                height: 108px;
             }
             .image-library-card,
             .image-library-empty {
@@ -1064,7 +1178,10 @@
                 border-radius: 12px;
             }
             .image-library-empty {
-                min-height: 138px;
+                min-height: 124px;
+            }
+            .analog-search-grid {
+                grid-template-columns: 1fr;
             }
             .modal-actions {
                 margin-top: 18px;
@@ -1104,6 +1221,9 @@
             }
             .pages-grid,
             .product-form-grid {
+                grid-template-columns: 1fr;
+            }
+            .analog-selected-item {
                 grid-template-columns: 1fr;
             }
             .products-toolbar,
@@ -1191,7 +1311,6 @@
                     </div>
                 @elseif ($selectedSection === 'orders')
                     @php
-                        $catalogOptions = $products->values();
                         $canCreateOrders = $catalogOptions->isNotEmpty() && $orderContacts->isNotEmpty();
                     @endphp
 
@@ -1460,7 +1579,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($products as $product)
-                                            <tr>
+                                            <tr data-edit-modal-id="edit-product-{{ $product->id }}">
                                                 <td>
                                                     <div class="table-product-cell">
                                                         @if ($product->image)
@@ -1804,6 +1923,73 @@
                             </div>
 
                             <div class="field field--full">
+                                <label>Аналоги</label>
+                                <div class="analog-settings" data-analog-editor data-product-id="{{ $product->id }}">
+                                    <div class="analog-mode-row">
+                                        <label><input type="radio" name="analog_mode" value="automatic" @checked(($product->analog_mode ?? 'automatic') === 'automatic') data-analog-mode> Автоматически</label>
+                                        <label><input type="radio" name="analog_mode" value="manual" @checked(($product->analog_mode ?? 'automatic') === 'manual') data-analog-mode> Вручную</label>
+                                    </div>
+                                    <div class="field-note">Автоматический режим показывает товары из той же категории. В ручном режиме можно выбрать до 10 конкретных аналогов и задать порядок показа.</div>
+
+                                    <div class="analog-manual-panel" data-analog-manual-panel @if (($product->analog_mode ?? 'automatic') !== 'manual') hidden @endif>
+                                        <div class="analog-search-grid">
+                                            <div class="field">
+                                                <label for="analog-search-{{ $product->id }}">Поиск по названию или артикулу</label>
+                                                <input id="analog-search-{{ $product->id }}" type="text" placeholder="Начните вводить название или SKU" data-analog-search>
+                                            </div>
+                                            <div class="field">
+                                                <label for="analog-select-{{ $product->id }}">Товар</label>
+                                                <select id="analog-select-{{ $product->id }}" data-analog-select>
+                                                    <option value="">Выберите товар</option>
+                                                    @foreach ($catalogOptions as $analogOption)
+                                                        @continue($analogOption->id === $product->id)
+                                                        <option value="{{ $analogOption->id }}" data-name="{{ $analogOption->name }}" data-sku="{{ $analogOption->sku }}">{{ $analogOption->name }} · {{ $analogOption->sku }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <button type="button" class="primary-button" data-analog-add>Добавить</button>
+                                        </div>
+
+                                        <div class="analog-limit" data-analog-limit>Выбрано 0 из 10.</div>
+
+                                        <div class="analog-selected-list" data-analog-selected-list>
+                                            @foreach ($product->manualAnalogs as $manualAnalog)
+                                                <div class="analog-selected-item" data-analog-selected-item data-id="{{ $manualAnalog->id }}" data-name="{{ $manualAnalog->name }}" data-sku="{{ $manualAnalog->sku }}">
+                                                    <div class="analog-selected-main">
+                                                        <div class="analog-selected-title">{{ $manualAnalog->name }}</div>
+                                                        <div class="analog-selected-meta">{{ $manualAnalog->sku }}</div>
+                                                    </div>
+                                                    <div class="analog-selected-actions">
+                                                        <button type="button" class="analog-chip-button" data-analog-up aria-label="Поднять выше">↑</button>
+                                                        <button type="button" class="analog-chip-button" data-analog-down aria-label="Опустить ниже">↓</button>
+                                                        <button type="button" class="analog-chip-button" data-analog-remove aria-label="Удалить">Удалить</button>
+                                                    </div>
+                                                    <input type="hidden" name="manual_analog_ids[]" value="{{ $manualAnalog->id }}">
+                                                </div>
+                                            @endforeach
+                                        </div>
+
+                                        <template data-analog-item-template>
+                                            <div class="analog-selected-item" data-analog-selected-item>
+                                                <div class="analog-selected-main">
+                                                    <div class="analog-selected-title"></div>
+                                                    <div class="analog-selected-meta"></div>
+                                                </div>
+                                                <div class="analog-selected-actions">
+                                                    <button type="button" class="analog-chip-button" data-analog-up aria-label="Поднять выше">↑</button>
+                                                    <button type="button" class="analog-chip-button" data-analog-down aria-label="Опустить ниже">↓</button>
+                                                    <button type="button" class="analog-chip-button" data-analog-remove aria-label="Удалить">Удалить</button>
+                                                </div>
+                                                <input type="hidden" name="manual_analog_ids[]">
+                                            </div>
+                                        </template>
+
+                                        <div class="analog-empty" data-analog-empty @if ($product->manualAnalogs->isNotEmpty()) hidden @endif>Пока не выбраны ручные аналоги.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field field--full">
                                 <label>Видимость на сайте</label>
                                 <div class="toggle-row">
                                     <label><input type="radio" name="is_visible" value="1" @checked($product->is_visible)> Показывать</label>
@@ -2126,6 +2312,24 @@
                     });
                 });
 
+                document.querySelectorAll('.products-table tbody tr[data-edit-modal-id]').forEach(function (row) {
+                    row.addEventListener('click', function (event) {
+                        if (
+                            event.target.closest('[data-actions-menu]') ||
+                            event.target.closest('button') ||
+                            event.target.closest('a') ||
+                            event.target.closest('input') ||
+                            event.target.closest('select') ||
+                            event.target.closest('textarea') ||
+                            event.target.closest('form')
+                        ) {
+                            return;
+                        }
+
+                        openNamedModal(row.getAttribute('data-edit-modal-id'));
+                    });
+                });
+
                 document.querySelectorAll('[data-close-edit-modal]').forEach(function (button) {
                     button.addEventListener('click', function () {
                         closeNamedModal(button.getAttribute('data-close-edit-modal'));
@@ -2183,6 +2387,199 @@
                         categoryFilter.form.submit();
                     });
                 }
+
+                document.querySelectorAll('[data-analog-editor]').forEach(function (editor) {
+                    var modeInputs = editor.querySelectorAll('[data-analog-mode]');
+                    var manualPanel = editor.querySelector('[data-analog-manual-panel]');
+                    var searchInput = editor.querySelector('[data-analog-search]');
+                    var select = editor.querySelector('[data-analog-select]');
+                    var addButton = editor.querySelector('[data-analog-add]');
+                    var selectedList = editor.querySelector('[data-analog-selected-list]');
+                    var emptyState = editor.querySelector('[data-analog-empty]');
+                    var limitLabel = editor.querySelector('[data-analog-limit]');
+                    var template = editor.querySelector('[data-analog-item-template]');
+                    var maxItems = 10;
+
+                    if (!manualPanel || !select || !addButton || !selectedList || !emptyState || !limitLabel || !template) {
+                        return;
+                    }
+
+                    function getItems() {
+                        return Array.prototype.slice.call(selectedList.querySelectorAll('[data-analog-selected-item]'));
+                    }
+
+                    function updateMoveButtons() {
+                        var items = getItems();
+                        items.forEach(function (item, index) {
+                            var upButton = item.querySelector('[data-analog-up]');
+                            var downButton = item.querySelector('[data-analog-down]');
+
+                            if (upButton) {
+                                upButton.disabled = index === 0;
+                            }
+
+                            if (downButton) {
+                                downButton.disabled = index === items.length - 1;
+                            }
+                        });
+                    }
+
+                    function updateEmptyState() {
+                        emptyState.hidden = getItems().length > 0;
+                    }
+
+                    function updateLimitLabel() {
+                        var count = getItems().length;
+                        limitLabel.textContent = 'Выбрано ' + count + ' из ' + maxItems + '.';
+                        limitLabel.classList.toggle('is-danger', count >= maxItems);
+                    }
+
+                    function toggleManualPanel() {
+                        var mode = editor.querySelector('[data-analog-mode]:checked');
+                        manualPanel.hidden = !mode || mode.value !== 'manual';
+                    }
+
+                    function updateAddButtonState() {
+                        var selectedOption = select.options[select.selectedIndex];
+                        addButton.disabled = !selectedOption || !selectedOption.value || getItems().length >= maxItems;
+                    }
+
+                    function syncState() {
+                        updateMoveButtons();
+                        updateEmptyState();
+                        updateLimitLabel();
+                        filterOptions(searchInput ? searchInput.value : '');
+                        updateAddButtonState();
+                        toggleManualPanel();
+                    }
+
+                    function hasSelectedProduct(productId) {
+                        return getItems().some(function (item) {
+                            return item.getAttribute('data-id') === String(productId);
+                        });
+                    }
+
+                    function attachItemHandlers(item) {
+                        var removeButton = item.querySelector('[data-analog-remove]');
+                        var upButton = item.querySelector('[data-analog-up]');
+                        var downButton = item.querySelector('[data-analog-down]');
+
+                        if (removeButton) {
+                            removeButton.addEventListener('click', function () {
+                                item.remove();
+                                syncState();
+                            });
+                        }
+
+                        if (upButton) {
+                            upButton.addEventListener('click', function () {
+                                var previous = item.previousElementSibling;
+                                if (previous) {
+                                    selectedList.insertBefore(item, previous);
+                                    syncState();
+                                }
+                            });
+                        }
+
+                        if (downButton) {
+                            downButton.addEventListener('click', function () {
+                                var next = item.nextElementSibling;
+                                if (next) {
+                                    selectedList.insertBefore(next, item);
+                                    syncState();
+                                }
+                            });
+                        }
+                    }
+
+                    function addSelectedItem(option) {
+                        if (!option || !option.value) {
+                            return;
+                        }
+
+                        if (getItems().length >= maxItems || hasSelectedProduct(option.value)) {
+                            syncState();
+                            return;
+                        }
+
+                        var fragment = template.content.cloneNode(true);
+                        var item = fragment.querySelector('[data-analog-selected-item]');
+                        var title = fragment.querySelector('.analog-selected-title');
+                        var meta = fragment.querySelector('.analog-selected-meta');
+                        var hiddenInput = fragment.querySelector('input[name="manual_analog_ids[]"]');
+
+                        if (!item || !title || !meta || !hiddenInput) {
+                            return;
+                        }
+
+                        item.setAttribute('data-id', option.value);
+                        item.setAttribute('data-name', option.getAttribute('data-name') || option.textContent.trim());
+                        item.setAttribute('data-sku', option.getAttribute('data-sku') || '');
+                        title.textContent = option.getAttribute('data-name') || option.textContent.trim();
+                        meta.textContent = option.getAttribute('data-sku') || '';
+                        hiddenInput.value = option.value;
+
+                        selectedList.appendChild(fragment);
+                        attachItemHandlers(selectedList.lastElementChild);
+                        select.value = '';
+                        if (searchInput) {
+                            searchInput.value = '';
+                            filterOptions('');
+                        }
+                        syncState();
+                    }
+
+                    function filterOptions(term) {
+                        var normalized = (term || '').trim().toLowerCase();
+                        var firstMatchedValue = '';
+                        Array.prototype.slice.call(select.options).forEach(function (option, index) {
+                            if (index === 0) {
+                                option.hidden = false;
+                                return;
+                            }
+
+                            var label = (option.textContent || '').toLowerCase();
+                            var name = (option.getAttribute('data-name') || '').toLowerCase();
+                            var sku = (option.getAttribute('data-sku') || '').toLowerCase();
+                            var matchesSearch = normalized === '' || label.indexOf(normalized) !== -1 || name.indexOf(normalized) !== -1 || sku.indexOf(normalized) !== -1;
+                            var alreadySelected = hasSelectedProduct(option.value);
+
+                            option.hidden = !matchesSearch || alreadySelected;
+
+                            if (!option.hidden && firstMatchedValue === '') {
+                                firstMatchedValue = option.value;
+                            }
+                        });
+
+                        select.value = firstMatchedValue;
+                        updateAddButtonState();
+                    }
+
+                    getItems().forEach(attachItemHandlers);
+
+                    modeInputs.forEach(function (input) {
+                        input.addEventListener('change', syncState);
+                    });
+
+                    addButton.addEventListener('click', function () {
+                        addSelectedItem(select.options[select.selectedIndex]);
+                    });
+
+                    if (searchInput) {
+                        searchInput.addEventListener('input', function () {
+                            filterOptions(searchInput.value);
+                        });
+
+                        searchInput.addEventListener('keydown', function (event) {
+                            if (event.key === 'Enter') {
+                                event.preventDefault();
+                                addSelectedItem(select.options[select.selectedIndex]);
+                            }
+                        });
+                    }
+
+                    syncState();
+                });
 
                 var toast = document.querySelector('[data-toast]');
                 var toastClose = document.querySelector('[data-toast-close]');

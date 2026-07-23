@@ -15,6 +15,8 @@ class Product extends Model
 
     public const UNIT_MODE_PIECES = 'pieces';
     public const UNIT_MODE_PACKS = 'packs';
+    public const ANALOG_MODE_AUTOMATIC = 'automatic';
+    public const ANALOG_MODE_MANUAL = 'manual';
 
     protected $fillable = [
         'name',
@@ -25,6 +27,7 @@ class Product extends Model
         'stock_quantity',
         'unit_mode',
         'unit_multiplier',
+        'analog_mode',
         'is_visible',
         'image',
         'category_id',
@@ -99,5 +102,14 @@ class Product extends Model
         return $this->belongsToMany(CatalogFilterOption::class, 'catalog_filter_option_product')
             ->with('group')
             ->withTimestamps();
+    }
+
+    public function manualAnalogs(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'product_analogs', 'product_id', 'analog_product_id')
+            ->withPivot('sort_order')
+            ->withTimestamps()
+            ->orderBy('product_analogs.sort_order')
+            ->orderBy('product_analogs.id');
     }
 }
