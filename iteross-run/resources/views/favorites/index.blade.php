@@ -734,7 +734,7 @@
                             </button>
                         </form>
 
-                        <a href="{{ route('catalog.index', ['categorySlug' => $product->category?->slug]) }}" class="product-link">
+                        <a href="{{ route('catalog.products.show', ['slug' => $product->slug]) }}" class="product-link">
                             <div class="product-media">
                                 <div class="product-media__shape"></div>
                             </div>
@@ -752,7 +752,7 @@
                         </a>
 
                         <div class="product-actions">
-                            <a href="{{ route('catalog.index', ['categorySlug' => $product->category?->slug]) }}" class="secondary-button">Подробнее</a>
+                            <a href="{{ route('catalog.products.show', ['slug' => $product->slug]) }}" class="secondary-button">Подробнее</a>
                         </div>
                     </article>
                 @endforeach

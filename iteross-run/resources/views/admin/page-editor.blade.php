@@ -48,6 +48,11 @@
             flex-direction: column;
             gap: 4px;
         }
+        .nav > a:nth-of-type(1) { order: 1; }
+        .nav > a:nth-of-type(2) { order: 2; }
+        .nav > a:nth-of-type(3) { order: 4; }
+        .nav > a:nth-of-type(4) { order: 3; }
+        .nav > a:nth-of-type(5) { order: 5; }
         .nav-title {
             padding: 18px 14px 8px;
             margin-top: 8px;
@@ -317,13 +322,14 @@
         </div>
 
         <nav class="nav">
-            <a href="{{ route('admin.dashboard', ['section' => 'pages']) }}" class="nav-link{{ $selectedSection === 'pages' ? ' nav-link--active' : '' }}">Страницы</a>
 
             <div class="nav-title">УПРАВЛЕНИЕ</div>
             <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link">Заявки</a>
             <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link">Товары</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link{{ $selectedEditor === 'catalog' ? ' nav-link--active' : '' }}">Категории</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'home']) }}" class="nav-link{{ $selectedEditor === 'home' ? ' nav-link--active' : '' }}">Главная</a>
+            <a href="{{ route('admin.pages.editor', ['page' => 'delivery']) }}" class="nav-link{{ $selectedEditor === 'delivery' ? ' nav-link--active' : '' }}">Доставка</a>
+            <a href="{{ route('admin.pages.editor', ['page' => 'product']) }}" class="nav-link{{ $selectedEditor === 'product' ? ' nav-link--active' : '' }}">Карточка товара</a>
         </nav>
 
         <div class="sidebar-footer">

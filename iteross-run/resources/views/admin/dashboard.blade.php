@@ -46,6 +46,11 @@
             flex-direction: column;
             gap: 4px;
         }
+        .nav > a:nth-of-type(1) { order: 1; }
+        .nav > a:nth-of-type(2) { order: 2; }
+        .nav > a:nth-of-type(3) { order: 3; }
+        .nav > a:nth-of-type(4) { order: 4; }
+        .nav > a:nth-of-type(5) { order: 5; }
         .nav-title {
             padding: 18px 14px 8px;
             margin-top: 8px;
@@ -1135,13 +1140,14 @@
             </div>
 
             <nav class="nav">
-                <a href="{{ route('admin.dashboard', ['section' => 'pages']) }}" class="nav-link{{ $selectedSection === 'pages' ? ' nav-link--active' : '' }}">Страницы</a>
 
                 <div class="nav-title">УПРАВЛЕНИЕ</div>
                 <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link{{ $selectedSection === 'orders' ? ' nav-link--active' : '' }}">Заявки</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'catalog' ? ' nav-link--active' : '' }}">Категории</a>
                 <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link{{ $selectedSection === 'products' ? ' nav-link--active' : '' }}">Товары</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'home']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'home' ? ' nav-link--active' : '' }}">Главная</a>
+                <a href="{{ route('admin.pages.editor', ['page' => 'delivery']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'delivery' ? ' nav-link--active' : '' }}">Доставка</a>
+                <a href="{{ route('admin.pages.editor', ['page' => 'product']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'product' ? ' nav-link--active' : '' }}">Карточка товара</a>
             </nav>
 
             <div class="sidebar-footer">
@@ -1219,6 +1225,7 @@
                                         @foreach ($orders as $order)
                                             <tr
                                                 data-order-row
+                                                data-order-update-url="{{ route('admin.orders.update', $order) }}"
                                                 data-order-id="{{ $order->order_number }}"
                                                 data-order-manager="{{ $order->user_id }}"
                                                 data-order-product-id="{{ $order->product_id }}"
@@ -1280,7 +1287,11 @@
                                                         </button>
                                                         <div class="table-actions-menu" role="menu">
                                                             <button type="button" class="table-action-item" data-edit-order role="menuitem">Редактировать</button>
-                                                            <button type="button" class="table-action-item table-action-item--danger" role="menuitem">Удалить</button>
+                                                            <form action="{{ route('admin.orders.destroy', $order) }}" method="post" onsubmit="return confirm('Удалить заявку {{ $order->order_number }}?');">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="submit" class="table-action-item table-action-item--danger" role="menuitem">Удалить</button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1306,8 +1317,10 @@
                                 </button>
                             </div>
 
-                            <form action="{{ route('admin.orders.store') }}" method="post" data-order-form>
+                            <form action="{{ route('admin.orders.store') }}" method="post" data-order-form data-create-action="{{ route('admin.orders.store') }}">
                                 @csrf
+                                <input type="hidden" name="_method" value="POST" data-order-form-method>
+                                <input type="hidden" name="order_id" value="{{ old('order_id') }}" data-order-current-id>
                                 <div class="product-form-grid">
                                     <div class="field">
                                         <label for="order-id">Номер заявки</label>
@@ -1325,6 +1338,8 @@
                                         </select>
                                         @if ($errors->createOrder->has('user_id'))
                                             <div class="field-error">{{ $errors->createOrder->first('user_id') }}</div>
+                                        @elseif ($errors->updateOrder->has('user_id'))
+                                            <div class="field-error">{{ $errors->updateOrder->first('user_id') }}</div>
                                         @endif
                                     </div>
 
@@ -1337,6 +1352,8 @@
                                         </select>
                                         @if ($errors->createOrder->has('product_id'))
                                             <div class="field-error">{{ $errors->createOrder->first('product_id') }}</div>
+                                        @elseif ($errors->updateOrder->has('product_id'))
+                                            <div class="field-error">{{ $errors->updateOrder->first('product_id') }}</div>
                                         @endif
                                     </div>
 
@@ -1349,6 +1366,8 @@
                                         </select>
                                         @if ($errors->createOrder->has('quantity'))
                                             <div class="field-error">{{ $errors->createOrder->first('quantity') }}</div>
+                                        @elseif ($errors->updateOrder->has('quantity'))
+                                            <div class="field-error">{{ $errors->updateOrder->first('quantity') }}</div>
                                         @endif
                                     </div>
 
@@ -1361,6 +1380,8 @@
                                         </select>
                                         @if ($errors->createOrder->has('status'))
                                             <div class="field-error">{{ $errors->createOrder->first('status') }}</div>
+                                        @elseif ($errors->updateOrder->has('status'))
+                                            <div class="field-error">{{ $errors->updateOrder->first('status') }}</div>
                                         @endif
                                     </div>
 
@@ -1815,8 +1836,10 @@
                 var modalDescription = document.querySelector('[data-order-modal-description]');
                 var submitButton = document.querySelector('[data-order-submit-button]');
                 var orderForm = document.querySelector('[data-order-form]');
+                var orderFormMethod = document.querySelector('[data-order-form-method]');
+                var currentOrderIdInput = document.querySelector('[data-order-current-id]');
 
-                if (!modal || !openButton || !productSelect || !managerSelect || !quantitySelect || !statusSelect || !orderIdInput || !modalTitle || !modalDescription || !submitButton || !orderForm) {
+                if (!modal || !openButton || !productSelect || !managerSelect || !quantitySelect || !statusSelect || !orderIdInput || !modalTitle || !modalDescription || !submitButton || !orderForm || !orderFormMethod || !currentOrderIdInput) {
                     return;
                 }
 
@@ -1861,6 +1884,9 @@
 
                 function fillCreateMode() {
                     orderForm.dataset.mode = 'create';
+                    orderForm.action = orderForm.dataset.createAction;
+                    orderFormMethod.value = 'POST';
+                    currentOrderIdInput.value = '';
                     modalTitle.textContent = 'Создать заявку';
                     modalDescription.textContent = 'Создайте заявку, выберите клиента, товар, количество и статус заказа.';
                     submitButton.textContent = 'Создать заявку';
@@ -1875,6 +1901,9 @@
 
                 function fillEditMode(row) {
                     orderForm.dataset.mode = 'edit';
+                    orderForm.action = row.dataset.orderUpdateUrl || orderForm.dataset.createAction;
+                    orderFormMethod.value = 'PUT';
+                    currentOrderIdInput.value = row.dataset.orderId || '';
                     modalTitle.textContent = 'Редактировать заявку';
                     modalDescription.textContent = 'Измените параметры заявки. Сохранение изменений будет подключено следующим шагом.';
                     submitButton.textContent = 'Сохранить изменения';
@@ -1945,12 +1974,6 @@
                     }
                 });
 
-                orderForm.addEventListener('submit', function (event) {
-                    if (orderForm.dataset.mode === 'edit') {
-                        event.preventDefault();
-                    }
-                });
-
                 document.querySelectorAll('[data-edit-order]').forEach(function (button) {
                     button.addEventListener('click', function (event) {
                         event.stopPropagation();
@@ -1981,6 +2004,18 @@
                     modalTitle.textContent = 'Создать заявку';
                     modalDescription.textContent = 'Исправьте ошибки в форме и отправьте заявку снова.';
                     submitButton.textContent = 'Создать заявку';
+                    openModal();
+                    updateProductPreview();
+                }
+
+                if ({{ $errors->updateOrder->isNotEmpty() ? 'true' : 'false' }}) {
+                    var failedOrderRow = document.querySelector('tr[data-order-row][data-order-id="{{ old('order_id') }}"]');
+                    if (failedOrderRow) {
+                        fillEditMode(failedOrderRow);
+                    } else {
+                        fillCreateMode();
+                    }
+                    modalDescription.textContent = 'РСЃРїСЂР°РІСЊС‚Рµ РѕС€РёР±РєРё РІ С„РѕСЂРјРµ Рё СЃРѕС…СЂР°РЅРёС‚Рµ РёР·РјРµРЅРµРЅРёСЏ РµС‰Рµ СЂР°Р·.';
                     openModal();
                     updateProductPreview();
                 }
