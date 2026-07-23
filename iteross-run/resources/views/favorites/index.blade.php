@@ -686,7 +686,7 @@
                     Избранное
                     <span class="favorite-count" data-favorites-count @if ($products->count() === 0) hidden @endif>{{ $products->count() }}</span>
                 </a>
-                <a href="#cart" class="nav-link">
+                <a href="{{ route('cart.index') }}" class="nav-link">
                     <svg viewBox="0 0 24 24" fill="none"><path d="M4 5h2l1.6 10.2a2 2 0 0 0 2 1.8h7.8a2 2 0 0 0 2-1.6L20.4 8H6.5" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="10" cy="20.5" r="1.4" fill="#1657C4"></circle><circle cx="17" cy="20.5" r="1.4" fill="#1657C4"></circle></svg>
                     Корзина
                 </a>

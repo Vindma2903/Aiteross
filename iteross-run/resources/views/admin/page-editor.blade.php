@@ -268,6 +268,76 @@
             border-color: var(--blue);
             box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
         }
+        .switch-list {
+            display: grid;
+            gap: 12px;
+        }
+        .switch-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 16px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fbfcfd;
+        }
+        .switch-copy {
+            min-width: 0;
+        }
+        .switch-copy strong {
+            display: block;
+            font-size: 15px;
+            line-height: 1.35;
+        }
+        .switch-copy span {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .switch-control {
+            position: relative;
+            display: inline-flex;
+            width: 52px;
+            height: 30px;
+            flex: none;
+        }
+        .switch-control input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .switch-slider {
+            width: 100%;
+            height: 100%;
+            border-radius: 999px;
+            background: #d6dae0;
+            transition: background .15s ease;
+        }
+        .switch-slider::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(11, 37, 69, 0.18);
+            transition: transform .15s ease;
+        }
+        .switch-control input:checked + .switch-slider {
+            background: var(--blue);
+        }
+        .switch-control input:checked + .switch-slider::after {
+            transform: translateX(22px);
+        }
+        .switch-control input:focus-visible + .switch-slider {
+            box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.14);
+        }
 
         @media (max-width: 960px) {
             .shell { flex-direction: column; }
@@ -692,6 +762,84 @@
                     <div class="button-row">
                         <button type="submit" class="button-primary">Сохранить категории</button>
                         <div class="note">Категории сохраняются в БД и используются на главной и в каталоге.</div>
+                    </div>
+                </div>
+            </form>
+        @elseif ($selectedEditor === 'product')
+            @php($settings = $productPageSettings ?? [])
+            <form action="{{ route('admin.pages.update', ['page' => 'product']) }}" method="post">
+                @csrf
+                <div class="panel-list">
+                    <section class="panel">
+                        <h2>Карточка товара</h2>
+                        <p>Настройте, какие блоки и строки характеристик показывать на странице товара по умолчанию. Значения товара редактируются отдельно в разделе `Товары`.</p>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label>Количество фото по умолчанию</label>
+                                <input type="number" min="1" max="10" name="photo_count" value="{{ data_get($settings, 'photo_count', 1) }}">
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <h2>Блоки карточки</h2>
+                        <div class="switch-list">
+                            @foreach ([
+                                ['key' => 'show_stock', 'label' => 'Наличие на складе', 'note' => 'Показывает остаток в верхней части карточки и в характеристиках.'],
+                                ['key' => 'show_analogs', 'label' => 'Блок «Аналоги»', 'note' => 'Секция аналогов под основной карточкой товара.'],
+                                ['key' => 'show_also_bought', 'label' => 'Блок «Также покупают»', 'note' => 'Резерв под будущий блок рекомендаций.'],
+                                ['key' => 'show_cart', 'label' => 'Кнопка и количество', 'note' => 'Блок количества и кнопка получения предложения.'],
+                                ['key' => 'show_wish', 'label' => 'Кнопка «Избранное»', 'note' => 'Сердце для добавления товара в избранное.'],
+                                ['key' => 'show_materials', 'label' => 'Обрабатываемый материал (ISO)', 'note' => 'Показывает строку/строки материалов, если они есть у товара.'],
+                                ['key' => 'show_processing_types', 'label' => 'Тип обработки', 'note' => 'Показывает строку/строки типа обработки, если они есть у товара.'],
+                            ] as $item)
+                                <div class="switch-row">
+                                    <div class="switch-copy">
+                                        <strong>{{ $item['label'] }}</strong>
+                                        <span>{{ $item['note'] }}</span>
+                                    </div>
+                                    <label class="switch-control">
+                                        <input type="hidden" name="blocks[{{ $item['key'] }}]" value="0">
+                                        <input type="checkbox" name="blocks[{{ $item['key'] }}]" value="1" @checked(data_get($settings, 'blocks.'.$item['key'], false))>
+                                        <span class="switch-slider"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <h2>Строки характеристик</h2>
+                        <div class="switch-list">
+                            @foreach ([
+                                ['key' => 'brand', 'label' => 'Бренд'],
+                                ['key' => 'geometry', 'label' => 'Геометрия'],
+                                ['key' => 'shape', 'label' => 'Форма пластины'],
+                                ['key' => 'size', 'label' => 'Размер'],
+                                ['key' => 'radius', 'label' => 'Радиус при вершине RE'],
+                                ['key' => 'back_angle', 'label' => 'Задний угол'],
+                                ['key' => 'construction', 'label' => 'Конструкция пластины'],
+                                ['key' => 'plate_material', 'label' => 'Материал пластины'],
+                                ['key' => 'alloy', 'label' => 'Сплав пластины'],
+                                ['key' => 'chipbreaker', 'label' => 'Стружколом'],
+                            ] as $row)
+                                <div class="switch-row">
+                                    <div class="switch-copy">
+                                        <strong>{{ $row['label'] }}</strong>
+                                    </div>
+                                    <label class="switch-control">
+                                        <input type="hidden" name="rows[{{ $row['key'] }}]" value="0">
+                                        <input type="checkbox" name="rows[{{ $row['key'] }}]" value="1" @checked(data_get($settings, 'rows.'.$row['key'], false))>
+                                        <span class="switch-slider"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+
+                    <div class="button-row">
+                        <button type="submit" class="button-primary">Сохранить изменения</button>
+                        <div class="note">Настройки сразу применяются к странице карточки товара по умолчанию.</div>
                     </div>
                 </div>
             </form>

@@ -13,6 +13,29 @@ class UpdateHomePageContentRequest extends FormRequest
 
     public function rules(): array
     {
+        if ($this->route('page') === 'product') {
+            return [
+                'photo_count' => ['required', 'integer', 'min:1', 'max:10'],
+                'blocks.show_stock' => ['required', 'boolean'],
+                'blocks.show_analogs' => ['required', 'boolean'],
+                'blocks.show_also_bought' => ['required', 'boolean'],
+                'blocks.show_cart' => ['required', 'boolean'],
+                'blocks.show_wish' => ['required', 'boolean'],
+                'blocks.show_materials' => ['required', 'boolean'],
+                'blocks.show_processing_types' => ['required', 'boolean'],
+                'rows.brand' => ['required', 'boolean'],
+                'rows.geometry' => ['required', 'boolean'],
+                'rows.shape' => ['required', 'boolean'],
+                'rows.size' => ['required', 'boolean'],
+                'rows.radius' => ['required', 'boolean'],
+                'rows.back_angle' => ['required', 'boolean'],
+                'rows.construction' => ['required', 'boolean'],
+                'rows.plate_material' => ['required', 'boolean'],
+                'rows.alloy' => ['required', 'boolean'],
+                'rows.chipbreaker' => ['required', 'boolean'],
+            ];
+        }
+
         return [
             'header_nav' => ['required', 'array', 'min:1'],
             'header_nav.*.label' => ['required', 'string', 'max:120'],

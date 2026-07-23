@@ -651,6 +651,13 @@
     </style>
 </head>
 <body>
+    @php
+        $pageSettings = $productPageSettings ?? [];
+        $showStock = data_get($pageSettings, 'blocks.show_stock', true);
+        $showCart = data_get($pageSettings, 'blocks.show_cart', true);
+        $showWish = data_get($pageSettings, 'blocks.show_wish', true);
+        $showAnalogs = data_get($pageSettings, 'blocks.show_analogs', true);
+    @endphp
     @php($isFavorite = in_array($product->id, $favoriteProductIds, true))
     <div class="page-shell">
         <header class="site-header">
@@ -746,12 +753,16 @@
                             </button>
                             <span class="copy-status" data-copy-status>Скопировано</span>
                         </div>
-                        <span class="stock-label">{{ $product->stockLabel() }}</span>
+                        @if ($showStock)
+                            <span class="stock-label">{{ $product->stockLabel() }}</span>
+                        @endif
                     </div>
 
                     <h1 class="product-title">{{ $product->sku }} | {{ $product->name }}</h1>
 
-                    <div class="product-actions-row">
+                    @if ($showCart || $showWish)
+                        <div class="product-actions-row">
+                            @if ($showCart)
                         <div class="qty-box">
                             <button type="button" class="qty-button" aria-label="Меньше" data-qty-dec>−</button>
                             <span class="qty-value" data-qty-value>1</span>
@@ -760,13 +771,17 @@
 
                         <a href="{{ url('/#lead-form-section') }}" class="buy-button">Получить предложение</a>
 
+                            @endif
+                            @if ($showWish)
                         <form action="{{ route('favorites.toggle', $product) }}" method="post" class="favorite-form">
                             @csrf
                             <button type="submit" class="favorite-button {{ $isFavorite ? 'favorite-button--active' : '' }}" aria-label="{{ $isFavorite ? 'Убрать из избранного' : 'Добавить в избранное' }}">
                                 <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z"></path></svg>
                             </button>
                         </form>
-                    </div>
+                            @endif
+                        </div>
+                    @endif
 
                     <div class="spec-list">
                         <div class="spec-row">
@@ -814,7 +829,7 @@
                 </div>
             </section>
 
-            @if ($analogProducts->isNotEmpty())
+            @if ($showAnalogs && $analogProducts->isNotEmpty())
                 <section class="container analogs-section">
                     <h2 class="section-title">Аналоги</h2>
                     <div class="analogs-shell">
@@ -898,6 +913,7 @@
 
     <script>
         (() => {
+            const productPageSettings = @json($pageSettings);
             const qtyValue = document.querySelector('[data-qty-value]');
             const decButton = document.querySelector('[data-qty-dec]');
             const incButton = document.querySelector('[data-qty-inc]');
@@ -907,6 +923,79 @@
             const analogsTrack = document.querySelector('[data-analogs-track]');
             const prevButton = document.querySelector('[data-analog-prev]');
             const nextButton = document.querySelector('[data-analog-next]');
+            const specRows = Array.from(document.querySelectorAll('.spec-row'));
+
+            const normalize = (value) => (value || '')
+                .toString()
+                .trim()
+                .toLowerCase();
+
+            const hideSpecRowByName = (matcher) => {
+                const row = specRows.find((item) => {
+                    const label = item.querySelector('.spec-name');
+
+                    return label && matcher(normalize(label.textContent));
+                });
+
+                if (row) {
+                    row.style.display = 'none';
+                }
+            };
+
+            const blocks = productPageSettings.blocks || {};
+            const rows = productPageSettings.rows || {};
+
+            if (blocks.show_stock === false) {
+                hideSpecRowByName((label) => label === 'наличие');
+            }
+
+            if (rows.brand === false) {
+                hideSpecRowByName((label) => label.includes('бренд'));
+            }
+
+            if (rows.geometry === false) {
+                hideSpecRowByName((label) => label.includes('геометр'));
+            }
+
+            if (rows.shape === false) {
+                hideSpecRowByName((label) => label.includes('форма'));
+            }
+
+            if (rows.size === false) {
+                hideSpecRowByName((label) => label === 'размер' || label.includes('размер'));
+            }
+
+            if (rows.radius === false) {
+                hideSpecRowByName((label) => label.includes('радиус'));
+            }
+
+            if (rows.back_angle === false) {
+                hideSpecRowByName((label) => label.includes('задн') || label.includes('угол'));
+            }
+
+            if (rows.construction === false) {
+                hideSpecRowByName((label) => label.includes('конструк'));
+            }
+
+            if (rows.plate_material === false) {
+                hideSpecRowByName((label) => label.includes('материал пластины'));
+            }
+
+            if (rows.alloy === false) {
+                hideSpecRowByName((label) => label.includes('сплав'));
+            }
+
+            if (rows.chipbreaker === false) {
+                hideSpecRowByName((label) => label.includes('стружк'));
+            }
+
+            if (blocks.show_materials === false) {
+                hideSpecRowByName((label) => label.includes('iso') || label.includes('обрабатываем') || label.includes('материал'));
+            }
+
+            if (blocks.show_processing_types === false) {
+                hideSpecRowByName((label) => label.includes('тип обработки') || label.includes('обработка'));
+            }
 
             if (qtyValue && decButton && incButton) {
                 let qty = 1;

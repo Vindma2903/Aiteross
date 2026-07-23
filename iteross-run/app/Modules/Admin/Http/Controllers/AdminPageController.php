@@ -4,6 +4,8 @@ namespace App\Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Admin\Application\UseCases\GetHomePageContent;
+use App\Modules\Admin\Application\UseCases\GetProductPageSettings;
+use App\Modules\Admin\Application\UseCases\UpdateProductPageSettings;
 use App\Modules\Admin\Application\UseCases\UpdateHomePageContent;
 use App\Modules\Admin\Http\Controllers\Concerns\InteractsWithStaticAdminPages;
 use App\Modules\Admin\Http\Requests\UpdateHomePageContentRequest;
@@ -23,12 +25,14 @@ class AdminPageController extends Controller
     public function editor(
         string $page,
         GetHomePageContent $getHomePageContent,
+        GetProductPageSettings $getProductPageSettings,
         GetCatalogFilterGroups $getCatalogFilterGroups,
     ): View
     {
         abort_unless(isset($this->staticPages()[$page]), 404);
 
         $homePageContent = $page === 'home' ? $getHomePageContent->handle() : null;
+        $productPageSettings = $page === 'product' ? $getProductPageSettings->handle() : null;
 
         return view('admin.page-editor', [
             'userCount' => User::query()->where('role', User::ROLE_USER)->count(),
@@ -39,6 +43,7 @@ class AdminPageController extends Controller
             'selectedEditorMeta' => $this->staticPages()[$page],
             'editorDefinition' => $this->editorDefinitions($page),
             'homePageContent' => $homePageContent,
+            'productPageSettings' => $productPageSettings,
             'catalogCategories' => $page === 'home'
                 ? Category::query()->orderBy('sort_order')->orderBy('name')->get(['name', 'slug'])
                 : collect(),
@@ -50,8 +55,17 @@ class AdminPageController extends Controller
         string $page,
         UpdateHomePageContentRequest $request,
         UpdateHomePageContent $updateHomePageContent,
+        UpdateProductPageSettings $updateProductPageSettings,
     ): RedirectResponse {
-        abort_unless($page === 'home', 404);
+        abort_unless(in_array($page, ['home', 'product'], true), 404);
+
+        if ($page === 'product') {
+            $updateProductPageSettings->handle($request->validated());
+
+            return redirect()
+                ->route('admin.pages.editor', ['page' => 'product'])
+                ->with('status', 'Настройки карточки товара сохранены.');
+        }
 
         $validated = $request->validated();
         $validated['work_types']['items'] = collect($validated['work_types']['items'])
