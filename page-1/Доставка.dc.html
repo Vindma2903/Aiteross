@@ -3,22 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./support.js"></script>
+<script src="../support.js"></script>
 </head>
 <body>
 <x-dc>
-
-<helmet>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
-    body { margin: 0; }
-  </style>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  ::selection { background: #0B2545; color: #fff; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 1400px) { [data-hdr-subtitle] { display: none; } }
+  @media (max-width: 1180px) { [data-hdr-phone-label] { display: none; } }
+</style>
 </helmet>
 
 <div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14161A; background: #FFFFFF; min-height: 100vh; width: 100%;">
 
   <!-- ============ HEADER ============ -->
-  <header data-screen-label="Header" style="position: sticky; top: 0; z-index: 100; background: #FFFFFF; border-bottom: 1px solid #E3E6EA;">
+  <header data-screen-label="Header" style="{{ headerStyle }}">
 
     <!-- Top bar -->
     <div style="border-bottom: 1px solid #EDEFF2;">
@@ -35,24 +40,21 @@
         <a href="mailto:info@iteross.ru" style="text-decoration: none; color: #5B6470; font-size: 14.5px; font-weight: 500; white-space: nowrap;" style-hover="color: #0B2545;">info@iteross.ru</a>
 
         <div style="display: flex; align-items: center; gap: 8px;">
-          <a href="#" aria-label="MAX" style="width: 32px; height: 32px; border-radius: 50%; background: #F1F3F6; display: flex; align-items: center; justify-content: center; flex: none;" style-hover="background: #E3E6EA;">
-            <span style="font-size: 12px; font-weight: 700; color: #5B6470; letter-spacing: -0.3px;">MAX</span>
+          <a href="#" aria-label="WhatsApp" style="width: 32px; height: 32px; border-radius: 50%; background: #F1F3F6; display: flex; align-items: center; justify-content: center; flex: none;" style-hover="background: #E3E6EA;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#5B6470" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#5B6470"/></svg>
           </a>
           <a href="#" aria-label="Telegram" style="width: 32px; height: 32px; border-radius: 50%; background: #F1F3F6; display: flex; align-items: center; justify-content: center; flex: none;" style-hover="background: #E3E6EA;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
           </a>
-          <a href="#" aria-label="WeChat" style="width: 32px; height: 32px; border-radius: 50%; background: #F1F3F6; display: flex; align-items: center; justify-content: center; flex: none;" style-hover="background: #E3E6EA;">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M9.5 3.5C5.4 3.5 2 6.3 2 9.8c0 2 1.1 3.7 2.8 4.9L4 17l2.4-1.2c.7.2 1.4.3 2.1.3h.3a5.9 5.9 0 0 1-.2-1.6c0-3.6 3.4-6.5 7.6-6.5h.2C15.7 5 12.9 3.5 9.5 3.5Z" stroke="#5B6470" stroke-width="1.4" stroke-linejoin="round"/><circle cx="7" cy="8.8" r="0.9" fill="#5B6470"/><circle cx="12" cy="8.8" r="0.9" fill="#5B6470"/><path d="M16.5 9.8c-3.6 0-6.5 2.4-6.5 5.4 0 3 2.9 5.4 6.5 5.4.6 0 1.2-.1 1.8-.2L20.5 21.5l-.7-2.3c1.5-1 2.4-2.4 2.4-4 0-3-2.9-5.4-6.5-5.4Z" stroke="#5B6470" stroke-width="1.4" stroke-linejoin="round"/><circle cx="14.3" cy="14.6" r="0.8" fill="#5B6470"/><circle cx="18.7" cy="14.6" r="0.8" fill="#5B6470"/></svg>
-          </a>
         </div>
 
-        <a href="./Главная АЙТЕРОСС.dc.html#lead-form-section" style="background: #1657C4; color: #fff; border: none; padding: 10px 18px; border-radius: 100px; font-size: 14px; font-weight: 600; white-space: nowrap; text-decoration: none;" style-hover="background: #123F94;">Заказать обратный звонок</a>
+        <button onClick="{{ openLeadForm }}" style="background: #1657C4; color: #fff; border: none; padding: 10px 18px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;" style-hover="background: #123F94;">Заказать обратный звонок</button>
       </div>
     </div>
 
     <!-- Bottom bar -->
     <div style="max-width: 1360px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 20px;">
-      <a href="./Главная АЙТЕРОСС.dc.html" style="text-decoration: none; flex: none;">
+      <a href="#top" style="text-decoration: none; flex: none;">
         <div style="font-size: 22px; font-weight: 700; color: #0B2545; letter-spacing: 0.3px; white-space: nowrap;">АЙТЕРОСС</div>
       </a>
 
@@ -77,13 +79,15 @@
         Корзина
       </a>
 
-      <a href="./Авторизация.dc.html" style="display: flex; align-items: center; gap: 7px; text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500; white-space: nowrap; flex: none;" style-hover="color: #1657C4;">
+      <a href="#login" style="display: flex; align-items: center; gap: 7px; text-decoration: none; color: #14161A; font-size: 14.5px; font-weight: 500; white-space: nowrap; flex: none;" style-hover="color: #1657C4;">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
         Войти
       </a>
     </div>
 
   </header>
+
+  <a id="top"></a>
 
   <!-- ============ BREADCRUMB + TITLE ============ -->
   <section style="max-width: 1360px; margin: 0 auto; padding: 32px 32px 0;">
@@ -170,7 +174,7 @@
   </section>
 
   <!-- ============ FOOTER ============ -->
-  <footer id="footer" style="background: #33363C;">
+  <footer id="footer" data-screen-label="Footer" style="background: #33363C;">
     <div style="max-width: 1360px; margin: 0 auto; padding: 64px 32px 32px; display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 40px;">
       <div>
         <div style="margin-bottom: 16px;">
@@ -178,21 +182,17 @@
         </div>
         <p style="font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6; margin: 0 0 20px; max-width: 280px;">Поставка твердосплавного инструмента для металлообработки. Работаем с юридическими лицами по всей России.</p>
         <div style="display: flex; gap: 10px;">
-          <a href="#" aria-label="Telegram" style="width: 38px; height: 38px; border-radius: 9px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none;" style-hover="background: rgba(255,255,255,0.2);">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          </a>
-          <a href="#" aria-label="WhatsApp" style="width: 38px; height: 38px; border-radius: 9px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none;" style-hover="background: rgba(255,255,255,0.2);">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#fff" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#fff"/></svg>
-          </a>
+          <sc-for list="{{ socials }}" as="s" hint-placeholder-count="3">
+            <a href="{{ s.href }}" aria-label="{{ s.label }}" style="width: 38px; height: 38px; border-radius: 9px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none;" style-hover="background: rgba(255,255,255,0.2);" dangerouslySetInnerHTML="{{ s.iconHtml }}"></a>
+          </sc-for>
         </div>
       </div>
       <div>
         <div style="font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-bottom: 18px;">НАВИГАЦИЯ</div>
         <div style="display: flex; flex-direction: column; gap: 12px;">
-          <a href="./Каталог.dc.html" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;" style-hover="color: #fff;">Каталог</a>
-          <a href="./Главная АЙТЕРОСС.dc.html#about" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;" style-hover="color: #fff;">О компании</a>
-          <a href="./Доставка.dc.html" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;" style-hover="color: #fff;">Доставка</a>
-          <a href="./Главная АЙТЕРОСС.dc.html#footer" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;" style-hover="color: #fff;">Контакты</a>
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="4">
+            <a href="{{ item.href }}" style="font-size: 15px; color: rgba(255,255,255,0.8); text-decoration: none;" style-hover="color: #fff;">{{ item.label }}</a>
+          </sc-for>
         </div>
       </div>
       <div>
@@ -217,13 +217,63 @@
     <div style="max-width: 1360px; margin: 0 auto; padding: 24px 32px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: rgba(255,255,255,0.4);">© 2026 ООО «АЙТЕРОСС». Все права защищены.</div>
   </footer>
 
+  <sc-if value="{{ cookieVisible }}" hint-placeholder-val="{{ true }}">
+    <div style="position: fixed; right: 24px; bottom: 24px; z-index: 300; width: min(92vw, 560px); background: #1657C4; border-radius: 14px; box-shadow: 0 20px 48px -12px rgba(11,37,69,0.4); padding: 20px 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <p style="flex: 1; min-width: 220px; margin: 0; font-size: 14.5px; color: #fff; line-height: 1.5;">Мы используем cookie для корректной работы сайта. Подробнее — в <a href="#" style="color: #fff; text-decoration: underline;">Политике конфиденциальности</a>.</p>
+      <button onClick="{{ acceptCookies }}" style="background: #14161A; color: #fff; border: none; padding: 12px 28px; border-radius: 9px; font-size: 14.5px; font-weight: 700; cursor: pointer; flex: none; white-space: nowrap;" style-hover="background: #000;">Ок</button>
+    </div>
+  </sc-if>
+
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440}}">
 class Component extends DCLogic {
+  state = {
+    headerScrolled: false,
+    cookieDismissed: (typeof localStorage !== 'undefined' && localStorage.getItem('iteross_cookie_ok') === '1'),
+  };
+
+  componentDidMount() {
+    this._onScroll = () => this.setState({ headerScrolled: window.scrollY > 8 });
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+  }
+
+  acceptCookies = () => {
+    try { localStorage.setItem('iteross_cookie_ok', '1'); } catch (e) {}
+    this.setState({ cookieDismissed: true });
+  };
+
+  openLeadForm = () => {
+    const el = document.getElementById('lead-form-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    window.location.href = './Главная АЙТЕРОСС.dc.html#lead-form-section';
+  };
+
   renderVals() {
-    return {};
+    return {
+      headerStyle: 'position: sticky; top: 0; z-index: 100; background: #FFFFFF; transition: box-shadow 0.15s ease; border-bottom: 1px solid ' + (this.state.headerScrolled ? 'transparent' : '#E3E6EA') + '; box-shadow: ' + (this.state.headerScrolled ? '0 4px 16px rgba(11,37,69,0.08)' : 'none') + ';',
+      openLeadForm: this.openLeadForm,
+      cookieVisible: !this.state.cookieDismissed,
+      acceptCookies: this.acceptCookies,
+      navItems: [
+        { label: 'О компании', href: './Главная АЙТЕРОСС.dc.html#about' },
+        { label: 'Доставка', href: './Доставка.dc.html' },
+        { label: 'Контакты', href: '#footer' },
+      ],
+      socials: [
+        { label: 'Telegram', href: '#', iconHtml: { __html: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 4L3 11l6 2 2 6 3-4 5 3z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>' } },
+        { label: 'WhatsApp', href: '#', iconHtml: { __html: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 20l1.4-4.2A8 8 0 1112 20a8 8 0 01-4-1z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>' } },
+        { label: 'VK', href: '#', iconHtml: { __html: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6c.3 8 4 13 11 13h1v-4l3 4h2c0-3-2-4-2-6 0-1 2-2 2-7h-3c0 3-2 6-3 6-1 0-1-3-1-6H8c0 3 1 6 0 6-1 0-2-3-2-6H4z" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg>' } },
+      ],
+    };
   }
 }
 </script>

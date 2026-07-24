@@ -10,6 +10,8 @@ use App\Modules\Catalog\Http\Controllers\ProductController;
 use App\Modules\Favorites\Http\Controllers\FavoriteController;
 use App\Modules\Identity\Http\Controllers\AccountController;
 use App\Modules\Identity\Http\Controllers\AdminLoginController;
+use App\Modules\Identity\Http\Controllers\AdminSecurityController;
+use App\Modules\Identity\Http\Controllers\AdminTwoFactorController;
 use App\Modules\Identity\Http\Controllers\LoginController;
 use App\Modules\Identity\Http\Controllers\RegisterController;
 use App\Modules\LeadRequests\Http\Controllers\CallbackRequestController;
@@ -38,6 +40,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/admin/login', [AdminLoginController::class, 'store'])->name('admin.login.store');
 });
 
+Route::get('/admin/two-factor', [AdminTwoFactorController::class, 'create'])->name('admin.two-factor');
+Route::post('/admin/two-factor', [AdminTwoFactorController::class, 'store'])->name('admin.two-factor.store');
+
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/account', AccountController::class)->name('account');
 });
@@ -46,7 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'role:admin', '2fa'])->group(function () {
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/pages/{page}', [AdminPageController::class, 'editor'])->name('admin.pages.editor');
     Route::post('/admin/pages/{page}', [AdminPageController::class, 'update'])
@@ -68,4 +73,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/static-resource/{path}', [AdminPageController::class, 'resource'])
         ->where('path', '.*')
         ->name('admin.static.resource');
+    Route::get('/admin/security', [AdminSecurityController::class, 'index'])->name('admin.security');
+    Route::post('/admin/security/2fa/setup', [AdminSecurityController::class, 'setup'])->name('admin.security.2fa.setup');
+    Route::post('/admin/security/2fa/confirm', [AdminSecurityController::class, 'confirm'])->name('admin.security.2fa.confirm');
+    Route::post('/admin/security/2fa/disable', [AdminSecurityController::class, 'disable'])->name('admin.security.2fa.disable');
 });

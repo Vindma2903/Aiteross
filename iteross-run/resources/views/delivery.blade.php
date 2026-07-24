@@ -32,6 +32,13 @@
 
         a { color: inherit; }
 
+        .container {
+            max-width: 1360px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
         .topbar-inner,
         .header-inner,
         .hero-block,
@@ -45,149 +52,237 @@
         }
 
         .topbar {
-            background: #fff;
-            border-bottom: 1px solid rgba(221, 227, 234, 0.85);
+            border-bottom: 1px solid #EDEFF2;
+            background: #FFFFFF;
         }
-
         .topbar-inner {
             min-height: 58px;
             display: flex;
             align-items: center;
-            gap: 18px;
-            color: var(--muted);
-            font-size: 14px;
+            gap: 28px;
         }
-
-        .topbar-nav,
-        .socials,
-        .header-actions {
+        .topbar-nav {
             display: flex;
             align-items: center;
+            gap: 22px;
+            flex-wrap: wrap;
         }
-
-        .topbar-nav { gap: 22px; }
-        .socials { gap: 8px; }
-        .header-actions { gap: 16px; }
-
-        .topbar-contact {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .topbar a,
-        .header-link,
-        .footer-link {
-            text-decoration: none;
-        }
-
-        .social-chip,
-        .button,
-        .ghost-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            font-weight: 600;
-            transition: 0.18s ease;
-            text-decoration: none;
-        }
-
-        .social-chip {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #f1f3f6;
-            color: #5b6470;
-            border: 0;
-        }
-
-        .social-chip:hover {
-            background: #e3e6ea;
-        }
-
-        .button,
-        .ghost-button {
-            min-height: 44px;
-            padding: 0 20px;
-        }
-
-        .button {
-            background: var(--blue);
-            color: #fff;
-        }
-
-        .ghost-button {
-            min-height: 40px;
-            background: #fff;
-            color: var(--text);
-            border: 1px solid var(--line);
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .button:hover,
-        .ghost-button:hover {
-            background: var(--blue-dark);
-            color: #fff;
-            border-color: var(--blue-dark);
-        }
-
-        .site-header {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(221, 227, 234, 0.9);
-        }
-
-        .header-inner {
-            min-height: 84px;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .brand {
-            text-decoration: none;
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            color: var(--navy);
-            white-space: nowrap;
-        }
-
-        .header-search {
-            flex: 1 1 360px;
-            max-width: 460px;
-            height: 48px;
-            padding: 0 14px;
-            border-radius: 999px;
-            border: 1px solid var(--line);
-            background: #f7f9fc;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header-search input {
-            width: 100%;
-            border: 0;
-            outline: 0;
-            background: transparent;
-            font: inherit;
-            color: var(--text);
-        }
-
+        .topbar-nav a,
+        .topbar-email,
+        .footer-link,
+        .social-circle,
         .header-link {
-            font-size: 14px;
+            text-decoration: none;
+        }
+        .topbar-nav a {
+            color: #5B6470;
+            font-size: 14.5px;
             font-weight: 500;
-            display: inline-flex;
+            white-space: nowrap;
+            transition: color 0.15s ease;
+        }
+        .topbar-nav a:hover,
+        .topbar-email:hover,
+        .header-link:hover,
+        .footer-link:hover {
+            color: #0B2545;
+        }
+        .topbar-spacer { flex: 1; }
+        .topbar-phone {
+            color: #14161A;
+            font-size: 14.5px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+        .topbar-email {
+            color: #5B6470;
+            font-size: 14.5px;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: color 0.15s ease;
+        }
+        .social-row {
+            display: flex;
             align-items: center;
             gap: 8px;
         }
+        .social-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #F1F3F6;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: none;
+            transition: background 0.15s ease;
+        }
+        .social-circle:hover { background: #E3E6EA; }
+        .callback-button,
+        .catalog-button,
+        .button {
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s ease;
+        }
+        .callback-button {
+            min-height: 40px;
+            padding: 10px 18px;
+            border-radius: 100px;
+            background: #1657C4;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .callback-button:hover,
+        .catalog-button:hover,
+        .button:hover { background: #123F94; }
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #FFFFFF;
+            border-bottom: 1px solid #E3E6EA;
+            box-shadow: 0 4px 16px rgba(11, 37, 69, 0.08);
+        }
+        .header-inner {
+            min-height: 74px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .brand {
+            text-decoration: none;
+            flex: none;
+        }
+        .brand-name {
+            color: #0B2545;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+        .catalog-button {
+            display: inline-flex;
+            align-items: center;
+            background: #1657C4;
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 100px;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+            flex: none;
+            text-decoration: none;
+        }
+        .header-search {
+            flex: 1;
+            min-width: 180px;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            border: 1.5px solid #1657C4;
+            border-radius: 100px;
+            padding: 0 6px 0 20px;
+            height: 46px;
+        }
+        .search-box input {
+            flex: 1;
+            min-width: 0;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14.5px;
+            font-family: inherit;
+            color: #14161A;
+        }
+        .search-submit {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: #1657C4;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex: none;
+            transition: background 0.15s ease;
+        }
+        .search-submit:hover { background: #123F94; }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: none;
+        }
+        .header-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #14161A;
+            font-size: 14.5px;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: color 0.15s ease;
+        }
+        .header-link:hover { color: #1657C4; }
+        .account-menu { position: relative; flex: none; }
+        .account-menu-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            color: #14161A;
+            font-size: 14.5px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .account-menu-trigger:hover { color: #0B2545; }
+        .account-menu-panel {
+            position: absolute;
+            top: calc(100% + 14px);
+            right: 0;
+            min-width: 220px;
+            padding: 10px;
+            border-radius: 16px;
+            border: 1px solid #E3E6EA;
+            background: #FFFFFF;
+            box-shadow: 0 24px 48px -24px rgba(11, 37, 69, 0.22);
+            display: none;
+            z-index: 130;
+        }
+        .account-menu.is-open .account-menu-panel { display: block; }
+        .account-menu-item,
+        .account-menu-logout {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 44px;
+            padding: 0 14px;
+            border-radius: 12px;
+            color: #14161A;
+            text-decoration: none;
+            background: #FFFFFF;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .account-menu-item:hover,
+        .account-menu-logout:hover { background: #F4F7FB; color: #1657C4; }
+        .account-menu-logout { border: none; font-family: inherit; cursor: pointer; }
+        .account-menu-form { margin: 0; }
 
         main {
             padding: 32px 0 56px;
@@ -416,49 +511,82 @@
 </head>
 <body>
     <div class="topbar">
-        <div class="topbar-inner">
+        <div class="container topbar-inner">
             <nav class="topbar-nav">
                 <a href="{{ url('/#about') }}">О компании</a>
                 <a href="{{ route('delivery') }}">Доставка</a>
                 <a href="{{ url('/#footer') }}">Контакты</a>
             </nav>
 
-            <div class="topbar-contact">
-                <a href="tel:+74951234567">+7 (495) 123-45-67</a>
-                <a href="mailto:info@iteross.ru">info@iteross.ru</a>
-                <div class="socials">
-                    <a href="#" class="social-chip" aria-label="MAX">
-                        <span style="font-size: 12px; font-weight: 700;">MAX</span>
-                    </a>
-                    <a href="#" class="social-chip" aria-label="Telegram">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                    </a>
-                    <a href="#" class="social-chip" aria-label="WeChat">
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M9.5 3.5C5.4 3.5 2 6.3 2 9.8c0 2 1.1 3.7 2.8 4.9L4 17l2.4-1.2c.7.2 1.4.3 2.1.3h.3a5.9 5.9 0 0 1-.2-1.6c0-3.6 3.4-6.5 7.6-6.5h.2C15.7 5 12.9 3.5 9.5 3.5Z" stroke="#5B6470" stroke-width="1.4" stroke-linejoin="round"/><circle cx="7" cy="8.8" r="0.9" fill="#5B6470"/><circle cx="12" cy="8.8" r="0.9" fill="#5B6470"/><path d="M16.5 9.8c-3.6 0-6.5 2.4-6.5 5.4 0 3 2.9 5.4 6.5 5.4.6 0 1.2-.1 1.8-.2L20.5 21.5l-.7-2.3c1.5-1 2.4-2.4 2.4-4 0-3-2.9-5.4-6.5-5.4Z" stroke="#5B6470" stroke-width="1.4" stroke-linejoin="round"/><circle cx="14.3" cy="14.6" r="0.8" fill="#5B6470"/><circle cx="18.7" cy="14.6" r="0.8" fill="#5B6470"/></svg>
-                    </a>
-                </div>
-                <a class="ghost-button" href="{{ url('/#lead-form-section') }}">Заказать обратный звонок</a>
+            <div class="topbar-spacer"></div>
+
+            <a href="tel:+74951234567" class="topbar-phone">+7 (495) 123-45-67</a>
+            <a href="mailto:info@iteross.ru" class="topbar-email">info@iteross.ru</a>
+
+            <div class="social-row">
+                <a href="#" class="social-circle" aria-label="WhatsApp">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#5B6470" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#5B6470"/></svg>
+                </a>
+                <a href="#" class="social-circle" aria-label="Telegram">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                </a>
             </div>
+
+            <a href="{{ url('/#lead-form-section') }}" class="callback-button">Заказать обратный звонок</a>
         </div>
     </div>
 
     <header class="site-header">
-        <div class="header-inner">
-            <a class="brand" href="{{ url('/') }}">АЙТЕРОСС</a>
-            <a class="button" href="{{ route('catalog.index') }}">Каталог</a>
+        <div class="container header-inner">
+            <a href="{{ url('/') }}" class="brand">
+                <div class="brand-name">АЙТЕРОСС</div>
+            </a>
 
-            <label class="header-search" aria-label="Поиск">
-                <input type="text" placeholder="Поиск товаров...">
-            </label>
+            <a href="{{ route('catalog.index') }}" class="catalog-button">Каталог</a>
+
+            <div class="header-search">
+                <div class="search-box">
+                    <input type="text" placeholder="Поиск товаров..." aria-label="Поиск товаров">
+                    <button type="button" class="search-submit" aria-label="Найти">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="1.8"/><path d="M20 20L16.2 16.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    </button>
+                </div>
+            </div>
 
             <div class="header-actions">
-                <a class="header-link" href="{{ route('favorites.index') }}">Избранное</a>
+                <a href="{{ route('favorites.index') }}" class="header-link">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>
+                    Избранное
+                </a>
+                <a href="{{ route('cart.index') }}" class="header-link">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 5h2l1.6 10.2a2 2 0 0 0 2 1.8h7.8a2 2 0 0 0 2-1.6L20.4 8H6.5" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20.5" r="1.4" fill="#1657C4"/><circle cx="17" cy="20.5" r="1.4" fill="#1657C4"/></svg>
+                    Корзина
+                </a>
                 @auth
-                    <a class="header-link" href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('account') }}">
-                        {{ auth()->user()->role === 'admin' ? 'Админка' : 'Личный кабинет' }}
-                    </a>
+                    <div class="account-menu" data-account-menu>
+                        <button type="button" class="account-menu-trigger" data-account-menu-trigger aria-expanded="false" aria-haspopup="true">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+                            {{ auth()->user()->role === 'admin' ? 'Админка' : 'Личный кабинет' }}
+                        </button>
+                        <div class="account-menu-panel" data-account-menu-panel>
+                            <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('account') }}" class="account-menu-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="#1657C4" stroke-width="1.7"/><path d="M4.8 19.5c1.5-3.7 4.6-5.6 7.2-5.6 2.6 0 5.7 1.9 7.2 5.6" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+                                Профиль
+                            </a>
+                            <form action="{{ route('logout') }}" method="post" class="account-menu-form">
+                                @csrf
+                                <button type="submit" class="account-menu-logout">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M10 6H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/><path d="M13 8l4 4-4 4M17 12H9" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    Выйти
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 @else
-                    <a class="header-link" href="{{ route('login') }}">Войти</a>
+                    <a href="{{ route('login') }}" class="header-link">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
+                        Войти
+                    </a>
                 @endauth
             </div>
         </div>

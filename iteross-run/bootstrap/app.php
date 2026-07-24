@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'role' => \App\Modules\Identity\Http\Middleware\EnsureRole::class,
+            '2fa' => \App\Modules\Identity\Http\Middleware\EnsureTwoFactorVerified::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

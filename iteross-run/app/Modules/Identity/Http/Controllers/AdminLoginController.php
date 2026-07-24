@@ -33,6 +33,15 @@ class AdminLoginController extends Controller
                 ->onlyInput('email');
         }
 
+        $user = Auth::user();
+
+        if ($user->two_factor_enabled) {
+            Auth::logout();
+            $request->session()->put('pending_2fa_user_id', $user->id);
+
+            return redirect()->route('admin.two-factor');
+        }
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('admin.dashboard'));

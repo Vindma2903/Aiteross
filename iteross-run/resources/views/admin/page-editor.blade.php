@@ -400,6 +400,9 @@
             <a href="{{ route('admin.pages.editor', ['page' => 'home']) }}" class="nav-link{{ $selectedEditor === 'home' ? ' nav-link--active' : '' }}">Главная</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'delivery']) }}" class="nav-link{{ $selectedEditor === 'delivery' ? ' nav-link--active' : '' }}">Доставка</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'product']) }}" class="nav-link{{ $selectedEditor === 'product' ? ' nav-link--active' : '' }}">Карточка товара</a>
+
+            <div class="nav-title">АККАУНТ</div>
+            <a href="{{ route('admin.security') }}" class="nav-link">Безопасность</a>
         </nav>
 
         <div class="sidebar-footer">
