@@ -3,8 +3,10 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Admin\Application\UseCases\GetDeliveryPageContent;
 use App\Modules\Admin\Application\UseCases\GetHomePageContent;
 use App\Modules\Admin\Application\UseCases\GetProductPageSettings;
+use App\Modules\Admin\Application\UseCases\UpdateDeliveryPageContent;
 use App\Modules\Admin\Application\UseCases\UpdateProductPageSettings;
 use App\Modules\Admin\Application\UseCases\UpdateHomePageContent;
 use App\Modules\Admin\Http\Controllers\Concerns\InteractsWithStaticAdminPages;
@@ -24,6 +26,7 @@ class AdminPageController extends Controller
 
     public function editor(
         string $page,
+        GetDeliveryPageContent $getDeliveryPageContent,
         GetHomePageContent $getHomePageContent,
         GetProductPageSettings $getProductPageSettings,
         GetCatalogFilterGroups $getCatalogFilterGroups,
@@ -31,6 +34,7 @@ class AdminPageController extends Controller
     {
         abort_unless(isset($this->staticPages()[$page]), 404);
 
+        $deliveryPageContent = $page === 'delivery' ? $getDeliveryPageContent->handle() : null;
         $homePageContent = $page === 'home' ? $getHomePageContent->handle() : null;
         $productPageSettings = $page === 'product' ? $getProductPageSettings->handle() : null;
 
@@ -42,6 +46,7 @@ class AdminPageController extends Controller
             'selectedEditor' => $page,
             'selectedEditorMeta' => $this->staticPages()[$page],
             'editorDefinition' => $this->editorDefinitions($page),
+            'deliveryPageContent' => $deliveryPageContent,
             'homePageContent' => $homePageContent,
             'productPageSettings' => $productPageSettings,
             'catalogCategories' => $page === 'home'
@@ -54,10 +59,19 @@ class AdminPageController extends Controller
     public function update(
         string $page,
         UpdateHomePageContentRequest $request,
+        UpdateDeliveryPageContent $updateDeliveryPageContent,
         UpdateHomePageContent $updateHomePageContent,
         UpdateProductPageSettings $updateProductPageSettings,
     ): RedirectResponse {
-        abort_unless(in_array($page, ['home', 'product'], true), 404);
+        abort_unless(in_array($page, ['home', 'delivery', 'product'], true), 404);
+
+        if ($page === 'delivery') {
+            $updateDeliveryPageContent->handle($request->validated());
+
+            return redirect()
+                ->route('admin.pages.editor', ['page' => 'delivery'])
+                ->with('status', 'Изменения страницы доставки сохранены.');
+        }
 
         if ($page === 'product') {
             $updateProductPageSettings->handle($request->validated());

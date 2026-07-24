@@ -13,6 +13,29 @@ class UpdateHomePageContentRequest extends FormRequest
 
     public function rules(): array
     {
+        if ($this->route('page') === 'delivery') {
+            return [
+                'hero.title' => ['required', 'string', 'max:255'],
+                'hero.lead' => ['required', 'string'],
+
+                'cards' => ['required', 'array', 'size:3'],
+                'cards.*.title' => ['required', 'string', 'max:255'],
+                'cards.*.text' => ['required', 'string'],
+
+                'terms.title' => ['required', 'string', 'max:255'],
+                'terms.items' => ['required', 'array', 'min:1'],
+                'terms.items.*.text' => ['required', 'string'],
+                'terms.panel.label' => ['required', 'string', 'max:255'],
+                'terms.panel.address' => ['required', 'string', 'max:255'],
+                'terms.panel.phone' => ['required', 'string', 'max:120'],
+                'terms.panel.schedule' => ['required', 'string', 'max:120'],
+
+                'cta.title' => ['required', 'string', 'max:255'],
+                'cta.text' => ['required', 'string'],
+                'cta.button_text' => ['required', 'string', 'max:120'],
+            ];
+        }
+
         if ($this->route('page') === 'product') {
             return [
                 'photo_count' => ['required', 'integer', 'min:1', 'max:10'],

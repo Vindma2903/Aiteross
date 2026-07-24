@@ -48,11 +48,6 @@
             flex-direction: column;
             gap: 4px;
         }
-        .nav > a:nth-of-type(1) { order: 1; }
-        .nav > a:nth-of-type(2) { order: 2; }
-        .nav > a:nth-of-type(3) { order: 4; }
-        .nav > a:nth-of-type(4) { order: 3; }
-        .nav > a:nth-of-type(5) { order: 5; }
         .nav-title {
             padding: 18px 14px 8px;
             margin-top: 8px;
@@ -401,6 +396,7 @@
             <a href="{{ route('admin.pages.editor', ['page' => 'delivery']) }}" class="nav-link{{ $selectedEditor === 'delivery' ? ' nav-link--active' : '' }}">Доставка</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'product']) }}" class="nav-link{{ $selectedEditor === 'product' ? ' nav-link--active' : '' }}">Карточка товара</a>
 
+
             <div class="nav-title">АККАУНТ</div>
             <a href="{{ route('admin.security') }}" class="nav-link">Безопасность</a>
         </nav>
@@ -420,6 +416,8 @@
         <p>
             @if ($selectedEditor === 'home')
                 Здесь настраивается фактический контент главной страницы: первый экран, преимущества, блок видов работ, блок компании и FAQ.
+            @elseif ($selectedEditor === 'delivery')
+                Здесь настраивается контент страницы доставки: первый экран, карточки с основными условиями, информационный блок и заключительный CTA.
             @elseif ($selectedEditor === 'catalog')
                 Здесь настраиваются категории каталога, которые используются и на главной, и на странице каталога.
             @else
@@ -429,10 +427,6 @@
     </section>
 
     <section class="card">
-        @if ($selectedEditor !== 'home')
-            <a href="{{ route('admin.dashboard', ['section' => 'pages']) }}" class="back-link">← К выбору страниц</a>
-        @endif
-
         @if ($selectedEditor === 'home')
             <form action="{{ route('admin.pages.update', ['page' => 'home']) }}" method="post">
                 @csrf
@@ -765,6 +759,106 @@
                     <div class="button-row">
                         <button type="submit" class="button-primary">Сохранить категории</button>
                         <div class="note">Категории сохраняются в БД и используются на главной и в каталоге.</div>
+                    </div>
+                </div>
+            </form>
+        @elseif ($selectedEditor === 'delivery')
+            @php($delivery = $deliveryPageContent ?? [])
+            <form action="{{ route('admin.pages.update', ['page' => 'delivery']) }}" method="post">
+                @csrf
+                <div class="panel-list">
+                    <section class="panel">
+                        <h2>Первый экран</h2>
+                        <p>Основной заголовок и поясняющий текст над карточками условий доставки.</p>
+                        <div class="field-grid">
+                            <div class="field field--full">
+                                <label for="delivery_hero_title">Заголовок</label>
+                                <input id="delivery_hero_title" type="text" name="hero[title]" value="{{ old('hero.title', data_get($delivery, 'hero.title')) }}">
+                            </div>
+                            <div class="field field--full">
+                                <label for="delivery_hero_lead">Лид-абзац</label>
+                                <textarea id="delivery_hero_lead" name="hero[lead]">{{ old('hero.lead', data_get($delivery, 'hero.lead')) }}</textarea>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <h2>Карточки преимуществ</h2>
+                        <p>Три карточки под первым экраном. Иконки остаются в текущем стиле страницы.</p>
+                        <div class="panel-list">
+                            @foreach (data_get($delivery, 'cards', []) as $index => $card)
+                                <div class="panel">
+                                    <h2>Карточка {{ $index + 1 }}</h2>
+                                    <div class="field-grid">
+                                        <div class="field field--full">
+                                            <label for="delivery_card_title_{{ $index }}">Заголовок</label>
+                                            <input id="delivery_card_title_{{ $index }}" type="text" name="cards[{{ $index }}][title]" value="{{ old("cards.$index.title", $card['title'] ?? '') }}">
+                                        </div>
+                                        <div class="field field--full">
+                                            <label for="delivery_card_text_{{ $index }}">Текст</label>
+                                            <textarea id="delivery_card_text_{{ $index }}" name="cards[{{ $index }}][text]">{{ old("cards.$index.text", $card['text'] ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <h2>Блок условий</h2>
+                        <p>Тёмный информационный блок с условиями доставки и контактной карточкой склада.</p>
+                        <div class="field-grid">
+                            <div class="field field--full">
+                                <label for="terms_title">Заголовок блока</label>
+                                <input id="terms_title" type="text" name="terms[title]" value="{{ old('terms.title', data_get($delivery, 'terms.title')) }}">
+                            </div>
+                            @foreach (data_get($delivery, 'terms.items', []) as $index => $item)
+                                <div class="field field--full">
+                                    <label for="term_item_{{ $index }}">Пункт {{ $index + 1 }}</label>
+                                    <textarea id="term_item_{{ $index }}" name="terms[items][{{ $index }}][text]">{{ old("terms.items.$index.text", $item['text'] ?? '') }}</textarea>
+                                </div>
+                            @endforeach
+                            <div class="field">
+                                <label for="panel_label">Заголовок карточки</label>
+                                <input id="panel_label" type="text" name="terms[panel][label]" value="{{ old('terms.panel.label', data_get($delivery, 'terms.panel.label')) }}">
+                            </div>
+                            <div class="field">
+                                <label for="panel_phone">Телефон</label>
+                                <input id="panel_phone" type="text" name="terms[panel][phone]" value="{{ old('terms.panel.phone', data_get($delivery, 'terms.panel.phone')) }}">
+                            </div>
+                            <div class="field field--full">
+                                <label for="panel_address">Адрес</label>
+                                <input id="panel_address" type="text" name="terms[panel][address]" value="{{ old('terms.panel.address', data_get($delivery, 'terms.panel.address')) }}">
+                            </div>
+                            <div class="field">
+                                <label for="panel_schedule">График</label>
+                                <input id="panel_schedule" type="text" name="terms[panel][schedule]" value="{{ old('terms.panel.schedule', data_get($delivery, 'terms.panel.schedule')) }}">
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <h2>Нижний CTA</h2>
+                        <p>Заключительный призыв к действию перед футером.</p>
+                        <div class="field-grid">
+                            <div class="field field--full">
+                                <label for="cta_title">Заголовок</label>
+                                <input id="cta_title" type="text" name="cta[title]" value="{{ old('cta.title', data_get($delivery, 'cta.title')) }}">
+                            </div>
+                            <div class="field field--full">
+                                <label for="cta_text">Текст</label>
+                                <textarea id="cta_text" name="cta[text]">{{ old('cta.text', data_get($delivery, 'cta.text')) }}</textarea>
+                            </div>
+                            <div class="field">
+                                <label for="cta_button_text">Текст кнопки</label>
+                                <input id="cta_button_text" type="text" name="cta[button_text]" value="{{ old('cta.button_text', data_get($delivery, 'cta.button_text')) }}">
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="button-row">
+                        <button type="submit" class="button-primary">Сохранить изменения</button>
+                        <div class="note">Изменения сразу применяются на публичной странице доставки.</div>
                     </div>
                 </div>
             </form>

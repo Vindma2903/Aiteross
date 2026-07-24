@@ -46,11 +46,6 @@
             flex-direction: column;
             gap: 4px;
         }
-        .nav > a:nth-of-type(1) { order: 1; }
-        .nav > a:nth-of-type(2) { order: 2; }
-        .nav > a:nth-of-type(3) { order: 3; }
-        .nav > a:nth-of-type(4) { order: 4; }
-        .nav > a:nth-of-type(5) { order: 5; }
         .nav-title {
             padding: 18px 14px 8px;
             margin-top: 8px;
@@ -1263,8 +1258,8 @@
 
                 <div class="nav-title">УПРАВЛЕНИЕ</div>
                 <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link{{ $selectedSection === 'orders' ? ' nav-link--active' : '' }}">Заявки</a>
-                <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'catalog' ? ' nav-link--active' : '' }}">Категории</a>
                 <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link{{ $selectedSection === 'products' ? ' nav-link--active' : '' }}">Товары</a>
+                <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'catalog' ? ' nav-link--active' : '' }}">Категории</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'home']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'home' ? ' nav-link--active' : '' }}">Главная</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'delivery']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'delivery' ? ' nav-link--active' : '' }}">Доставка</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'product']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'product' ? ' nav-link--active' : '' }}">Карточка товара</a>
@@ -1284,10 +1279,7 @@
         <main class="main">
             <section class="hero">
                 <div>
-                    @if ($selectedSection === 'pages')
-                        <h1>Страницы сайта</h1>
-                        <p>Выберите страницу, для которой нужно открыть отдельную полноценную страницу редактора.</p>
-                    @elseif ($selectedSection === 'orders')
+                    @if ($selectedSection === 'orders')
                         <h1>Заявки</h1>
                         <p>В этом разделе администратор создаёт и ведёт заявки. Сейчас доступен фронтовый прототип с кнопкой создания и таблицей заявок со статусами.</p>
                     @else
@@ -1298,21 +1290,7 @@
             </section>
 
             <section class="content-card">
-                @if ($selectedSection === 'pages')
-                    <div class="pages-grid">
-                        @foreach (['delivery', 'product'] as $slug)
-                            <a href="{{ route('admin.pages.editor', ['page' => $slug]) }}" class="page-tile">
-                                <div class="page-icon">
-                                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                        <path d="M4 4h16v16H4z" stroke="#1657C4" stroke-width="1.6"/>
-                                        <path d="M4 9h16M9 9v11" stroke="#1657C4" stroke-width="1.6"/>
-                                    </svg>
-                                </div>
-                                <div class="page-tile__label">{{ $staticPages[$slug]['label'] }}</div>
-                            </a>
-                        @endforeach
-                    </div>
-                @elseif ($selectedSection === 'orders')
+                @if ($selectedSection === 'orders')
                     @php
                         $canCreateOrders = $catalogOptions->isNotEmpty() && $orderContacts->isNotEmpty();
                     @endphp
@@ -1696,7 +1674,7 @@
                             <label>Поддерживаемые колонки</label>
                             <ul class="import-format">
                                 <li><strong>Обязательные:</strong> Название, Артикул</li>
-                                <li><strong>Дополнительные:</strong> Категория, Цена, Остаток, Единица, Множитель, Описание, Видимость, Фото</li>
+                                <li><strong>Дополнительные:</strong> Категория, Цена, Остаток, Единица, Штук в упаковке, Описание, Видимость, Фото</li>
                                 <li><strong>Для колонки Фото:</strong> можно указать `https://...`, `/storage/product-images/file.jpg`, `product-images/file.jpg` или просто `file.jpg`</li>
                                 <li><strong>Можно и на английском:</strong> `name`, `sku`, `category`, `price`, `stock_quantity`, `unit`, `unit_mode`, `unit_multiplier`, `multiplier`, `description`, `is_visible`, `image`, `photo`</li>
                             </ul>
@@ -1761,16 +1739,16 @@
 
                         <div class="field">
                             <label for="create-unit-mode">Единица продажи</label>
-                            <select id="create-unit-mode" name="unit_mode">
+                            <select id="create-unit-mode" name="unit_mode" data-unit-mode-select>
                                 <option value="pieces" @selected(old('unit_mode', 'pieces') === 'pieces')>Штуки</option>
                                 <option value="packs" @selected(old('unit_mode') === 'packs')>Упаковки</option>
                             </select>
                         </div>
 
-                        <div class="field">
-                            <label for="create-unit-multiplier">Множитель</label>
+                        <div class="field" data-unit-multiplier-field @if(old('unit_mode', 'pieces') !== 'packs') style="display:none" @endif>
+                            <label for="create-unit-multiplier">Штук в упаковке</label>
                             <input id="create-unit-multiplier" type="number" min="1" name="unit_multiplier" value="{{ old('unit_multiplier', 1) }}" required>
-                            <div class="field-note">Если выбраны упаковки, укажите сколько штук в одной упаковке. Для штук оставьте `1`.</div>
+                            <div class="field-note">Сколько штук содержится в одной упаковке.</div>
                         </div>
 
                         <div class="field">
@@ -1876,16 +1854,16 @@
 
                             <div class="field">
                                 <label for="unit-mode-{{ $product->id }}">Единица продажи</label>
-                                <select id="unit-mode-{{ $product->id }}" name="unit_mode">
+                                <select id="unit-mode-{{ $product->id }}" name="unit_mode" data-unit-mode-select>
                                     <option value="pieces" @selected($product->unit_mode === 'pieces')>Штуки</option>
                                     <option value="packs" @selected($product->unit_mode === 'packs')>Упаковки</option>
                                 </select>
                             </div>
 
-                            <div class="field">
-                                <label for="unit-multiplier-{{ $product->id }}">Множитель</label>
+                            <div class="field" data-unit-multiplier-field @if($product->unit_mode !== 'packs') style="display:none" @endif>
+                                <label for="unit-multiplier-{{ $product->id }}">Штук в упаковке</label>
                                 <input id="unit-multiplier-{{ $product->id }}" type="number" min="1" name="unit_multiplier" value="{{ $product->unit_multiplier }}" required>
-                                <div class="field-note">Если выбраны упаковки, укажите сколько штук в одной упаковке. Для штук оставьте `1`.</div>
+                                <div class="field-note">Сколько штук содержится в одной упаковке.</div>
                             </div>
 
                             <div class="field">
@@ -2613,6 +2591,22 @@
                 if ({{ old('_open_import_modal') === '1' || $errors->importProducts->isNotEmpty() ? 'true' : 'false' }}) {
                     openImportModal();
                 }
+
+                document.querySelectorAll('[data-unit-mode-select]').forEach(function (select) {
+                    var form = select.closest('form');
+                    if (!form) { return; }
+                    var multiplierField = form.querySelector('[data-unit-multiplier-field]');
+                    if (!multiplierField) { return; }
+
+                    select.addEventListener('change', function () {
+                        var isPacks = select.value === 'packs';
+                        multiplierField.style.display = isPacks ? '' : 'none';
+                        if (!isPacks) {
+                            var input = multiplierField.querySelector('input');
+                            if (input) { input.value = 1; }
+                        }
+                    });
+                });
             })();
         </script>
     @endif

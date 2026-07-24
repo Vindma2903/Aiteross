@@ -24,11 +24,11 @@ class AdminDashboardController
         GetAdminOrders $getAdminOrders,
     ): View
     {
-        $selectedSection = $request->query('section', 'pages');
-        $allowedSections = ['pages', 'orders', 'products'];
+        $selectedSection = $request->query('section', 'orders');
+        $allowedSections = ['orders', 'products'];
 
         if (! in_array($selectedSection, $allowedSections, true)) {
-            $selectedSection = 'pages';
+            $selectedSection = 'orders';
         }
 
         $productSearch = trim((string) $request->query('search', ''));

@@ -5,6 +5,7 @@ use App\Modules\Admin\Http\Controllers\AdminDashboardController;
 use App\Modules\Admin\Http\Controllers\AdminPageController;
 use App\Modules\Admin\Http\Controllers\AdminProductController;
 use App\Modules\Catalog\Http\Controllers\CatalogController;
+use App\Modules\Catalog\Http\Controllers\DeliveryController;
 use App\Modules\Catalog\Http\Controllers\HomeController;
 use App\Modules\Catalog\Http\Controllers\ProductController;
 use App\Modules\Favorites\Http\Controllers\FavoriteController;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class);
 Route::post('/callback-requests', [CallbackRequestController::class, 'store'])->name('callback-requests.store');
 Route::post('/lead-requests', [LeadRequestController::class, 'store'])->name('lead-requests.store');
-Route::view('/delivery', 'delivery')->name('delivery');
+Route::get('/delivery', DeliveryController::class)->name('delivery');
 Route::view('/cart', 'cart.index')->name('cart.index');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('catalog.products.show');
 Route::get('/catalog/{categorySlug?}', [CatalogController::class, 'index'])->name('catalog.index');
@@ -55,7 +56,7 @@ Route::middleware(['auth', 'role:admin', '2fa'])->group(function () {
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/pages/{page}', [AdminPageController::class, 'editor'])->name('admin.pages.editor');
     Route::post('/admin/pages/{page}', [AdminPageController::class, 'update'])
-        ->where('page', 'home|product')
+        ->where('page', 'home|delivery|product')
         ->name('admin.pages.update');
     Route::post('/admin/catalog/categories', [AdminCatalogController::class, 'updateCategories'])->name('admin.catalog.categories.update');
     Route::post('/admin/catalog/filters', [AdminCatalogController::class, 'updateFilters'])->name('admin.catalog.filters.update');
