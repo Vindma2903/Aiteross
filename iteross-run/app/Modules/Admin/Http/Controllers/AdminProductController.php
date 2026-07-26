@@ -141,15 +141,8 @@ class AdminProductController extends Controller
 
     private function normalizeUnitData(array $data): array
     {
-        $data['unit_mode'] = ($data['unit_mode'] ?? Product::UNIT_MODE_PIECES) === Product::UNIT_MODE_PACKS
-            ? Product::UNIT_MODE_PACKS
-            : Product::UNIT_MODE_PIECES;
-
+        $data['unit_mode'] = Product::UNIT_MODE_PIECES;
         $data['unit_multiplier'] = max(1, (int) ($data['unit_multiplier'] ?? 1));
-
-        if ($data['unit_mode'] === Product::UNIT_MODE_PIECES) {
-            $data['unit_multiplier'] = 1;
-        }
 
         return $data;
     }

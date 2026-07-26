@@ -1189,6 +1189,8 @@
             }
         }
     </style>
+    @include('partials.unified-site-header-styles')
+    @include('partials.unified-site-footer-styles')
 </head>
 <body>
 @php
@@ -1228,6 +1230,8 @@
 @endphp
 
 <div class="page-shell">
+    @include('partials.unified-site-header')
+    {{--
     <div class="topbar">
         <div class="container topbar-inner">
             <nav class="topbar-nav">
@@ -1316,6 +1320,7 @@
         </div>
     </header>
 
+    --}}
     <section class="hero">
         <div class="hero-surface">
             <img src="{{ $heroImage }}" alt="" class="hero-image">
@@ -1550,6 +1555,8 @@
         </div>
     </section>
 
+    @include('partials.unified-site-footer')
+    {{--
     <footer class="site-footer" id="footer">
         <div class="container footer-top">
             <div class="footer-grid">
@@ -1602,6 +1609,7 @@
 
         <div class="container footer-bottom">© 2026 ООО «АЙТЕРОСС». Все права защищены.</div>
     </footer>
+    --}}
 
     <div class="proposal-modal" data-proposal-modal aria-hidden="true">
         <div class="proposal-modal-card" role="dialog" aria-modal="true" aria-labelledby="proposal-modal-title">
@@ -1841,5 +1849,6 @@
         });
     })();
 </script>
+@include('partials.unified-site-header-scripts')
 </body>
 </html>

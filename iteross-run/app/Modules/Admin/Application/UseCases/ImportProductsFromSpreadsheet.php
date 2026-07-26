@@ -21,13 +21,13 @@ class ImportProductsFromSpreadsheet
         $rows = $this->readRows($file);
 
         if ($rows === []) {
-            throw new RuntimeException('Файл пустой. Добавьте хотя бы одну строку с товаром.');
+            throw new RuntimeException('Р¤Р°Р№Р» РїСѓСЃС‚РѕР№. Р”РѕР±Р°РІСЊС‚Рµ С…РѕС‚СЏ Р±С‹ РѕРґРЅСѓ СЃС‚СЂРѕРєСѓ СЃ С‚РѕРІР°СЂРѕРј.');
         }
 
         $headers = $this->normalizeHeaders(array_shift($rows));
 
         if (! in_array('name', $headers, true) || ! in_array('sku', $headers, true)) {
-            throw new RuntimeException('В файле должны быть колонки "Название" и "Артикул".');
+            throw new RuntimeException('Р’ С„Р°Р№Р»Рµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РєРѕР»РѕРЅРєРё "РќР°Р·РІР°РЅРёРµ" Рё "РђСЂС‚РёРєСѓР»".');
         }
 
         $counts = [
@@ -90,7 +90,7 @@ class ImportProductsFromSpreadsheet
         });
 
         if (($counts['created'] + $counts['updated']) === 0) {
-            throw new RuntimeException('В файле не найдено ни одной корректной строки для импорта.');
+            throw new RuntimeException('Р’ С„Р°Р№Р»Рµ РЅРµ РЅР°Р№РґРµРЅРѕ РЅРё РѕРґРЅРѕР№ РєРѕСЂСЂРµРєС‚РЅРѕР№ СЃС‚СЂРѕРєРё РґР»СЏ РёРјРїРѕСЂС‚Р°.');
         }
 
         return $counts;
@@ -106,7 +106,7 @@ class ImportProductsFromSpreadsheet
         return match ($extension) {
             'xlsx' => $this->readXlsxRows($file),
             'csv', 'txt' => $this->readCsvRows($file),
-            default => throw new RuntimeException('Неподдерживаемый формат файла.'),
+            default => throw new RuntimeException('РќРµРїРѕРґРґРµСЂР¶РёРІР°РµРјС‹Р№ С„РѕСЂРјР°С‚ С„Р°Р№Р»Р°.'),
         };
     }
 
@@ -117,12 +117,12 @@ class ImportProductsFromSpreadsheet
     {
         $path = $file->getRealPath();
         if (! $path || ! is_file($path)) {
-            throw new RuntimeException('Не удалось прочитать CSV-файл.');
+            throw new RuntimeException('РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ CSV-С„Р°Р№Р».');
         }
 
         $handle = fopen($path, 'rb');
         if ($handle === false) {
-            throw new RuntimeException('Не удалось открыть CSV-файл.');
+            throw new RuntimeException('РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ CSV-С„Р°Р№Р».');
         }
 
         $firstLine = fgets($handle) ?: '';
@@ -147,12 +147,12 @@ class ImportProductsFromSpreadsheet
     {
         $path = $file->getRealPath();
         if (! $path || ! is_file($path)) {
-            throw new RuntimeException('Не удалось прочитать Excel-файл.');
+            throw new RuntimeException('РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ Excel-С„Р°Р№Р».');
         }
 
         $zip = new ZipArchive();
         if ($zip->open($path) !== true) {
-            throw new RuntimeException('Не удалось открыть Excel-файл.');
+            throw new RuntimeException('РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ Excel-С„Р°Р№Р».');
         }
 
         $sharedStrings = $this->readSharedStrings($zip);
@@ -161,13 +161,13 @@ class ImportProductsFromSpreadsheet
 
         if ($worksheetXml === false) {
             $zip->close();
-            throw new RuntimeException('Не удалось прочитать первый лист Excel-файла.');
+            throw new RuntimeException('РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ РїРµСЂРІС‹Р№ Р»РёСЃС‚ Excel-С„Р°Р№Р»Р°.');
         }
 
         $worksheet = simplexml_load_string($worksheetXml);
         if (! $worksheet instanceof SimpleXMLElement) {
             $zip->close();
-            throw new RuntimeException('Повреждён лист Excel-файла.');
+            throw new RuntimeException('РџРѕРІСЂРµР¶РґС‘РЅ Р»РёСЃС‚ Excel-С„Р°Р№Р»Р°.');
         }
 
         $namespaces = $worksheet->getNamespaces(true);
@@ -357,7 +357,7 @@ class ImportProductsFromSpreadsheet
             $normalized = Str::of((string) $header)
                 ->trim()
                 ->lower()
-                ->replace(['ё'], 'е')
+                ->replace(['С‘'], 'Рµ')
                 ->replace(['"', "'", '`'], '')
                 ->replace(['-', ' '], '_')
                 ->replace(['/', '\\'], '_')
@@ -365,16 +365,16 @@ class ImportProductsFromSpreadsheet
                 ->toString();
 
             return match ($normalized) {
-                'название', 'name', 'product_name', 'товар' => 'name',
-                'артикул', 'sku', 'код', 'article' => 'sku',
-                'описание', 'description', 'desc' => 'description',
-                'цена', 'price', 'стоимость' => 'price',
-                'остаток', 'stock', 'stock_quantity', 'количество' => 'stock_quantity',
-                'видимость', 'is_visible', 'visible', 'показывать' => 'is_visible',
-                'единица', 'unit', 'unit_mode', 'тип_единицы' => 'unit_mode',
-                'множитель', 'unit_multiplier', 'multiplier', 'в_упаковке' => 'unit_multiplier',
-                'категория', 'category', 'category_name' => 'category',
-                'изображение', 'image', 'image_url', 'фото', 'photo' => 'image',
+                'РЅР°Р·РІР°РЅРёРµ', 'name', 'product_name', 'С‚РѕРІР°СЂ' => 'name',
+                'Р°СЂС‚РёРєСѓР»', 'sku', 'РєРѕРґ', 'article' => 'sku',
+                'РѕРїРёСЃР°РЅРёРµ', 'description', 'desc' => 'description',
+                'С†РµРЅР°', 'price', 'СЃС‚РѕРёРјРѕСЃС‚СЊ' => 'price',
+                'РѕСЃС‚Р°С‚РѕРє', 'stock', 'stock_quantity', 'РєРѕР»РёС‡РµСЃС‚РІРѕ' => 'stock_quantity',
+                'РІРёРґРёРјРѕСЃС‚СЊ', 'is_visible', 'visible', 'РїРѕРєР°Р·С‹РІР°С‚СЊ' => 'is_visible',
+                'РµРґРёРЅРёС†Р°', 'unit', 'unit_mode', 'С‚РёРї_РµРґРёРЅРёС†С‹' => 'unit_mode',
+                'РјРЅРѕР¶РёС‚РµР»СЊ', 'unit_multiplier', 'multiplier', 'РІ_СѓРїР°РєРѕРІРєРµ' => 'unit_multiplier',
+                'РєР°С‚РµРіРѕСЂРёСЏ', 'category', 'category_name' => 'category',
+                'РёР·РѕР±СЂР°Р¶РµРЅРёРµ', 'image', 'image_url', 'С„РѕС‚Рѕ', 'photo' => 'image',
                 default => $normalized,
             };
         }, $headers);
@@ -434,7 +434,7 @@ class ImportProductsFromSpreadsheet
             return $default;
         }
 
-        return in_array($string, ['1', 'true', 'yes', 'y', 'да', 'показывать', 'виден'], true);
+        return in_array($string, ['1', 'true', 'yes', 'y', 'РґР°', 'РїРѕРєР°Р·С‹РІР°С‚СЊ', 'РІРёРґРµРЅ'], true);
     }
 
     private function parseUnitMode(mixed $value): string
@@ -442,7 +442,7 @@ class ImportProductsFromSpreadsheet
         $string = mb_strtolower($this->stringValue($value));
 
         return match ($string) {
-            'packs', 'pack', 'package', 'упаковки', 'упаковка', 'упак', 'коробка' => Product::UNIT_MODE_PACKS,
+            'packs', 'pack', 'package', 'СѓРїР°РєРѕРІРєРё', 'СѓРїР°РєРѕРІРєР°', 'СѓРїР°Рє', 'РєРѕСЂРѕР±РєР°' => Product::UNIT_MODE_PACKS,
             default => Product::UNIT_MODE_PIECES,
         };
     }

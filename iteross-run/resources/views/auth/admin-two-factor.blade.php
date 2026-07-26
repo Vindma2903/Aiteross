@@ -145,14 +145,19 @@
             margin: 0 0 20px;
         }
     </style>
+    @include('partials.unified-site-header-styles')
+    @include('partials.unified-site-footer-styles')
 </head>
 <body>
+    @include('partials.unified-site-header')
+    {{--
     <header class="header">
         <div class="header__inner">
             <a href="/" class="brand">АЙТЕРОСС</a>
         </div>
     </header>
 
+    --}}
     <main class="auth">
         <div class="card">
             <svg class="icon-shield" width="44" height="44" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -197,5 +202,7 @@
             </div>
         </div>
     </main>
+    @include('partials.unified-site-footer')
+    @include('partials.unified-site-header-scripts')
 </body>
 </html>

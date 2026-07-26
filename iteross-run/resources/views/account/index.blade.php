@@ -162,6 +162,8 @@
       .main-wrap { padding: 24px 16px !important; }
     }
   </style>
+  @include('partials.unified-site-header-styles')
+  @include('partials.unified-site-footer-styles')
 </head>
 <body>
 @php
@@ -199,6 +201,8 @@
   ];
 @endphp
 
+@include('partials.unified-site-header')
+{{--
 <!-- Topbar -->
 <div class="topbar">
   <div class="container topbar-inner">
@@ -282,6 +286,7 @@
   </div>
 </header>
 
+--}}
 <!-- MAIN GRID -->
 <div class="main-wrap main-grid" style="max-width:1360px;margin:0 auto;padding:40px 32px;display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start;">
 
@@ -685,7 +690,7 @@
     </form>
   </div>
 </div>
+@include('partials.unified-site-footer')
+@include('partials.unified-site-header-scripts')
 </body>
 </html>
-
-

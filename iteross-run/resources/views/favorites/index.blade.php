@@ -634,8 +634,12 @@
             }
         }
     </style>
+    @include('partials.unified-site-header-styles')
+    @include('partials.unified-site-footer-styles')
 </head>
 <body>
+    @include('partials.unified-site-header')
+    {{--
     <header>
         <div class="topbar">
             <div class="topbar__inner">
@@ -705,6 +709,7 @@
         </div>
     </header>
 
+    --}}
     <main class="shell">
         <nav class="breadcrumbs" aria-label="Хлебные крошки">
             <a href="/">Главная</a>
@@ -773,6 +778,8 @@
         </div>
     </section>
 
+    @include('partials.unified-site-footer')
+    {{--
     <footer id="footer" class="site-footer">
         <div class="footer-top">
             <div>
@@ -815,6 +822,7 @@
 
         <div class="footer-bottom">© 2026 ООО «АЙТЕРОСС». Все права защищены.</div>
     </footer>
+    --}}
 
     <script>
         (function () {
@@ -897,5 +905,6 @@
             syncEmptyState();
         })();
     </script>
+@include('partials.unified-site-header-scripts')
 </body>
 </html>

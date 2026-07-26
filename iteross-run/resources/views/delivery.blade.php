@@ -319,7 +319,7 @@
 
         .cards {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 24px;
             padding-bottom: 48px;
         }
@@ -508,8 +508,12 @@
             }
         }
     </style>
+    @include('partials.unified-site-header-styles')
+    @include('partials.unified-site-footer-styles')
 </head>
 <body>
+    @include('partials.unified-site-header')
+    {{--
     <div class="topbar">
         <div class="container topbar-inner">
             <nav class="topbar-nav">
@@ -592,6 +596,7 @@
         </div>
     </header>
 
+    --}}
     <main>
         <section class="hero-block">
             <div class="breadcrumbs">
@@ -621,13 +626,6 @@
                 <p>{{ data_get($page, 'cards.1.text') }}</p>
             </article>
 
-            <article class="card">
-                <div class="card-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
-                <h2>{{ data_get($page, 'cards.2.title') }}</h2>
-                <p>{{ data_get($page, 'cards.2.text') }}</p>
-            </article>
         </section>
 
         <section class="terms">
@@ -670,6 +668,8 @@
         </section>
     </main>
 
+    @include('partials.unified-site-footer')
+    {{--
     <footer id="footer">
         <div class="footer-inner">
             <div>
@@ -717,5 +717,7 @@
         </div>
         <div class="footer-legal">© 2026 ООО «АЙТЕРОСС». Все права защищены.</div>
     </footer>
+    --}}
+@include('partials.unified-site-header-scripts')
 </body>
 </html>

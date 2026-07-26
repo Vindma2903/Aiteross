@@ -168,14 +168,19 @@
             text-decoration: underline;
         }
     </style>
+    @include('partials.unified-site-header-styles')
+    @include('partials.unified-site-footer-styles')
 </head>
 <body>
+    @include('partials.unified-site-header')
+    {{--
     <header class="header">
         <div class="header__inner">
             <a href="/" class="brand">АЙТЕРОСС</a>
         </div>
     </header>
 
+    --}}
     <main class="auth">
         <div class="card">
             <h1>Регистрация</h1>
@@ -268,6 +273,7 @@
         </div>
     </main>
 
+    @include('partials.unified-site-footer')
     <script>
         document.querySelectorAll('[data-password-toggle]').forEach(function (toggle) {
             var input = document.getElementById(toggle.getAttribute('data-password-toggle'));
@@ -291,5 +297,6 @@
             });
         });
     </script>
+    @include('partials.unified-site-header-scripts')
 </body>
 </html>

@@ -68,10 +68,6 @@ class Order extends Model
 
     public function quantityLabel(): string
     {
-        if ($this->product_unit_mode === Product::UNIT_MODE_PACKS) {
-            return $this->quantity.' упаковок';
-        }
-
         return $this->quantity.' шт.';
     }
 }
