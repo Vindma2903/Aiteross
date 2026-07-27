@@ -60,7 +60,6 @@ class ImportProductsFromSpreadsheet
                 $unitMode = $this->parseUnitMode($mapped['unit_mode'] ?? $mapped['unit'] ?? null);
                 $unitMultiplier = $this->parseInteger($mapped['unit_multiplier'] ?? $mapped['multiplier'] ?? null);
                 $description = $this->nullableString($mapped['description'] ?? null);
-                $image = $this->normalizeImageValue($mapped['image'] ?? null);
 
                 $payload = [
                     'name' => $name,
@@ -72,7 +71,6 @@ class ImportProductsFromSpreadsheet
                     'unit_mode' => $unitMode,
                     'unit_multiplier' => $unitMode === Product::UNIT_MODE_PACKS ? max(1, $unitMultiplier) : 1,
                     'is_visible' => $isVisible,
-                    'image' => $image,
                     'category_id' => $categoryId,
                 ];
 
@@ -374,7 +372,6 @@ class ImportProductsFromSpreadsheet
                 'РµРґРёРЅРёС†Р°', 'unit', 'unit_mode', 'С‚РёРї_РµРґРёРЅРёС†С‹' => 'unit_mode',
                 'РјРЅРѕР¶РёС‚РµР»СЊ', 'unit_multiplier', 'multiplier', 'РІ_СѓРїР°РєРѕРІРєРµ' => 'unit_multiplier',
                 'РєР°С‚РµРіРѕСЂРёСЏ', 'category', 'category_name' => 'category',
-                'РёР·РѕР±СЂР°Р¶РµРЅРёРµ', 'image', 'image_url', 'С„РѕС‚Рѕ', 'photo' => 'image',
                 default => $normalized,
             };
         }, $headers);
@@ -457,39 +454,6 @@ class ImportProductsFromSpreadsheet
         $string = $this->stringValue($value);
 
         return $string !== '' ? $string : null;
-    }
-
-    private function normalizeImageValue(mixed $value): ?string
-    {
-        $image = $this->nullableString($value);
-
-        if ($image === null) {
-            return null;
-        }
-
-        $image = str_replace('\\', '/', $image);
-
-        if (preg_match('#^https?://#i', $image)) {
-            return $image;
-        }
-
-        if (str_starts_with($image, '/storage/')) {
-            return $image;
-        }
-
-        if (str_starts_with($image, 'storage/')) {
-            return '/'.ltrim($image, '/');
-        }
-
-        if (str_starts_with($image, 'product-images/')) {
-            return '/storage/'.ltrim($image, '/');
-        }
-
-        if (! str_contains($image, '/')) {
-            return '/storage/product-images/'.$image;
-        }
-
-        return '/'.ltrim($image, '/');
     }
 
     private function columnLettersToIndex(string $letters): int
