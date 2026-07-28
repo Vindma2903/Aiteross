@@ -60,7 +60,7 @@ Route::middleware(['auth', 'role:admin', '2fa'])->group(function () {
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/pages/{page}', [AdminPageController::class, 'editor'])->name('admin.pages.editor');
     Route::post('/admin/pages/{page}', [AdminPageController::class, 'update'])
-        ->where('page', 'home|delivery|product')
+        ->where('page', 'home|delivery|header|product')
         ->name('admin.pages.update');
     Route::post('/admin/catalog/categories', [AdminCatalogController::class, 'updateCategories'])->name('admin.catalog.categories.update');
     Route::post('/admin/catalog/filters', [AdminCatalogController::class, 'updateFilters'])->name('admin.catalog.filters.update');
