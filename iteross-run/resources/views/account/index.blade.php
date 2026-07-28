@@ -610,7 +610,7 @@
 
     fetch('{{ route('account.profile.update') }}', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
       body: JSON.stringify({
         first_name: document.getElementById('inp-firstname').value,
         last_name:  document.getElementById('inp-lastname').value,
@@ -643,7 +643,7 @@
 
     fetch('{{ route('account.password.update') }}', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
       body: JSON.stringify({
         current_password:      document.getElementById('inp-pass-current').value,
         password:              document.getElementById('inp-pass-new').value,
