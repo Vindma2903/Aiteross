@@ -671,26 +671,6 @@
   };
 
 
-  // ── Account menu (same as home page) ──
-  (function () {
-    var menu    = document.querySelector('[data-account-menu]');
-    var trigger = document.querySelector('[data-account-menu-trigger]');
-    if (!menu || !trigger) return;
-
-    function openMenu()  { menu.classList.add('is-open');    trigger.setAttribute('aria-expanded', 'true'); }
-    function closeMenu() { menu.classList.remove('is-open'); trigger.setAttribute('aria-expanded', 'false'); }
-
-    trigger.addEventListener('click', function (e) {
-      e.stopPropagation();
-      menu.classList.contains('is-open') ? closeMenu() : openMenu();
-    });
-    document.addEventListener('click', function (e) {
-      if (!menu.contains(e.target)) closeMenu();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeMenu();
-    });
-  })();
 
   // ── Proposal modal ──
   (function () {
