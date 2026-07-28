@@ -443,8 +443,8 @@
 
             <div class="nav-title">УПРАВЛЕНИЕ</div>
             <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link">Заявки</a>
-            <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link">Товары</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link{{ $selectedEditor === 'catalog' ? ' nav-link--active' : '' }}">Категории</a>
+            <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link">Товары</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'header']) }}" class="nav-link{{ $selectedEditor === 'header' ? ' nav-link--active' : '' }}">Шапка</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'home']) }}" class="nav-link{{ $selectedEditor === 'home' ? ' nav-link--active' : '' }}">Главная</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'delivery']) }}" class="nav-link{{ $selectedEditor === 'delivery' ? ' nav-link--active' : '' }}">Доставка</a>
@@ -474,6 +474,8 @@
                 Здесь настраивается контент страницы доставки: первый экран, карточки с основными условиями, информационный блок и заключительный CTA.
             @elseif ($selectedEditor === 'catalog')
                 Здесь настраиваются категории каталога, которые используются и на главной, и на странице каталога.
+            @elseif ($selectedEditor === 'header')
+                Здесь настраивается шапка сайта: номер телефона, email и ссылки на социальные сети.
             @else
                 Для этой страницы пока доступен только базовый просмотр структуры.
             @endif
