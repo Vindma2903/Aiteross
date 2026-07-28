@@ -828,15 +828,11 @@
         (function () {
             const grid = document.querySelector('[data-favorites-grid]');
             const emptyStateNodes = document.querySelectorAll('[data-empty-state]');
-            const countNode = document.querySelector('[data-favorites-count]');
-
             function updateFavoritesCount(count) {
-                if (!countNode) {
-                    return;
-                }
-
-                countNode.textContent = String(count);
-                countNode.hidden = count <= 0;
+                document.querySelectorAll('[data-favorites-count]').forEach(function (el) {
+                    el.textContent = String(count);
+                    el.hidden = count <= 0;
+                });
             }
 
             function syncEmptyState() {

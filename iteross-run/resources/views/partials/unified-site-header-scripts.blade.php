@@ -40,4 +40,19 @@
             }
         });
     })();
+
+    (function () {
+        var input = document.querySelector('.header-search input');
+        var btn = document.querySelector('.search-submit');
+        if (!input || !btn) return;
+
+        function doSearch() {
+            var q = input.value.trim();
+            if (!q) return;
+            window.location.href = '{{ route('catalog.index') }}?search=' + encodeURIComponent(q);
+        }
+
+        btn.addEventListener('click', doSearch);
+        input.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+    })();
 </script>

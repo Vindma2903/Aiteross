@@ -895,8 +895,8 @@
 
             <div class="navbar-search">
                 <div class="search-box">
-                    <input type="text" placeholder="Поиск товаров...">
-                    <button type="button" class="search-button" aria-label="Найти">
+                    <input type="text" placeholder="Поиск товаров..." id="catalog-search-input" value="{{ $search }}">
+                    <button type="button" class="search-button" aria-label="Найти" id="catalog-search-btn">
                         <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="1.8"></circle><path d="M20 20 16.2 16.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"></path></svg>
                     </button>
                 </div>
@@ -967,12 +967,13 @@
         </section>
 
         <section class="catalog-layout">
-            <aside class="filters">
-                <div class="toggle-row">
-                    <span class="toggle-label">В наличии на складе</span>
-                    <span class="toggle" aria-hidden="true"></span>
-                </div>
+            <form method="GET" action="{{ route('catalog.index', $selectedCategory ? ['categorySlug' => $selectedCategory->slug] : []) }}" id="filter-form">
+                @if ($search)
+                    <input type="hidden" name="search" value="{{ $search }}">
+                @endif
+            </form>
 
+            <aside class="filters">
                 <div class="filter-group">
                     <h2 class="filter-title">Категории</h2>
                     <div class="category-checklist">
@@ -981,7 +982,7 @@
                             <span>Все категории</span>
                         </a>
                         @foreach ($categories as $category)
-                        <a href="{{ route('catalog.index', ['categorySlug' => $category->slug]) }}" class="category-check {{ $selectedCategory?->is($category) ? 'category-check--active' : '' }}">
+                            <a href="{{ route('catalog.index', ['categorySlug' => $category->slug]) }}" class="category-check {{ $selectedCategory?->is($category) ? 'category-check--active' : '' }}">
                                 <span class="category-check__box" aria-hidden="true"></span>
                                 <span>{{ $category->name }}</span>
                             </a>
@@ -989,65 +990,26 @@
                     </div>
                 </div>
 
-                <div class="filter-group">
-                    <h2 class="filter-title">Радиус при вершине RE</h2>
-                    <div class="option-grid">
-                        @foreach ($radiusOptions as $radius)
-                            <label class="option"><input type="checkbox"><span>{{ $radius }}</span></label>
-                        @endforeach
+                @foreach ($filterGroups as $group)
+                    <div class="filter-group">
+                        <h2 class="filter-title">{{ $group->name }}</h2>
+                        <div class="option-grid">
+                            @foreach ($group->options as $option)
+                                <label class="option">
+                                    <input
+                                        type="checkbox"
+                                        form="filter-form"
+                                        name="filters[{{ $group->id }}][]"
+                                        value="{{ $option->id }}"
+                                        {{ $selectedFilterOptionIds->contains($option->id) ? 'checked' : '' }}
+                                        data-filter-checkbox
+                                    >
+                                    <span>{{ $option->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-
-                <div class="filter-group">
-                    <h2 class="filter-title">Форма пластины</h2>
-                    <label class="option"><input type="checkbox"><span>Ромб 80° (C***)</span></label>
-                </div>
-
-                <div class="filter-group">
-                    <h2 class="filter-title">Размер пластины</h2>
-                    <div class="option-grid">
-                        @foreach ($sizeOptions as $size)
-                            <label class="option"><input type="checkbox"><span>{{ $size }}</span></label>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="filter-group">
-                    <h2 class="filter-title">Обрабатываемый материал</h2>
-                    <div class="option-grid">
-                        @foreach ($materialOptions as $material)
-                            <label class="option">
-                                <input type="checkbox">
-                                <span class="iso-chip" style="background: {{ $material['color'] }};">{{ $material['iso'] }}</span>
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="filter-group">
-                    <h2 class="filter-title">Тип обработки</h2>
-                    <label class="option"><input type="checkbox"><span>Чистовая</span></label>
-                    <label class="option"><input type="checkbox"><span>Получистовая</span></label>
-                    <label class="option"><input type="checkbox"><span>Черновая</span></label>
-                </div>
-
-                <div class="filter-group">
-                    <h2 class="filter-title">Сплав пластины</h2>
-                    <div class="option-grid">
-                        @foreach ($alloyOptions as $alloy)
-                            <label class="option"><input type="checkbox"><span>{{ $alloy }}</span></label>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="filter-group">
-                    <h2 class="filter-title">Стружколом</h2>
-                    <div class="option-grid">
-                        @foreach ($chipbreakerOptions as $chipbreaker)
-                            <label class="option"><input type="checkbox"><span>{{ $chipbreaker }}</span></label>
-                        @endforeach
-                    </div>
-                </div>
+                @endforeach
             </aside>
 
             <div class="catalog-main">
@@ -1176,15 +1138,11 @@
 
     <script>
         (function () {
-            const countNode = document.querySelector('[data-favorites-count]');
-
             function updateFavoritesCount(count) {
-                if (!countNode) {
-                    return;
-                }
-
-                countNode.textContent = String(count);
-                countNode.hidden = count <= 0;
+                document.querySelectorAll('[data-favorites-count]').forEach(function (el) {
+                    el.textContent = String(count);
+                    el.hidden = count <= 0;
+                });
             }
 
             async function handleFavoriteSubmit(form) {
@@ -1238,5 +1196,31 @@
         })();
     </script>
 @include('partials.unified-site-header-scripts')
+<script>
+(function () {
+    var input = document.getElementById('catalog-search-input');
+    var btn = document.getElementById('catalog-search-btn');
+    if (!input || !btn) return;
+
+    function doSearch() {
+        var q = input.value.trim();
+        var url = new URL(window.location.href);
+        if (q) { url.searchParams.set('search', q); } else { url.searchParams.delete('search'); }
+        url.searchParams.delete('page');
+        window.location.href = url.toString();
+    }
+
+    btn.addEventListener('click', doSearch);
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+})();
+
+(function () {
+    document.querySelectorAll('[data-filter-checkbox]').forEach(function (cb) {
+        cb.addEventListener('change', function () {
+            document.getElementById('filter-form').submit();
+        });
+    });
+})();
+</script>
 </body>
 </html>

@@ -34,9 +34,17 @@ class CatalogController extends Controller
             $selectedCategory = $categories->firstWhere('slug', trim($categorySlug));
         }
 
+        $search = trim((string) $request->input('search', ''));
+
         $products = Product::query()
             ->with(['category', 'filterOptions.group'])
             ->where('is_visible', true)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->whereRaw('lower(name) like ?', ['%' . mb_strtolower($search) . '%'])
+                      ->orWhereRaw('lower(sku) like ?', ['%' . mb_strtolower($search) . '%']);
+                });
+            })
             ->when($selectedCategory, fn ($query) => $query->where('category_id', $selectedCategory->id))
             ->when(
                 $selectedFilterOptionIds->isNotEmpty(),
@@ -68,6 +76,7 @@ class CatalogController extends Controller
             'selectedCategory' => $selectedCategory,
             'filterGroups' => $filterGroups,
             'selectedFilterOptionIds' => $selectedFilterOptionIds,
+            'search' => $search,
         ]);
     }
 }
