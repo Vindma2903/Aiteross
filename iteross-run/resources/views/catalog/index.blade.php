@@ -967,13 +967,12 @@
         </section>
 
         <section class="catalog-layout">
-            <form method="GET" action="{{ route('catalog.index', $selectedCategory ? ['categorySlug' => $selectedCategory->slug] : []) }}" id="filter-form">
+            <aside class="filters">
+            <form method="GET" action="{{ route('catalog.index', $selectedCategory ? ['categorySlug' => $selectedCategory->slug] : []) }}" id="filter-form" style="display:none">
                 @if ($search)
                     <input type="hidden" name="search" value="{{ $search }}">
                 @endif
             </form>
-
-            <aside class="filters">
                 <div class="filter-group">
                     <h2 class="filter-title">Категории</h2>
                     <div class="category-checklist">
