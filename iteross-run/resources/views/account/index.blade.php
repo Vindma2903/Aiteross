@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Р›РёС‡РЅС‹Р№ РєР°Р±РёРЅРµС‚ | РђР™РўР•Р РћРЎРЎ</title>
+  <title>Личный кабинет | АЙТЕРОСС</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
@@ -11,7 +11,7 @@
     body { margin: 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14161A; background: #F7F8FA; }
     a { text-decoration: none; }
 
-    /* в”Ђв”Ђ Header (same as home page) в”Ђв”Ђ */
+    /* ── Header (same as home page) ── */
     .container { max-width: 1360px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
     .topbar { border-bottom: 1px solid #EDEFF2; background: #FFFFFF; }
     .topbar-inner { min-height: 58px; display: flex; align-items: center; gap: 28px; }
@@ -167,7 +167,7 @@
 </head>
 <body>
 @php
-  $profileName = trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')) ?: ($user->name ?? 'РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ');
+  $profileName = trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')) ?: ($user->name ?? 'Пользователь');
   $firstName = $user->first_name ?? $user->name ?? '';
   $lastName  = $user->last_name ?? '';
   $email     = $user->email ?? '';
@@ -176,17 +176,17 @@
   $accountOrdersData = $orders->mapWithKeys(function ($order) {
       return [
           $order->order_number => [
-              'title' => 'Р—Р°СЏРІРєР° в„– '.$order->order_number,
+              'title' => 'Заявка № '.$order->order_number,
               'item' => $order->product_name,
-              'description' => $order->product_description ?: 'РћРїРёСЃР°РЅРёРµ С‚РѕРІР°СЂР° РЅРµ СѓРєР°Р·Р°РЅРѕ.',
+              'description' => $order->product_description ?: 'Описание товара не указано.',
               'qty' => $order->quantity,
               'qtyLabel' => $order->quantityLabel(),
               'date' => optional($order->created_at)->format('d.m.Y'),
               'status' => $order->status,
-              'total' => number_format($order->product_price * $order->quantity, 0, ',', ' ').' в‚Ѕ',
-              'address' => 'РЈС‚РѕС‡РЅСЏРµС‚СЃСЏ РјРµРЅРµРґР¶РµСЂРѕРј',
-              'manager' => 'РњРµРЅРµРґР¶РµСЂ СѓС‚РѕС‡РЅСЏРµС‚СЃСЏ',
-              'tracking' => 'вЂ”',
+              'total' => number_format($order->product_price * $order->quantity, 0, ',', ' ').' ₽',
+              'address' => 'Уточняется менеджером',
+              'manager' => 'Менеджер уточняется',
+              'tracking' => '—',
               'image' => $order->product_image ?: '',
           ],
       ];
@@ -195,9 +195,9 @@
 
 @php
   $headerNav = [
-      ['label' => 'Рћ РєРѕРјРїР°РЅРёРё',      'href' => '/#about'],
-      ['label' => 'РЈСЃР»РѕРІРёСЏ РїРѕРєСѓРїРєРё', 'href' => '/#about'],
-      ['label' => 'РљРѕРЅС‚Р°РєС‚С‹',        'href' => '/#footer'],
+      ['label' => 'О компании',      'href' => '/#about'],
+      ['label' => 'Условия покупки', 'href' => '/#about'],
+      ['label' => 'Контакты',        'href' => '/#footer'],
   ];
 @endphp
 
@@ -229,7 +229,7 @@
       </a>
     </div>
 
-    <button type="button" class="callback-button" data-open-proposal-modal>Р—Р°РєР°Р·Р°С‚СЊ РѕР±СЂР°С‚РЅС‹Р№ Р·РІРѕРЅРѕРє</button>
+    <button type="button" class="callback-button" data-open-proposal-modal>Заказать обратный звонок</button>
   </div>
 </div>
 
@@ -237,15 +237,15 @@
 <header class="site-header">
   <div class="container header-inner">
     <a href="{{ url('/') }}" class="brand">
-      <div class="brand-name">РђР™РўР•Р РћРЎРЎ</div>
+      <div class="brand-name">АЙТЕРОСС</div>
     </a>
 
-    <a href="{{ route('catalog.index') }}" class="catalog-button">РљР°С‚Р°Р»РѕРі</a>
+    <a href="{{ route('catalog.index') }}" class="catalog-button">Каталог</a>
 
     <div class="header-search">
       <div class="search-box">
-        <input type="text" placeholder="РџРѕРёСЃРє С‚РѕРІР°СЂРѕРІ..." aria-label="РџРѕРёСЃРє С‚РѕРІР°СЂРѕРІ" autocomplete="off">
-        <button type="button" class="search-submit" aria-label="РќР°Р№С‚Рё">
+        <input type="text" placeholder="Поиск товаров..." aria-label="Поиск товаров" autocomplete="off">
+        <button type="button" class="search-submit" aria-label="Найти">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="1.8"/><path d="M20 20L16.2 16.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
         </button>
       </div>
@@ -254,30 +254,30 @@
     <div class="header-actions">
       <a href="{{ route('favorites.index') }}" class="header-link">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>
-        РР·Р±СЂР°РЅРЅРѕРµ
+        Избранное
         @if ($favoriteCount > 0)
           <span class="header-count">{{ $favoriteCount }}</span>
         @endif
       </a>
       <a href="{{ route('cart.index') }}" class="header-link">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 5h2l1.6 10.2a2 2 0 0 0 2 1.8h7.8a2 2 0 0 0 2-1.6L20.4 8H6.5" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20.5" r="1.4" fill="#1657C4"/><circle cx="17" cy="20.5" r="1.4" fill="#1657C4"/></svg>
-        РљРѕСЂР·РёРЅР°
+        Корзина
       </a>
       <div class="account-menu" data-account-menu>
         <button type="button" class="account-menu-trigger" data-account-menu-trigger aria-expanded="false" aria-haspopup="true">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
-          Р›РёС‡РЅС‹Р№ РєР°Р±РёРЅРµС‚
+          Личный кабинет
         </button>
         <div class="account-menu-panel" data-account-menu-panel>
           <a href="{{ route('account') }}" class="account-menu-item">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="#1657C4" stroke-width="1.7"/><path d="M4.8 19.5c1.5-3.7 4.6-5.6 7.2-5.6 2.6 0 5.7 1.9 7.2 5.6" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
-            РџСЂРѕС„РёР»СЊ
+            Профиль
           </a>
           <form action="{{ route('logout') }}" method="post" class="account-menu-form">
             @csrf
             <button type="submit" class="account-menu-logout">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M10 6H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/><path d="M13 8l4 4-4 4M17 12H9" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Р’С‹Р№С‚Рё
+              Выйти
             </button>
           </form>
         </div>
@@ -296,16 +296,16 @@
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
     </div>
     <div style="font-size:16px;font-weight:700;color:#14161A;margin-bottom:2px;">{{ $profileName }}</div>
-    <div style="font-size:13.5px;color:#8891A0;margin-bottom:20px;">{{ $company ?: 'Р›РёС‡РЅС‹Р№ Р°РєРєР°СѓРЅС‚' }}</div>
+    <div style="font-size:13.5px;color:#8891A0;margin-bottom:20px;">{{ $company ?: 'Личный аккаунт' }}</div>
 
     <nav style="display:flex;flex-direction:column;gap:4px;">
-      <button class="tab-btn active" data-tab="orders">РњРѕРё Р·Р°СЏРІРєРё</button>
-      <button class="tab-btn" data-tab="favorites">РР·Р±СЂР°РЅРЅРѕРµ</button>
-      <button class="tab-btn" data-tab="profile">Р”Р°РЅРЅС‹Рµ РїСЂРѕС„РёР»СЏ</button>
+      <button class="tab-btn active" data-tab="orders">Мои заявки</button>
+      <button class="tab-btn" data-tab="favorites">Избранное</button>
+      <button class="tab-btn" data-tab="profile">Данные профиля</button>
       <form action="{{ route('logout') }}" method="post" style="margin:0;">
         @csrf
         <button type="submit" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;font-size:14.5px;border:none;cursor:pointer;width:100%;text-align:left;font-family:inherit;background:transparent;color:#C43D3D;font-weight:500;margin-top:10px;border-top:1px solid #E3E6EA;padding-top:16px;transition:background 0.15s;" onmouseover="this.style.background='#FBEAEA'" onmouseout="this.style.background='transparent'">
-          Р’С‹Р№С‚Рё
+          Выйти
         </button>
       </form>
     </nav>
@@ -314,7 +314,7 @@
   <!-- MAIN CONTENT -->
   <div>
 
-    <!-- в•ђв•ђв•ђ ORDERS LIST в•ђв•ђв•ђ -->
+    <!-- ═══ ORDERS LIST ═══ -->
     <div class="tab-panel active" id="panel-orders">
       <div id="orders-list">
         <h1 style="font-size:28px;font-weight:700;color:#14161A;margin:0 0 24px;">Мои заявки</h1>
@@ -347,7 +347,7 @@
       <div id="order-detail" style="display:none;">
         <button class="back-btn" onclick="backToOrders()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1657C4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Рљ СЃРїРёСЃРєСѓ Р·Р°СЏРІРѕРє
+          К списку заявок
         </button>
 
         <div style="background:#fff;border:1px solid #E3E6EA;border-radius:14px;padding:32px;max-width:720px;">
@@ -360,17 +360,17 @@
           <div id="status-tracker" style="display:flex;align-items:center;gap:0;margin-bottom:28px;">
             <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
               <div id="step1-dot" style="width:12px;height:12px;border-radius:50%;"></div>
-              <span id="step1-label" style="font-size:12px;font-weight:600;">Р¤РѕСЂРјРёСЂСѓРµРј Р·Р°РєР°Р·</span>
+              <span id="step1-label" style="font-size:12px;font-weight:600;">Формируем заказ</span>
             </div>
             <div id="line1" style="height:2px;flex:1;margin-bottom:20px;"></div>
             <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
               <div id="step2-dot" style="width:12px;height:12px;border-radius:50%;"></div>
-              <span id="step2-label" style="font-size:12px;font-weight:600;">Р’ РґРѕСЃС‚Р°РІРєРµ</span>
+              <span id="step2-label" style="font-size:12px;font-weight:600;">В доставке</span>
             </div>
             <div id="line2" style="height:2px;flex:1;margin-bottom:20px;"></div>
             <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
               <div id="step3-dot" style="width:12px;height:12px;border-radius:50%;"></div>
-              <span id="step3-label" style="font-size:12px;font-weight:600;">Р”РѕСЃС‚Р°РІР»РµРЅРѕ</span>
+              <span id="step3-label" style="font-size:12px;font-weight:600;">Доставлено</span>
             </div>
           </div>
 
@@ -387,19 +387,19 @@
 
           <div class="detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
             <div>
-              <div style="font-size:12.5px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:6px;">РЎРЈРњРњРђ Р—РђРљРђР—Рђ</div>
+              <div style="font-size:12.5px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:6px;">СУММА ЗАКАЗА</div>
               <div id="detail-total" style="font-size:15.5px;color:#14161A;font-weight:600;"></div>
             </div>
             <div>
-              <div style="font-size:12.5px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:6px;">РђР”Р Р•РЎ Р”РћРЎРўРђР’РљР</div>
+              <div style="font-size:12.5px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:6px;">АДРЕС ДОСТАВКИ</div>
               <div id="detail-address" style="font-size:15.5px;color:#14161A;font-weight:600;"></div>
             </div>
             <div>
-              <div style="font-size:12.5px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:6px;">РњР•РќР•Р”Р–Р•Р </div>
+              <div style="font-size:12.5px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:6px;">МЕНЕДЖЕР</div>
               <div id="detail-manager" style="font-size:15.5px;color:#14161A;font-weight:600;"></div>
             </div>
             <div>
-              <div style="font-size:12.5px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:6px;">РўР Р•Рљ-РќРћРњР•Р </div>
+              <div style="font-size:12.5px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:6px;">ТРЕК-НОМЕР</div>
               <div id="detail-tracking" style="font-size:15.5px;color:#14161A;font-weight:600;"></div>
             </div>
           </div>
@@ -407,12 +407,12 @@
       </div>
     </div>
 
-    <!-- в•ђв•ђв•ђ FAVORITES в•ђв•ђв•ђ -->
+    <!-- ═══ FAVORITES ═══ -->
     <div class="tab-panel" id="panel-favorites">
-      <h1 style="font-size:28px;font-weight:700;color:#14161A;margin:0 0 24px;">РР·Р±СЂР°РЅРЅРѕРµ</h1>
+      <h1 style="font-size:28px;font-weight:700;color:#14161A;margin:0 0 24px;">Избранное</h1>
 
       @if($favorites->isEmpty())
-        <div style="text-align:center;padding:48px 0;color:#8891A0;font-size:15px;">РЎРїРёСЃРѕРє РёР·Р±СЂР°РЅРЅРѕРіРѕ РїСѓСЃС‚.</div>
+        <div style="text-align:center;padding:48px 0;color:#8891A0;font-size:15px;">Список избранного пуст.</div>
       @else
         <div id="fav-grid" class="fav-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
           @foreach($favorites as $product)
@@ -420,7 +420,7 @@
               <button
                 class="fav-remove-btn"
                 onclick="removeFavorite({{ $product->id }}, '{{ route('favorites.toggle', $product) }}')"
-                aria-label="РЈР±СЂР°С‚СЊ РёР· РёР·Р±СЂР°РЅРЅРѕРіРѕ"
+                aria-label="Убрать из избранного"
               >
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="#1657C4"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>
               </button>
@@ -433,70 +433,70 @@
               </div>
               <div style="padding:16px 18px 20px;">
                 <div style="font-size:15px;font-weight:700;color:#14161A;margin-bottom:6px;">{{ $product->name }}</div>
-                <div style="font-size:15px;color:#14161A;font-weight:600;margin-bottom:14px;">{{ number_format($product->price, 0, ',', ' ') }} в‚Ѕ / С€С‚.</div>
-                <a href="{{ route('catalog.index') }}" class="fav-card-btn">РџРѕРґСЂРѕР±РЅРµРµ</a>
+                <div style="font-size:15px;color:#14161A;font-weight:600;margin-bottom:14px;">{{ number_format($product->price, 0, ',', ' ') }} ₽ / шт.</div>
+                <a href="{{ route('catalog.index') }}" class="fav-card-btn">Подробнее</a>
               </div>
             </div>
           @endforeach
         </div>
-        <div id="fav-empty" style="display:none;text-align:center;padding:48px 0;color:#8891A0;font-size:15px;">РЎРїРёСЃРѕРє РёР·Р±СЂР°РЅРЅРѕРіРѕ РїСѓСЃС‚.</div>
+        <div id="fav-empty" style="display:none;text-align:center;padding:48px 0;color:#8891A0;font-size:15px;">Список избранного пуст.</div>
       @endif
     </div>
 
-    <!-- в•ђв•ђв•ђ PROFILE в•ђв•ђв•ђ -->
+    <!-- ═══ PROFILE ═══ -->
     <div class="tab-panel" id="panel-profile">
-      <h1 style="font-size:28px;font-weight:700;color:#14161A;margin:0 0 24px;">Р”Р°РЅРЅС‹Рµ РїСЂРѕС„РёР»СЏ</h1>
+      <h1 style="font-size:28px;font-weight:700;color:#14161A;margin:0 0 24px;">Данные профиля</h1>
 
       <!-- Personal info -->
       <div style="background:#fff;border:1px solid #E3E6EA;border-radius:14px;padding:32px;max-width:560px;margin-bottom:24px;">
-        <h2 style="font-size:17px;font-weight:700;color:#14161A;margin:0 0 20px;">Р›РёС‡РЅС‹Рµ РґР°РЅРЅС‹Рµ</h2>
+        <h2 style="font-size:17px;font-weight:700;color:#14161A;margin:0 0 20px;">Личные данные</h2>
 
         <div class="name-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
           <div>
-            <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">РРњРЇ</label>
+            <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">ИМЯ</label>
             <input class="field-input" id="inp-firstname" type="text" value="{{ $firstName }}">
           </div>
           <div>
-            <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">Р¤РђРњРР›РРЇ</label>
+            <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">ФАМИЛИЯ</label>
             <input class="field-input" id="inp-lastname" type="text" value="{{ $lastName }}">
           </div>
         </div>
 
         <div style="margin-bottom:16px;">
-          <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">РџРћР§РўРђ</label>
+          <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">ПОЧТА</label>
           <input class="field-input" id="inp-email" type="email" value="{{ $email }}">
         </div>
 
         <div style="margin-bottom:24px;">
-          <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">РўР•Р›Р•Р¤РћРќ</label>
+          <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">ТЕЛЕФОН</label>
           <input class="field-input" id="inp-phone" type="text" value="{{ $phone }}">
         </div>
 
-        <button class="save-btn" onclick="saveProfile()">РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ</button>
-        <span id="profile-saved" style="display:none;margin-left:14px;font-size:14px;color:#2E7D32;font-weight:600;">РЎРѕС…СЂР°РЅРµРЅРѕ</span>
+        <button class="save-btn" onclick="saveProfile()">Сохранить изменения</button>
+        <span id="profile-saved" style="display:none;margin-left:14px;font-size:14px;color:#2E7D32;font-weight:600;">Сохранено</span>
       </div>
 
       <!-- Password change -->
       <div style="background:#fff;border:1px solid #E3E6EA;border-radius:14px;padding:32px;max-width:560px;">
-        <h2 style="font-size:17px;font-weight:700;color:#14161A;margin:0 0 20px;">РЎРјРµРЅР° РїР°СЂРѕР»СЏ</h2>
+        <h2 style="font-size:17px;font-weight:700;color:#14161A;margin:0 0 20px;">Смена пароля</h2>
 
         <div style="margin-bottom:16px;">
-          <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">РўР•РљРЈР©РР™ РџРђР РћР›Р¬</label>
-          <input class="field-input" id="inp-pass-current" type="password" placeholder="вЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂў">
+          <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">ТЕКУЩИЙ ПАРОЛЬ</label>
+          <input class="field-input" id="inp-pass-current" type="password" placeholder="••••••••">
         </div>
 
         <div style="margin-bottom:16px;">
-          <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">РќРћР’Р«Р™ РџРђР РћР›Р¬</label>
-          <input class="field-input" id="inp-pass-new" type="password" placeholder="вЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂў">
+          <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">НОВЫЙ ПАРОЛЬ</label>
+          <input class="field-input" id="inp-pass-new" type="password" placeholder="••••••••">
         </div>
 
         <div style="margin-bottom:24px;">
-          <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">РџРћР’РўРћР РРўР• РќРћР’Р«Р™ РџРђР РћР›Р¬</label>
-          <input class="field-input" id="inp-pass-confirm" type="password" placeholder="вЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂў">
+          <label style="display:block;font-size:13px;font-weight:700;color:#8891A0;letter-spacing:0.3px;margin-bottom:8px;">ПОВТОРИТЕ НОВЫЙ ПАРОЛЬ</label>
+          <input class="field-input" id="inp-pass-confirm" type="password" placeholder="••••••••">
         </div>
 
-        <button class="save-btn" onclick="savePassword()">РР·РјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ</button>
-        <span id="password-saved" style="display:none;margin-left:14px;font-size:14px;color:#2E7D32;font-weight:600;">РџР°СЂРѕР»СЊ РёР·РјРµРЅС‘РЅ</span>
+        <button class="save-btn" onclick="savePassword()">Изменить пароль</button>
+        <span id="password-saved" style="display:none;margin-left:14px;font-size:14px;color:#2E7D32;font-weight:600;">Пароль изменён</span>
       </div>
     </div>
 
@@ -506,7 +506,7 @@
 <script>
 (function () {
 
-  // в”Ђв”Ђ Tab switching в”Ђв”Ђ
+  // ── Tab switching ──
   var tabBtns = document.querySelectorAll('.tab-btn[data-tab]');
   var tabPanels = document.querySelectorAll('.tab-panel');
 
@@ -521,13 +521,13 @@
     });
   });
 
-  // в”Ђв”Ђ Orders data в”Ђв”Ђ
+  // ── Orders data ──
   var ORDERS = @json($accountOrdersData);
 
   var STATUS_META = {
-    forming:   { label: 'Р¤РѕСЂРјРёСЂСѓРµРј Р·Р°РєР°Р·', bg: '#FDF3E3', color: '#B8791E' },
-    shipping:  { label: 'Р’ РґРѕСЃС‚Р°РІРєРµ',      bg: '#EAF1FB', color: '#1657C4' },
-    delivered: { label: 'Р”РѕСЃС‚Р°РІР»РµРЅРѕ',      bg: '#EAF6EC', color: '#2E7D32' },
+    forming:   { label: 'Формируем заказ', bg: '#FDF3E3', color: '#B8791E' },
+    shipping:  { label: 'В доставке',      bg: '#EAF1FB', color: '#1657C4' },
+    delivered: { label: 'Доставлено',      bg: '#EAF6EC', color: '#2E7D32' },
   };
 
   var STEP_ORDER = ['forming', 'shipping', 'delivered'];
@@ -577,7 +577,7 @@
     document.getElementById('order-detail').style.display = 'none';
   };
 
-  // в”Ђв”Ђ Favorites: remove via real API в”Ђв”Ђ
+  // ── Favorites: remove via real API ──
   var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   window.removeFavorite = function (productId, toggleUrl) {
@@ -599,7 +599,7 @@
     });
   };
 
-  // в”Ђв”Ђ Profile save в”Ђв”Ђ
+  // ── Profile save ──
   window.saveProfile = function () {
     var el = document.getElementById('profile-saved');
     el.style.display = 'inline';
@@ -616,7 +616,7 @@
   };
 
 
-  // в”Ђв”Ђ Account menu (same as home page) в”Ђв”Ђ
+  // ── Account menu (same as home page) ──
   (function () {
     var menu    = document.querySelector('[data-account-menu]');
     var trigger = document.querySelector('[data-account-menu-trigger]');
@@ -637,7 +637,7 @@
     });
   })();
 
-  // в”Ђв”Ђ Proposal modal в”Ђв”Ђ
+  // ── Proposal modal ──
   (function () {
     var modal   = document.getElementById('proposalModal');
     var closeBtn = modal ? modal.querySelector('[data-close-proposal-modal]') : null;
@@ -662,31 +662,31 @@
 </script>
 
 <!-- Proposal modal -->
-<div class="proposal-modal" id="proposalModal" role="dialog" aria-modal="true" aria-label="Р—Р°РєР°Р·Р°С‚СЊ РѕР±СЂР°С‚РЅС‹Р№ Р·РІРѕРЅРѕРє">
+<div class="proposal-modal" id="proposalModal" role="dialog" aria-modal="true" aria-label="Заказать обратный звонок">
   <div class="proposal-modal-card">
     <div class="proposal-modal-header">
       <div>
-        <h3>Р—Р°РєР°Р·Р°С‚СЊ<br>РѕР±СЂР°С‚РЅС‹Р№ Р·РІРѕРЅРѕРє</h3>
-        <p>РћСЃС‚Р°РІСЊС‚Рµ СЃРІРѕРё РєРѕРЅС‚Р°РєС‚С‹ вЂ” РјС‹ РїРµСЂРµР·РІРѕРЅРёРј<br>РІ С‚РµС‡РµРЅРёРµ 30 РјРёРЅСѓС‚</p>
+        <h3>Заказать<br>обратный звонок</h3>
+        <p>Оставьте свои контакты — мы перезвоним<br>в течение 30 минут</p>
       </div>
-      <button class="proposal-modal-close" data-close-proposal-modal aria-label="Р—Р°РєСЂС‹С‚СЊ">
+      <button class="proposal-modal-close" data-close-proposal-modal aria-label="Закрыть">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2L14 14M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
     </div>
     <form class="proposal-modal-form" onsubmit="return false;">
       <div class="proposal-modal-field">
-        <label>РРјСЏ</label>
-        <input type="text" placeholder="Р’Р°С€Рµ РёРјСЏ" autocomplete="name">
+        <label>Имя</label>
+        <input type="text" placeholder="Ваше имя" autocomplete="name">
       </div>
       <div class="proposal-modal-field">
-        <label>РўРµР»РµС„РѕРЅ</label>
+        <label>Телефон</label>
         <input type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel">
       </div>
       <div class="proposal-modal-field">
-        <label>РљРѕРјРјРµРЅС‚Р°СЂРёР№</label>
-        <textarea placeholder="РћРїРёС€РёС‚Рµ РІР°С€Сѓ Р·Р°РґР°С‡Сѓ РёР»Рё РІРѕРїСЂРѕСЃ"></textarea>
+        <label>Комментарий</label>
+        <textarea placeholder="Опишите вашу задачу или вопрос"></textarea>
       </div>
-      <button type="submit" class="proposal-modal-submit">РћС‚РїСЂР°РІРёС‚СЊ Р·Р°СЏРІРєСѓ</button>
+      <button type="submit" class="proposal-modal-submit">Отправить заявку</button>
     </form>
   </div>
 </div>
