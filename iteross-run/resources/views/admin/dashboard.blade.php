@@ -1906,16 +1906,16 @@
                         </div>
 
                         <div class="field">
-                            <label for="create-stock">РљРѕР»РёС‡РµСЃС‚РІРѕ, С€С‚.</label>
+                            <label for="create-stock">Количество, шт.</label>
                             <input id="create-stock" type="number" min="0" name="stock_quantity" value="{{ old('stock_quantity', 0) }}" required>
-                            <div class="field-note">РћСЃРЅРѕРІРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРІР°СЂР° РЅР° СЃРєР»Р°РґРµ РІ С€С‚СѓРєР°С….</div>
+                            <div class="field-note">Основное количество товара на складе в штуках.</div>
                         </div>
 
                         <div class="field">
                             <input type="hidden" name="unit_mode" value="pieces">
-                            <label for="create-unit-multiplier">РЁС‚СѓРє РІ СѓРїР°РєРѕРІРєРµ</label>
+                            <label for="create-unit-multiplier">Штук в упаковке</label>
                             <input id="create-unit-multiplier" type="number" min="1" name="unit_multiplier" value="{{ old('unit_multiplier', 1) }}" required>
-                            <div class="field-note">РЎРєРѕР»СЊРєРѕ С€С‚СѓРє СЃРѕРґРµСЂР¶РёС‚СЃСЏ РІ РѕРґРЅРѕР№ СѓРїР°РєРѕРІРєРµ. Р•СЃР»Рё СѓРїР°РєРѕРІРєР° РЅРµ РЅСѓР¶РЅР°, РѕСЃС‚Р°РІСЊС‚Рµ 1.</div>
+                            <div class="field-note">Сколько штук содержится в одной упаковке. Если упаковка не нужна, оставьте 1.</div>
                         </div>
 
 
@@ -2351,7 +2351,7 @@
                     } else {
                         fillCreateMode();
                     }
-                    modalDescription.textContent = 'РСЃРїСЂР°РІСЊС‚Рµ РѕС€РёР±РєРё РІ С„РѕСЂРјРµ Рё СЃРѕС…СЂР°РЅРёС‚Рµ РёР·РјРµРЅРµРЅРёСЏ РµС‰Рµ СЂР°Р·.';
+                    modalDescription.textContent = 'Исправьте ошибки в форме и сохраните изменения еще раз.';
                     openModal();
                     updateProductPreview();
                 }
