@@ -2760,7 +2760,6 @@
                 if ({{ old('_open_import_modal') === '1' || $errors->importProducts->isNotEmpty() ? 'true' : 'false' }}) {
                     openImportModal();
                 }
-                });
             })();
         </script>
     @endif
