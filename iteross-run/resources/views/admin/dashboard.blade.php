@@ -1912,10 +1912,17 @@
                         </div>
 
                         <div class="field">
-                            <input type="hidden" name="unit_mode" value="pieces">
+                            <label for="create-unit-mode">Единица продажи</label>
+                            <select id="create-unit-mode" name="unit_mode" data-unit-mode-select>
+                                <option value="pieces" @selected(old('unit_mode', 'pieces') === 'pieces')>Штуки</option>
+                                <option value="packs" @selected(old('unit_mode') === 'packs')>Упаковки</option>
+                            </select>
+                        </div>
+
+                        <div class="field" data-unit-multiplier-field @if(old('unit_mode', 'pieces') !== 'packs') style="display:none" @endif>
                             <label for="create-unit-multiplier">Штук в упаковке</label>
                             <input id="create-unit-multiplier" type="number" min="1" name="unit_multiplier" value="{{ old('unit_multiplier', 1) }}" required>
-                            <div class="field-note">Сколько штук содержится в одной упаковке. Если упаковка не нужна, оставьте 1.</div>
+                            <div class="field-note">Сколько штук содержится в одной упаковке.</div>
                         </div>
 
 
@@ -2760,6 +2767,25 @@
                 if ({{ old('_open_import_modal') === '1' || $errors->importProducts->isNotEmpty() ? 'true' : 'false' }}) {
                     openImportModal();
                 }
+
+                document.querySelectorAll('[data-unit-mode-select]').forEach(function (select) {
+                    function syncMultiplierField() {
+                        var field = select.closest('.field');
+                        var multiplierField = null;
+                        var next = field ? field.nextElementSibling : null;
+                        while (next) {
+                            if (next.hasAttribute('data-unit-multiplier-field')) {
+                                multiplierField = next;
+                                break;
+                            }
+                            next = next.nextElementSibling;
+                        }
+                        if (multiplierField) {
+                            multiplierField.style.display = select.value === 'packs' ? '' : 'none';
+                        }
+                    }
+                    select.addEventListener('change', syncMultiplierField);
+                });
             })();
         </script>
     @endif

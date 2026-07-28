@@ -13,12 +13,23 @@ class UpdateHomePageContentRequest extends FormRequest
 
     public function rules(): array
     {
+        if ($this->route('page') === 'header') {
+            return [
+                'phone'              => ['required', 'string', 'max:30'],
+                'email'              => ['required', 'email', 'max:200'],
+                'socials'            => ['required', 'array', 'size:3'],
+                'socials.*.type'     => ['required', 'string', 'in:whatsapp,telegram,viber'],
+                'socials.*.href'     => ['required', 'string', 'max:500'],
+                'socials.*.enabled'  => ['required', 'boolean'],
+            ];
+        }
+
         if ($this->route('page') === 'delivery') {
             return [
                 'hero.title' => ['required', 'string', 'max:255'],
                 'hero.lead' => ['required', 'string'],
 
-                'cards' => ['required', 'array', 'size:3'],
+                'cards' => ['required', 'array', 'size:2'],
                 'cards.*.title' => ['required', 'string', 'max:255'],
                 'cards.*.text' => ['required', 'string'],
 

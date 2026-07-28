@@ -1,10 +1,12 @@
 @php
+    use App\Modules\Admin\Application\UseCases\GetHeaderContent;
     use App\Modules\Admin\Application\UseCases\GetHomePageContent;
     use App\Modules\Favorites\Application\UseCases\GetFavoriteProductIdsForRequest;
     use App\Modules\Identity\Infrastructure\Persistence\Eloquent\User;
 
     $siteHeaderContent = app(GetHomePageContent::class)->handle();
     $siteHeaderNav = data_get($siteHeaderContent, 'header_nav', []);
+    $siteHeaderData = app(GetHeaderContent::class)->handle();
     $siteFavoriteCount = count(app(GetFavoriteProductIdsForRequest::class)->handle(request()));
     $siteUser = auth()->user();
     $siteAccountUrl = $siteUser?->role === User::ROLE_ADMIN ? route('admin.dashboard') : route('account');
@@ -21,19 +23,26 @@
 
         <div class="topbar-spacer"></div>
 
-        <a href="tel:+74951234567" class="topbar-phone">+7 (495) 123-45-67</a>
-        <a href="mailto:info@iteross.ru" class="topbar-email">info@iteross.ru</a>
+        @php
+            $sitePhone = data_get($siteHeaderData, 'phone', '+7 (495) 123-45-67');
+            $siteEmail = data_get($siteHeaderData, 'email', 'info@iteross.ru');
+            $siteSocials = data_get($siteHeaderData, 'socials', []);
+            $siteSocialSvgs = [
+                'whatsapp' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#5B6470" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#5B6470"/></svg>',
+                'telegram' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>',
+                'viber'    => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3.5c4.7 0 8.5 3.3 8.5 7.5 0 4.7-4 8.5-8.9 8.5-.7 0-1.5-.1-2.2-.3L5 20.5l1.4-3.6C4.9 15.6 3.5 13.4 3.5 11c0-4.2 3.8-7.5 8.5-7.5Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.4 8.7c.2-.4.5-.5.8-.5h.5c.2 0 .4 0 .6.4.2.5.6 1.6.7 1.7.1.2.1.4 0 .5-.1.2-.2.3-.4.4-.2.2-.3.3-.2.6.2.4.9 1.1 1.9 1.6.2.1.4.1.6-.1.2-.2.5-.6.7-.8.1-.2.3-.2.5-.1.2.1 1.2.6 1.4.7.2.1.3.2.3.4 0 .2 0 .8-.3 1.2-.3.4-1.1.6-1.9.4-1.3-.3-2.5-1.1-3.5-2.1-.8-.8-1.4-1.6-1.7-2.5-.2-.4-.1-.8 0-1.1Z" fill="#5B6470"/></svg>',
+            ];
+            $siteSocialLabels = ['whatsapp' => 'WhatsApp', 'telegram' => 'Telegram', 'viber' => 'Viber'];
+        @endphp
+        <a href="tel:{{ preg_replace('/[^+\d]/', '', $sitePhone) }}" class="topbar-phone">{{ $sitePhone }}</a>
+        <a href="mailto:{{ $siteEmail }}" class="topbar-email">{{ $siteEmail }}</a>
 
         <div class="social-row">
-            <a href="#" class="social-circle" aria-label="WhatsApp">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#5B6470" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#5B6470"/></svg>
-            </a>
-            <a href="#" class="social-circle" aria-label="Telegram">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
-            </a>
-            <a href="#" class="social-circle" aria-label="Viber">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3.5c4.7 0 8.5 3.3 8.5 7.5 0 4.7-4 8.5-8.9 8.5-.7 0-1.5-.1-2.2-.3L5 20.5l1.4-3.6C4.9 15.6 3.5 13.4 3.5 11c0-4.2 3.8-7.5 8.5-7.5Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.4 8.7c.2-.4.5-.5.8-.5h.5c.2 0 .4 0 .6.4.2.5.6 1.6.7 1.7.1.2.1.4 0 .5-.1.2-.2.3-.4.4-.2.2-.3.3-.2.6.2.4.9 1.1 1.9 1.6.2.1.4.1.6-.1.2-.2.5-.6.7-.8.1-.2.3-.2.5-.1.2.1 1.2.6 1.4.7.2.1.3.2.3.4 0 .2 0 .8-.3 1.2-.3.4-1.1.6-1.9.4-1.3-.3-2.5-1.1-3.5-2.1-.8-.8-1.4-1.6-1.7-2.5-.2-.4-.1-.8 0-1.1Z" fill="#5B6470"/></svg>
-            </a>
+            @foreach ($siteSocials as $social)
+                @if (!empty($social['enabled']))
+                    <a href="{{ $social['href'] ?? '#' }}" class="social-circle" aria-label="{{ $siteSocialLabels[$social['type']] ?? $social['type'] }}">{!! $siteSocialSvgs[$social['type']] ?? '' !!}</a>
+                @endif
+            @endforeach
         </div>
 
         <a href="{{ url('/#lead-form-section') }}" class="callback-button">Заказать обратный звонок</a>

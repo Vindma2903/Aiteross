@@ -445,6 +445,7 @@
             <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link">Заявки</a>
             <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link">Товары</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link{{ $selectedEditor === 'catalog' ? ' nav-link--active' : '' }}">Категории</a>
+            <a href="{{ route('admin.pages.editor', ['page' => 'header']) }}" class="nav-link{{ $selectedEditor === 'header' ? ' nav-link--active' : '' }}">Шапка</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'home']) }}" class="nav-link{{ $selectedEditor === 'home' ? ' nav-link--active' : '' }}">Главная</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'delivery']) }}" class="nav-link{{ $selectedEditor === 'delivery' ? ' nav-link--active' : '' }}">Доставка</a>
             <a href="{{ route('admin.pages.editor', ['page' => 'product']) }}" class="nav-link{{ $selectedEditor === 'product' ? ' nav-link--active' : '' }}">Карточка товара</a>
@@ -959,6 +960,66 @@
                     <div class="button-row">
                         <button type="submit" class="button-primary">Сохранить изменения</button>
                         <div class="note">Изменения сразу применяются на публичной странице доставки.</div>
+                    </div>
+                </div>
+            </form>
+        @elseif ($selectedEditor === 'header')
+            @php($hdr = $headerContent ?? [])
+            <form action="{{ route('admin.pages.update', ['page' => 'header']) }}" method="post">
+                @csrf
+                <div class="panel-list">
+                    <section class="panel">
+                        <h2>Контактные данные</h2>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="hdr_phone">Номер телефона</label>
+                                <input id="hdr_phone" type="text" name="phone" value="{{ old('phone', data_get($hdr, 'phone', '+7 (495) 123-45-67')) }}">
+                            </div>
+                            <div class="field">
+                                <label for="hdr_email">Email</label>
+                                <input id="hdr_email" type="email" name="email" value="{{ old('email', data_get($hdr, 'email', 'info@iteross.ru')) }}">
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <h2>Иконки социальных сетей</h2>
+                        @php
+                            $socialLabels = ['whatsapp' => 'WhatsApp', 'telegram' => 'Telegram', 'viber' => 'Viber'];
+                            $socials = data_get($hdr, 'socials', [
+                                ['type' => 'whatsapp', 'href' => '#', 'enabled' => true],
+                                ['type' => 'telegram', 'href' => '#', 'enabled' => true],
+                                ['type' => 'viber',    'href' => '#', 'enabled' => true],
+                            ]);
+                        @endphp
+                        <div class="switch-list">
+                            @foreach ($socials as $i => $social)
+                                @php($label = $socialLabels[$social['type']] ?? $social['type'])
+                                <div class="switch-row" style="flex-wrap:wrap; gap:8px; align-items:center;">
+                                    <div class="switch-copy" style="min-width:120px;">
+                                        <strong>{{ $label }}</strong>
+                                    </div>
+                                    <div class="field" style="flex:1; min-width:200px; margin:0;">
+                                        <input type="hidden" name="socials[{{ $i }}][type]" value="{{ $social['type'] }}">
+                                        <input type="text" name="socials[{{ $i }}][href]"
+                                               placeholder="https://wa.me/7..."
+                                               value="{{ old("socials.$i.href", $social['href'] ?? '#') }}"
+                                               style="width:100%;">
+                                    </div>
+                                    <label class="switch-control" style="margin-left:8px;">
+                                        <input type="hidden" name="socials[{{ $i }}][enabled]" value="0">
+                                        <input type="checkbox" name="socials[{{ $i }}][enabled]" value="1"
+                                               @checked(old("socials.$i.enabled", $social['enabled'] ?? true))>
+                                        <span class="switch-slider"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+
+                    <div class="button-row">
+                        <button type="submit" class="button-primary">Сохранить изменения</button>
+                        <div class="note">Изменения сразу применяются в шапке сайта.</div>
                     </div>
                 </div>
             </form>

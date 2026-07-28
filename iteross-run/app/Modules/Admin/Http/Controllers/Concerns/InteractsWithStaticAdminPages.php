@@ -12,6 +12,7 @@ trait InteractsWithStaticAdminPages
         'catalog' => ['label' => 'Категории', 'file' => 'Каталог.dc.html'],
         'delivery' => ['label' => 'Доставка', 'file' => 'Доставка.dc.html'],
         'product' => ['label' => 'Карточка товара', 'file' => 'Товар.dc.html'],
+        'header' => ['label' => 'Шапка', 'file' => ''],
         'account' => ['label' => 'Личный кабинет', 'file' => 'Личный кабинет.dc.html'],
         'auth' => ['label' => 'Авторизация', 'file' => 'Авторизация.dc.html'],
         'register' => ['label' => 'Регистрация', 'file' => 'Регистрация.dc.html'],

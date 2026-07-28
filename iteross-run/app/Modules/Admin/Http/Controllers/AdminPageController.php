@@ -4,9 +4,11 @@ namespace App\Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Admin\Application\UseCases\GetDeliveryPageContent;
+use App\Modules\Admin\Application\UseCases\GetHeaderContent;
 use App\Modules\Admin\Application\UseCases\GetHomePageContent;
 use App\Modules\Admin\Application\UseCases\GetProductPageSettings;
 use App\Modules\Admin\Application\UseCases\UpdateDeliveryPageContent;
+use App\Modules\Admin\Application\UseCases\UpdateHeaderContent;
 use App\Modules\Admin\Application\UseCases\UpdateProductPageSettings;
 use App\Modules\Admin\Application\UseCases\UpdateHomePageContent;
 use App\Modules\Admin\Http\Controllers\Concerns\InteractsWithStaticAdminPages;
@@ -27,6 +29,7 @@ class AdminPageController extends Controller
     public function editor(
         string $page,
         GetDeliveryPageContent $getDeliveryPageContent,
+        GetHeaderContent $getHeaderContent,
         GetHomePageContent $getHomePageContent,
         GetProductPageSettings $getProductPageSettings,
         GetCatalogFilterGroups $getCatalogFilterGroups,
@@ -35,6 +38,7 @@ class AdminPageController extends Controller
         abort_unless(isset($this->staticPages()[$page]), 404);
 
         $deliveryPageContent = $page === 'delivery' ? $getDeliveryPageContent->handle() : null;
+        $headerContent = $page === 'header' ? $getHeaderContent->handle() : null;
         $homePageContent = $page === 'home' ? $getHomePageContent->handle() : null;
         $productPageSettings = $page === 'product' ? $getProductPageSettings->handle() : null;
 
@@ -47,6 +51,7 @@ class AdminPageController extends Controller
             'selectedEditorMeta' => $this->staticPages()[$page],
             'editorDefinition' => $this->editorDefinitions($page),
             'deliveryPageContent' => $deliveryPageContent,
+            'headerContent' => $headerContent,
             'homePageContent' => $homePageContent,
             'productPageSettings' => $productPageSettings,
             'catalogCategories' => $page === 'home'
@@ -60,10 +65,19 @@ class AdminPageController extends Controller
         string $page,
         UpdateHomePageContentRequest $request,
         UpdateDeliveryPageContent $updateDeliveryPageContent,
+        UpdateHeaderContent $updateHeaderContent,
         UpdateHomePageContent $updateHomePageContent,
         UpdateProductPageSettings $updateProductPageSettings,
     ): RedirectResponse {
-        abort_unless(in_array($page, ['home', 'delivery', 'product'], true), 404);
+        abort_unless(in_array($page, ['home', 'delivery', 'header', 'product'], true), 404);
+
+        if ($page === 'header') {
+            $updateHeaderContent->handle($request->validated());
+
+            return redirect()
+                ->route('admin.pages.editor', ['page' => 'header'])
+                ->with('status', 'Данные шапки сохранены.');
+        }
 
         if ($page === 'delivery') {
             $updateDeliveryPageContent->handle($request->validated());
