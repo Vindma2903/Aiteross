@@ -474,6 +474,7 @@
 
         <button class="save-btn" onclick="saveProfile()">Сохранить изменения</button>
         <span id="profile-saved" style="display:none;margin-left:14px;font-size:14px;color:#2E7D32;font-weight:600;">Сохранено</span>
+        <span id="profile-error" style="display:none;margin-left:14px;font-size:14px;color:#C0392B;font-weight:600;"></span>
       </div>
 
       <!-- Password change -->
@@ -497,6 +498,7 @@
 
         <button class="save-btn" onclick="savePassword()">Изменить пароль</button>
         <span id="password-saved" style="display:none;margin-left:14px;font-size:14px;color:#2E7D32;font-weight:600;">Пароль изменён</span>
+        <span id="password-error" style="display:none;margin-left:14px;font-size:14px;color:#C0392B;font-weight:600;"></span>
       </div>
     </div>
 
@@ -601,18 +603,71 @@
 
   // ── Profile save ──
   window.saveProfile = function () {
-    var el = document.getElementById('profile-saved');
-    el.style.display = 'inline';
-    setTimeout(function () { el.style.display = 'none'; }, 2500);
+    var msgOk  = document.getElementById('profile-saved');
+    var msgErr = document.getElementById('profile-error');
+    msgOk.style.display  = 'none';
+    msgErr.style.display = 'none';
+
+    fetch('{{ route('account.profile.update') }}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+      body: JSON.stringify({
+        first_name: document.getElementById('inp-firstname').value,
+        last_name:  document.getElementById('inp-lastname').value,
+        email:      document.getElementById('inp-email').value,
+        phone:      document.getElementById('inp-phone').value,
+      }),
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (data.ok) {
+        msgOk.style.display = 'inline';
+        setTimeout(function () { msgOk.style.display = 'none'; }, 2500);
+      } else {
+        var text = data.errors ? Object.values(data.errors).flat().join(' ') : (data.message || 'Ошибка');
+        msgErr.textContent = text;
+        msgErr.style.display = 'inline';
+      }
+    })
+    .catch(function () {
+      msgErr.textContent = 'Ошибка соединения';
+      msgErr.style.display = 'inline';
+    });
   };
 
   window.savePassword = function () {
-    var el = document.getElementById('password-saved');
-    document.getElementById('inp-pass-current').value = '';
-    document.getElementById('inp-pass-new').value = '';
-    document.getElementById('inp-pass-confirm').value = '';
-    el.style.display = 'inline';
-    setTimeout(function () { el.style.display = 'none'; }, 2500);
+    var msgOk  = document.getElementById('password-saved');
+    var msgErr = document.getElementById('password-error');
+    msgOk.style.display  = 'none';
+    msgErr.style.display = 'none';
+
+    fetch('{{ route('account.password.update') }}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+      body: JSON.stringify({
+        current_password:      document.getElementById('inp-pass-current').value,
+        password:              document.getElementById('inp-pass-new').value,
+        password_confirmation: document.getElementById('inp-pass-confirm').value,
+      }),
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (data.ok) {
+        document.getElementById('inp-pass-current').value = '';
+        document.getElementById('inp-pass-new').value = '';
+        document.getElementById('inp-pass-confirm').value = '';
+        msgOk.style.display = 'inline';
+        setTimeout(function () { msgOk.style.display = 'none'; }, 2500);
+      } else {
+        var text = data.errors ? Object.values(data.errors).flat().join(' ') : (data.error || data.message || 'Ошибка');
+        msgErr.textContent = text;
+        msgErr.style.display = 'inline';
+      }
+    })
+    .catch(function () {
+      msgErr.textContent = 'Ошибка соединения';
+      msgErr.style.display = 'inline';
+    });
   };
 
 

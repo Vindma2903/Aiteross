@@ -11,6 +11,7 @@ use App\Modules\Catalog\Http\Controllers\HomeController;
 use App\Modules\Catalog\Http\Controllers\ProductController;
 use App\Modules\Favorites\Http\Controllers\FavoriteController;
 use App\Modules\Identity\Http\Controllers\AccountController;
+use App\Modules\Identity\Http\Controllers\AccountUpdateController;
 use App\Modules\Identity\Http\Controllers\AdminLoginController;
 use App\Modules\Identity\Http\Controllers\AdminSecurityController;
 use App\Modules\Identity\Http\Controllers\AdminTwoFactorController;
@@ -47,6 +48,8 @@ Route::post('/admin/two-factor', [AdminTwoFactorController::class, 'store'])->na
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/account', AccountController::class)->name('account');
+    Route::post('/account/profile', [AccountUpdateController::class, 'profile'])->name('account.profile.update');
+    Route::post('/account/password', [AccountUpdateController::class, 'password'])->name('account.password.update');
 });
 
 Route::middleware('auth')->group(function () {
