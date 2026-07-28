@@ -344,7 +344,60 @@
             .main { padding: 20px; }
             .field-grid { grid-template-columns: 1fr; }
         }
+
+        /* Image upload */
+        .img-upload-wrap { display: flex; flex-direction: column; gap: 10px; }
+        .img-preview {
+            width: 100%;
+            height: 120px;
+            border: 1.5px solid #d6dae0;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f5f7fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .img-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .img-preview-empty {
+            color: #aab2bf;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            padding: 12px;
+        }
+        .img-upload-row { display: flex; gap: 8px; align-items: stretch; }
+        .img-upload-row input[type="text"] { flex: 1; margin: 0; }
+        .img-upload-btn {
+            flex: none;
+            min-height: 44px;
+            padding: 0 14px;
+            border: 1.5px solid #d6dae0;
+            border-radius: 10px;
+            background: #fff;
+            color: var(--blue);
+            font: inherit;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background .15s, border-color .15s;
+        }
+        .img-upload-btn:hover { background: #eef3fb; border-color: #b0c4e8; }
+        .img-upload-btn.is-loading { opacity: .6; pointer-events: none; }
+        .img-upload-error {
+            font-size: 13px;
+            color: #c43d3d;
+            padding: 8px 12px;
+            background: #fff3f3;
+            border: 1px solid #f1c7c7;
+            border-radius: 8px;
+        }
     </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 @if (session('status'))
@@ -451,8 +504,24 @@
                                 <input id="hero_cta_text" type="text" name="hero[cta_text]" value="{{ old('hero.cta_text', $homePageContent['hero']['cta_text']) }}">
                             </div>
                             <div class="field">
-                                <label for="hero_background_image">URL фотографии</label>
-                                <input id="hero_background_image" type="text" name="hero[background_image]" value="{{ old('hero.background_image', $homePageContent['hero']['background_image']) }}">
+                                <label for="hero_background_image">Фотография</label>
+                                <div class="img-upload-wrap" data-img-field>
+                                    <div class="img-preview" data-img-preview>
+                                        @php $heroImg = old('hero.background_image', $homePageContent['hero']['background_image']); @endphp
+                                        @if($heroImg)
+                                            <img src="{{ $heroImg }}" alt="">
+                                        @else
+                                            <div class="img-preview-empty">Нет изображения</div>
+                                        @endif
+                                    </div>
+                                    <div class="img-upload-row">
+                                        <input id="hero_background_image" type="text" name="hero[background_image]" value="{{ $heroImg }}" placeholder="/home-media/hero.jpg" data-img-url>
+                                        <button type="button" class="img-upload-btn" data-img-pick>
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                            Загрузить
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -607,8 +676,23 @@
                                             </select>
                                         </div>
                                         <div class="field">
-                                            <label>URL фотографии</label>
-                                            <input type="text" name="work_types[items][{{ $index }}][image]" value="{{ $item['image'] }}">
+                                            <label>Фотография</label>
+                                            <div class="img-upload-wrap" data-img-field>
+                                                <div class="img-preview" data-img-preview>
+                                                    @if($item['image'])
+                                                        <img src="{{ $item['image'] }}" alt="">
+                                                    @else
+                                                        <div class="img-preview-empty">Нет изображения</div>
+                                                    @endif
+                                                </div>
+                                                <div class="img-upload-row">
+                                                    <input type="text" name="work_types[items][{{ $index }}][image]" value="{{ $item['image'] }}" placeholder="/home-media/work-b.jpg" data-img-url>
+                                                    <button type="button" class="img-upload-btn" data-img-pick>
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                                        Загрузить
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="field field--full">
                                             <label>Описание</label>
@@ -639,8 +723,24 @@
                                 <textarea name="about[text]">{{ old('about.text', $homePageContent['about']['text']) }}</textarea>
                             </div>
                             <div class="field">
-                                <label>URL фотографии</label>
-                                <input type="text" name="about[image]" value="{{ old('about.image', $homePageContent['about']['image']) }}">
+                                <label>Фотография</label>
+                                <div class="img-upload-wrap" data-img-field>
+                                    <div class="img-preview" data-img-preview>
+                                        @php $aboutImg = old('about.image', $homePageContent['about']['image']); @endphp
+                                        @if($aboutImg)
+                                            <img src="{{ $aboutImg }}" alt="">
+                                        @else
+                                            <div class="img-preview-empty">Нет изображения</div>
+                                        @endif
+                                    </div>
+                                    <div class="img-upload-row">
+                                        <input type="text" name="about[image]" value="{{ $aboutImg }}" placeholder="/home-media/about.jpg" data-img-url>
+                                        <button type="button" class="img-upload-btn" data-img-pick>
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                            Загрузить
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -1189,6 +1289,80 @@
     if (toastClose) {
         toastClose.addEventListener('click', hideToast);
     }
+
+    // Image upload
+    const UPLOAD_URL = '{{ route('admin.images.upload') }}';
+    const CSRF = document.querySelector('meta[name="csrf-token"]').content;
+
+    function updatePreview(wrap, url) {
+        const preview = wrap.querySelector('[data-img-preview]');
+        if (!preview) return;
+        if (url) {
+            preview.innerHTML = '<img src="' + url + '" alt="">';
+        } else {
+            preview.innerHTML = '<div class="img-preview-empty">Нет изображения</div>';
+        }
+    }
+
+    document.querySelectorAll('[data-img-url]').forEach(function (urlInput) {
+        urlInput.addEventListener('input', function () {
+            const wrap = urlInput.closest('[data-img-field]');
+            updatePreview(wrap, urlInput.value.trim());
+        });
+    });
+
+    document.querySelectorAll('[data-img-pick]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const wrap = btn.closest('[data-img-field]');
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/jpeg,image/png,image/webp';
+            fileInput.style.display = 'none';
+            document.body.appendChild(fileInput);
+
+            fileInput.addEventListener('change', function () {
+                const file = fileInput.files[0];
+                document.body.removeChild(fileInput);
+                if (!file) return;
+
+                const errorEl = wrap.querySelector('.img-upload-error');
+                if (errorEl) errorEl.remove();
+
+                btn.classList.add('is-loading');
+                btn.textContent = 'Загрузка…';
+
+                const fd = new FormData();
+                fd.append('image', file);
+                fd.append('_token', CSRF);
+
+                fetch(UPLOAD_URL, { method: 'POST', body: fd })
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        if (data.url) {
+                            const urlInput = wrap.querySelector('[data-img-url]');
+                            if (urlInput) {
+                                urlInput.value = data.url;
+                            }
+                            updatePreview(wrap, data.url);
+                        } else {
+                            throw new Error(data.message || 'Ошибка загрузки');
+                        }
+                    })
+                    .catch(function (err) {
+                        const errDiv = document.createElement('div');
+                        errDiv.className = 'img-upload-error';
+                        errDiv.textContent = err.message || 'Не удалось загрузить изображение';
+                        wrap.appendChild(errDiv);
+                    })
+                    .finally(function () {
+                        btn.classList.remove('is-loading');
+                        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Загрузить';
+                    });
+            });
+
+            fileInput.click();
+        });
+    });
 </script>
 </body>
 </html>

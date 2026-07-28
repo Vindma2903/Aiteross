@@ -21,13 +21,13 @@ class ImportProductsFromSpreadsheet
         $rows = $this->readRows($file);
 
         if ($rows === []) {
-            throw new RuntimeException('Р¤Р°Р№Р» РїСѓСЃС‚РѕР№. Р”РѕР±Р°РІСЊС‚Рµ С…РѕС‚СЏ Р±С‹ РѕРґРЅСѓ СЃС‚СЂРѕРєСѓ СЃ С‚РѕРІР°СЂРѕРј.');
+            throw new RuntimeException('Файл пустой. Добавьте хотя бы одну строку с товаром.');
         }
 
         $headers = $this->normalizeHeaders(array_shift($rows));
 
         if (! in_array('name', $headers, true) || ! in_array('sku', $headers, true)) {
-            throw new RuntimeException('Р’ С„Р°Р№Р»Рµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РєРѕР»РѕРЅРєРё "РќР°Р·РІР°РЅРёРµ" Рё "РђСЂС‚РёРєСѓР»".');
+            throw new RuntimeException('В файле должны быть колонки "Название" и "Артикул".');
         }
 
         $counts = [
@@ -88,7 +88,7 @@ class ImportProductsFromSpreadsheet
         });
 
         if (($counts['created'] + $counts['updated']) === 0) {
-            throw new RuntimeException('Р’ С„Р°Р№Р»Рµ РЅРµ РЅР°Р№РґРµРЅРѕ РЅРё РѕРґРЅРѕР№ РєРѕСЂСЂРµРєС‚РЅРѕР№ СЃС‚СЂРѕРєРё РґР»СЏ РёРјРїРѕСЂС‚Р°.');
+            throw new RuntimeException('В файле не найдено ни одной корректной строки для импорта.');
         }
 
         return $counts;
@@ -104,7 +104,7 @@ class ImportProductsFromSpreadsheet
         return match ($extension) {
             'xlsx' => $this->readXlsxRows($file),
             'csv', 'txt' => $this->readCsvRows($file),
-            default => throw new RuntimeException('РќРµРїРѕРґРґРµСЂР¶РёРІР°РµРјС‹Р№ С„РѕСЂРјР°С‚ С„Р°Р№Р»Р°.'),
+            default => throw new RuntimeException('Неподдерживаемый формат файла.'),
         };
     }
 
@@ -115,12 +115,12 @@ class ImportProductsFromSpreadsheet
     {
         $path = $file->getRealPath();
         if (! $path || ! is_file($path)) {
-            throw new RuntimeException('РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ CSV-С„Р°Р№Р».');
+            throw new RuntimeException('Не удалось прочитать CSV-файл.');
         }
 
         $handle = fopen($path, 'rb');
         if ($handle === false) {
-            throw new RuntimeException('РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ CSV-С„Р°Р№Р».');
+            throw new RuntimeException('Не удалось открыть CSV-файл.');
         }
 
         $firstLine = fgets($handle) ?: '';
@@ -145,12 +145,12 @@ class ImportProductsFromSpreadsheet
     {
         $path = $file->getRealPath();
         if (! $path || ! is_file($path)) {
-            throw new RuntimeException('РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ Excel-С„Р°Р№Р».');
+            throw new RuntimeException('Не удалось прочитать Excel-файл.');
         }
 
         $zip = new ZipArchive();
         if ($zip->open($path) !== true) {
-            throw new RuntimeException('РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ Excel-С„Р°Р№Р».');
+            throw new RuntimeException('Не удалось открыть Excel-файл.');
         }
 
         $sharedStrings = $this->readSharedStrings($zip);
@@ -159,32 +159,26 @@ class ImportProductsFromSpreadsheet
 
         if ($worksheetXml === false) {
             $zip->close();
-            throw new RuntimeException('РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ РїРµСЂРІС‹Р№ Р»РёСЃС‚ Excel-С„Р°Р№Р»Р°.');
+            throw new RuntimeException('Не удалось прочитать первый лист Excel-файла.');
         }
 
-        $worksheet = simplexml_load_string($worksheetXml);
+        $worksheet = simplexml_load_string($this->stripXmlNamespaces($worksheetXml));
         if (! $worksheet instanceof SimpleXMLElement) {
             $zip->close();
-            throw new RuntimeException('РџРѕРІСЂРµР¶РґС‘РЅ Р»РёСЃС‚ Excel-С„Р°Р№Р»Р°.');
+            throw new RuntimeException('Повреждён лист Excel-файла.');
         }
 
-        $namespaces = $worksheet->getNamespaces(true);
-        $mainNs = $namespaces[''] ?? null;
-        if ($mainNs) {
-            $worksheet->registerXPathNamespace('x', $mainNs);
-        }
-
-        $rowNodes = $worksheet->xpath($mainNs ? '//x:sheetData/x:row' : '//sheetData/row') ?: [];
+        $rowNodes = $worksheet->xpath('//sheetData/row') ?: [];
         $rows = [];
 
         foreach ($rowNodes as $rowNode) {
             $cells = [];
-            $cellNodes = $rowNode->xpath($mainNs ? 'x:c' : 'c') ?: [];
+            $cellNodes = $rowNode->xpath('c') ?: [];
 
             foreach ($cellNodes as $cell) {
                 $reference = (string) ($cell['r'] ?? '');
                 $columnIndex = $this->columnLettersToIndex(preg_replace('/\d+/', '', $reference));
-                $cells[$columnIndex] = $this->extractCellValue($cell, $sharedStrings, $mainNs);
+                $cells[$columnIndex] = $this->extractCellValue($cell, $sharedStrings);
             }
 
             if ($cells === []) {
@@ -218,22 +212,16 @@ class ImportProductsFromSpreadsheet
             return [];
         }
 
-        $sharedStrings = simplexml_load_string($xml);
+        $sharedStrings = simplexml_load_string($this->stripXmlNamespaces($xml));
         if (! $sharedStrings instanceof SimpleXMLElement) {
             return [];
         }
 
-        $namespaces = $sharedStrings->getNamespaces(true);
-        $mainNs = $namespaces[''] ?? null;
-        if ($mainNs) {
-            $sharedStrings->registerXPathNamespace('x', $mainNs);
-        }
-
-        $items = $sharedStrings->xpath($mainNs ? '//x:si' : '//si') ?: [];
+        $items = $sharedStrings->xpath('//si') ?: [];
         $strings = [];
 
         foreach ($items as $item) {
-            $parts = $item->xpath($mainNs ? './/x:t' : './/t') ?: [];
+            $parts = $item->xpath('.//t') ?: [];
             $strings[] = trim(implode('', array_map(fn ($part): string => (string) $part, $parts)));
         }
 
@@ -242,45 +230,25 @@ class ImportProductsFromSpreadsheet
 
     private function resolveFirstWorksheetPath(ZipArchive $zip): string
     {
-        $workbookXml = $zip->getFromName('xl/workbook.xml');
         $relsXml = $zip->getFromName('xl/_rels/workbook.xml.rels');
+        $workbookXml = $zip->getFromName('xl/workbook.xml');
 
-        if ($workbookXml === false || $relsXml === false) {
+        if ($relsXml === false || $workbookXml === false) {
             return 'xl/worksheets/sheet1.xml';
         }
 
-        $workbook = simplexml_load_string($workbookXml);
-        $relationships = simplexml_load_string($relsXml);
+        // Extract the r:id of the first sheet from the raw XML to avoid namespace issues
+        if (! preg_match('/<sheet\b[^>]*\br:id="([^"]+)"/', $workbookXml, $m)) {
+            return 'xl/worksheets/sheet1.xml';
+        }
+        $relationshipId = $m[1];
 
-        if (! $workbook instanceof SimpleXMLElement || ! $relationships instanceof SimpleXMLElement) {
+        $relationships = simplexml_load_string($this->stripXmlNamespaces($relsXml));
+        if (! $relationships instanceof SimpleXMLElement) {
             return 'xl/worksheets/sheet1.xml';
         }
 
-        $workbookNamespaces = $workbook->getNamespaces(true);
-        $mainNs = $workbookNamespaces[''] ?? null;
-        $relNs = $workbookNamespaces['r'] ?? null;
-
-        if ($mainNs) {
-            $workbook->registerXPathNamespace('x', $mainNs);
-        }
-        if ($relNs) {
-            $workbook->registerXPathNamespace('r', $relNs);
-        }
-
-        $sheet = ($workbook->xpath($mainNs ? '//x:sheets/x:sheet[1]' : '//sheets/sheet[1]') ?: [])[0] ?? null;
-        $relationshipId = $sheet ? (string) $sheet->attributes($relNs, true)?->id : '';
-
-        if ($relationshipId === '') {
-            return 'xl/worksheets/sheet1.xml';
-        }
-
-        $relationshipNamespaces = $relationships->getNamespaces(true);
-        $relationshipNs = $relationshipNamespaces[''] ?? null;
-        if ($relationshipNs) {
-            $relationships->registerXPathNamespace('r', $relationshipNs);
-        }
-
-        $relation = ($relationships->xpath($relationshipNs ? "//r:Relationship[@Id='{$relationshipId}']" : "//Relationship[@Id='{$relationshipId}']") ?: [])[0] ?? null;
+        $relation = ($relationships->xpath("//Relationship[@Id='{$relationshipId}']") ?: [])[0] ?? null;
         $target = $relation ? (string) ($relation['Target'] ?? '') : '';
 
         if ($target === '') {
@@ -290,11 +258,11 @@ class ImportProductsFromSpreadsheet
         return str_starts_with($target, 'xl/') ? $target : 'xl/'.$target;
     }
 
-    private function extractCellValue(SimpleXMLElement $cell, array $sharedStrings, ?string $mainNs): string
+    private function extractCellValue(SimpleXMLElement $cell, array $sharedStrings): string
     {
         $type = (string) ($cell['t'] ?? '');
-        $valueNode = ($cell->xpath($mainNs ? 'x:v' : 'v') ?: [])[0] ?? null;
-        $inlineNode = ($cell->xpath($mainNs ? 'x:is/x:t' : 'is/t') ?: [])[0] ?? null;
+        $valueNode = ($cell->xpath('v') ?: [])[0] ?? null;
+        $inlineNode = ($cell->xpath('is/t') ?: [])[0] ?? null;
 
         return match ($type) {
             's' => $sharedStrings[(int) ($valueNode ? (string) $valueNode : 0)] ?? '',
@@ -302,6 +270,11 @@ class ImportProductsFromSpreadsheet
             'b' => ((string) $valueNode) === '1' ? '1' : '0',
             default => (string) ($valueNode ?? ''),
         };
+    }
+
+    private function stripXmlNamespaces(string $xml): string
+    {
+        return preg_replace('/\s+xmlns(?::\w+)?="[^"]*"/', '', $xml);
     }
 
     private function detectDelimiter(string $line): string
@@ -355,7 +328,7 @@ class ImportProductsFromSpreadsheet
             $normalized = Str::of((string) $header)
                 ->trim()
                 ->lower()
-                ->replace(['С‘'], 'Рµ')
+                ->replace(['ё'], 'е')
                 ->replace(['"', "'", '`'], '')
                 ->replace(['-', ' '], '_')
                 ->replace(['/', '\\'], '_')
@@ -363,15 +336,15 @@ class ImportProductsFromSpreadsheet
                 ->toString();
 
             return match ($normalized) {
-                'РЅР°Р·РІР°РЅРёРµ', 'name', 'product_name', 'С‚РѕРІР°СЂ' => 'name',
-                'Р°СЂС‚РёРєСѓР»', 'sku', 'РєРѕРґ', 'article' => 'sku',
-                'РѕРїРёСЃР°РЅРёРµ', 'description', 'desc' => 'description',
-                'С†РµРЅР°', 'price', 'СЃС‚РѕРёРјРѕСЃС‚СЊ' => 'price',
-                'РѕСЃС‚Р°С‚РѕРє', 'stock', 'stock_quantity', 'РєРѕР»РёС‡РµСЃС‚РІРѕ' => 'stock_quantity',
-                'РІРёРґРёРјРѕСЃС‚СЊ', 'is_visible', 'visible', 'РїРѕРєР°Р·С‹РІР°С‚СЊ' => 'is_visible',
-                'РµРґРёРЅРёС†Р°', 'unit', 'unit_mode', 'С‚РёРї_РµРґРёРЅРёС†С‹' => 'unit_mode',
-                'РјРЅРѕР¶РёС‚РµР»СЊ', 'unit_multiplier', 'multiplier', 'РІ_СѓРїР°РєРѕРІРєРµ' => 'unit_multiplier',
-                'РєР°С‚РµРіРѕСЂРёСЏ', 'category', 'category_name' => 'category',
+                'название', 'name', 'product_name', 'товар' => 'name',
+                'артикул', 'sku', 'код', 'article' => 'sku',
+                'описание', 'description', 'desc' => 'description',
+                'цена', 'price', 'стоимость' => 'price',
+                'остаток', 'stock', 'stock_quantity', 'количество' => 'stock_quantity',
+                'видимость', 'is_visible', 'visible', 'показывать' => 'is_visible',
+                'единица', 'unit', 'unit_mode', 'тип_единицы' => 'unit_mode',
+                'множитель', 'unit_multiplier', 'multiplier', 'в_упаковке' => 'unit_multiplier',
+                'категория', 'category', 'category_name' => 'category',
                 default => $normalized,
             };
         }, $headers);
@@ -431,7 +404,7 @@ class ImportProductsFromSpreadsheet
             return $default;
         }
 
-        return in_array($string, ['1', 'true', 'yes', 'y', 'РґР°', 'РїРѕРєР°Р·С‹РІР°С‚СЊ', 'РІРёРґРµРЅ'], true);
+        return in_array($string, ['1', 'true', 'yes', 'y', 'да', 'показывать', 'виден'], true);
     }
 
     private function parseUnitMode(mixed $value): string
@@ -439,7 +412,7 @@ class ImportProductsFromSpreadsheet
         $string = mb_strtolower($this->stringValue($value));
 
         return match ($string) {
-            'packs', 'pack', 'package', 'СѓРїР°РєРѕРІРєРё', 'СѓРїР°РєРѕРІРєР°', 'СѓРїР°Рє', 'РєРѕСЂРѕР±РєР°' => Product::UNIT_MODE_PACKS,
+            'packs', 'pack', 'package', 'упаковки', 'упаковка', 'упак', 'коробка' => Product::UNIT_MODE_PACKS,
             default => Product::UNIT_MODE_PIECES,
         };
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Admin\Http\Controllers\AdminCatalogController;
+use App\Modules\Admin\Http\Controllers\AdminImageController;
 use App\Modules\Admin\Http\Controllers\AdminDashboardController;
 use App\Modules\Admin\Http\Controllers\AdminPageController;
 use App\Modules\Admin\Http\Controllers\AdminProductController;
@@ -78,4 +79,5 @@ Route::middleware(['auth', 'role:admin', '2fa'])->group(function () {
     Route::post('/admin/security/2fa/setup', [AdminSecurityController::class, 'setup'])->name('admin.security.2fa.setup');
     Route::post('/admin/security/2fa/confirm', [AdminSecurityController::class, 'confirm'])->name('admin.security.2fa.confirm');
     Route::post('/admin/security/2fa/disable', [AdminSecurityController::class, 'disable'])->name('admin.security.2fa.disable');
+    Route::post('/admin/images/upload', [AdminImageController::class, 'upload'])->name('admin.images.upload');
 });
