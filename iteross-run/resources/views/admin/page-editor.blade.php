@@ -967,6 +967,12 @@
             </form>
         @elseif ($selectedEditor === 'header')
             @php($hdr = $headerContent ?? [])
+            @php(logger()->debug('Rendering admin.page-editor header branch', [
+                'selectedEditor' => $selectedEditor,
+                'header_keys' => is_array($hdr) ? array_keys($hdr) : [],
+                'header_nav_count' => is_array(data_get($hdr, 'header_nav')) ? count(data_get($hdr, 'header_nav')) : 0,
+                'socials_count' => is_array(data_get($hdr, 'socials')) ? count(data_get($hdr, 'socials')) : 0,
+            ]))
             <form action="{{ route('admin.pages.update', ['page' => 'header']) }}" method="post">
                 @csrf
                 <div class="panel-list">

@@ -20,6 +20,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AdminPageController extends Controller
@@ -41,6 +42,17 @@ class AdminPageController extends Controller
         $headerContent = $page === 'header' ? $getHeaderContent->handle() : null;
         $homePageContent = $page === 'home' ? $getHomePageContent->handle() : null;
         $productPageSettings = $page === 'product' ? $getProductPageSettings->handle() : null;
+
+        if ($page === 'header') {
+            Log::debug('Admin header editor payload prepared', [
+                'page' => $page,
+                'header_content_keys' => is_array($headerContent) ? array_keys($headerContent) : [],
+                'header_nav_count' => is_array(data_get($headerContent, 'header_nav')) ? count(data_get($headerContent, 'header_nav')) : 0,
+                'socials_count' => is_array(data_get($headerContent, 'socials')) ? count(data_get($headerContent, 'socials')) : 0,
+                'has_phone' => filled(data_get($headerContent, 'phone')),
+                'has_email' => filled(data_get($headerContent, 'email')),
+            ]);
+        }
 
         return view('admin.page-editor', [
             'userCount' => User::query()->where('role', User::ROLE_USER)->count(),
