@@ -865,7 +865,7 @@
                 </div>
             </form>
         @elseif ($selectedEditor === 'delivery')
-            @php($delivery = $deliveryPageContent ?? [])
+            @php $delivery = $deliveryPageContent ?? []; @endphp
             <form action="{{ route('admin.pages.update', ['page' => 'delivery']) }}" method="post">
                 @csrf
                 <div class="panel-list">
@@ -965,7 +965,7 @@
                 </div>
             </form>
         @elseif ($selectedEditor === 'header')
-            @php($hdr = $headerContent ?? [])
+            @php $hdr = $headerContent ?? []; @endphp
             <form action="{{ route('admin.pages.update', ['page' => 'header']) }}" method="post">
                 @csrf
                 <div class="panel-list">
@@ -985,7 +985,7 @@
 
                     <section class="panel">
                         <h2>Иконки социальных сетей</h2>
-                        @php($socialLabels = ['telegram' => 'Телеграм', 'max' => 'Max', 'vichat' => 'Вичат'])
+                        @php $socialLabels = ['telegram' => 'Телеграм', 'max' => 'Max', 'vichat' => 'Вичат']; @endphp
                         <div class="repeater" data-repeater="header-nav" style="margin-bottom: 18px;">
                             @foreach (old('header_nav', data_get($hdr, 'header_nav', [])) as $index => $item)
                                 <div class="repeater-item" data-repeater-item>
@@ -1019,7 +1019,7 @@
                         @endphp
                         <div class="switch-list">
                             @foreach ($socials as $i => $social)
-                                @php($label = $socialLabels[$social['type']] ?? $social['type'])
+                                @php $label = $socialLabels[$social['type']] ?? $social['type']; @endphp
                                 <div class="switch-row" style="flex-wrap:wrap; gap:16px; align-items:flex-start;">
                                     <div class="switch-copy" style="min-width:120px;">
                                         <strong>{{ $label }}</strong>
@@ -1069,7 +1069,7 @@
                 </div>
             </form>
         @elseif ($selectedEditor === 'product')
-            @php($settings = $productPageSettings ?? [])
+            @php $settings = $productPageSettings ?? []; @endphp
             <form action="{{ route('admin.pages.update', ['page' => 'product']) }}" method="post">
                 @csrf
                 <div class="panel-list">
