@@ -986,8 +986,8 @@
 
                     <section class="panel">
                         <h2>Иконки социальных сетей</h2>
-                        @php($socialLabels = ['whatsapp' => 'WhatsApp', 'telegram' => 'Telegram', 'viber' => 'Viber'])
-                        @php($socials = data_get($hdr, 'socials', [['type' => 'whatsapp', 'href' => '#', 'enabled' => true], ['type' => 'telegram', 'href' => '#', 'enabled' => true], ['type' => 'viber', 'href' => '#', 'enabled' => true]]))
+                        @php($socialLabels = ['telegram' => 'Телеграм', 'max' => 'Max', 'vichat' => 'Вичат'])
+                        @php($socials = data_get($hdr, 'socials', [['type' => 'telegram', 'href' => '#', 'enabled' => true], ['type' => 'max', 'href' => '#', 'enabled' => true], ['type' => 'vichat', 'href' => '#', 'enabled' => true]]))
                         <div class="switch-list">
                             @foreach ($socials as $i => $social)
                                 @php($label = $socialLabels[$social['type']] ?? $social['type'])

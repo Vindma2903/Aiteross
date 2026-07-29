@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $product->name }} | РђР™РўР•Р РћРЎРЎ</title>
+    <title>{{ $product->name }} | АЙТЕРОСС</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
@@ -668,9 +668,9 @@
             <div class="topbar">
                 <div class="container topbar-inner">
                     <nav class="topbar-nav">
-                        <a href="{{ url('/#about') }}">Рћ РєРѕРјРїР°РЅРёРё</a>
-                        <a href="{{ route('delivery') }}">РЈСЃР»РѕРІРёСЏ РїРѕРєСѓРїРєРё</a>
-                        <a href="{{ url('/#footer') }}">РљРѕРЅС‚Р°РєС‚С‹</a>
+                        <a href="{{ url('/#about') }}">О компании</a>
+                        <a href="{{ route('delivery') }}">Условия покупки</a>
+                        <a href="{{ url('/#footer') }}">Контакты</a>
                     </nav>
                     <div class="topbar-spacer"></div>
                     <a href="tel:+74951234567" class="topbar-phone">+7 (495) 123-45-67</a>
@@ -683,21 +683,21 @@
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>
                         </a>
                     </div>
-                    <a href="{{ url('/#lead-form-section') }}" class="callback-button">Р—Р°РєР°Р·Р°С‚СЊ РѕР±СЂР°С‚РЅС‹Р№ Р·РІРѕРЅРѕРє</a>
+                    <a href="{{ url('/#lead-form-section') }}" class="callback-button">Заказать обратный звонок</a>
                 </div>
             </div>
 
             <div class="container header-inner">
                 <a href="{{ url('/') }}" class="brand">
-                    <div class="brand-name">РђР™РўР•Р РћРЎРЎ</div>
+                    <div class="brand-name">АЙТЕРОСС</div>
                 </a>
 
-                <a href="{{ route('catalog.index') }}" class="catalog-button">РљР°С‚Р°Р»РѕРі</a>
+                <a href="{{ route('catalog.index') }}" class="catalog-button">Каталог</a>
 
                 <div class="search-shell">
                     <div class="search-box">
-                        <input type="text" placeholder="РџРѕРёСЃРє С‚РѕРІР°СЂРѕРІ..." aria-label="РџРѕРёСЃРє С‚РѕРІР°СЂРѕРІ">
-                        <button type="button" class="search-button" aria-label="РќР°Р№С‚Рё">
+                        <input type="text" placeholder="Поиск товаров..." aria-label="Поиск товаров">
+                        <button type="button" class="search-button" aria-label="Найти">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="1.8"/><path d="M20 20 L16.2 16.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
                         </button>
                     </div>
@@ -706,17 +706,17 @@
                 <div class="header-actions">
                     <a href="{{ route('favorites.index') }}" class="header-action">
                         <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z" stroke="#1657C4" stroke-width="1.6"/></svg>
-                        РР·Р±СЂР°РЅРЅРѕРµ
+                        Избранное
                     </a>
                     @auth
                         <a href="{{ route('account') }}" class="header-action">
                             <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
-                            Р›РёС‡РЅС‹Р№ РєР°Р±РёРЅРµС‚
+                            Личный кабинет
                         </a>
                     @else
                         <a href="{{ route('login') }}" class="header-action">
                             <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#1657C4" stroke-width="1.7"/><path d="M4.5 20c1.4-3.8 4.6-5.8 7.5-5.8s6.1 2 7.5 5.8" stroke="#1657C4" stroke-width="1.7" stroke-linecap="round"/></svg>
-                            Р’РѕР№С‚Рё
+                            Войти
                         </a>
                     @endauth
                 </div>
@@ -726,9 +726,9 @@
         --}}
         <main>
             <section class="container breadcrumbs">
-                <a href="{{ url('/') }}">Р“Р»Р°РІРЅР°СЏ</a>
+                <a href="{{ url('/') }}">Главная</a>
                 <span>/</span>
-                <a href="{{ route('catalog.index') }}">РљР°С‚Р°Р»РѕРі</a>
+                <a href="{{ route('catalog.index') }}">Каталог</a>
                 @if ($product->category)
                     <span>/</span>
                     <a href="{{ route('catalog.index', ['categorySlug' => $product->category->slug]) }}">{{ $product->category->name }}</a>
@@ -751,12 +751,12 @@
                 <div>
                     <div class="product-topline">
                         <div class="sku-line">
-                            <span class="sku-label">РђР РўРРљРЈР›:</span>
+                            <span class="sku-label">АРТИКУЛ:</span>
                             <span class="sku-value" data-sku-value>{{ $product->sku }}</span>
-                            <button type="button" class="copy-button" aria-label="РљРѕРїРёСЂРѕРІР°С‚СЊ Р°СЂС‚РёРєСѓР»" data-copy-sku>
+                            <button type="button" class="copy-button" aria-label="Копировать артикул" data-copy-sku>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="1.5" stroke="#5B6470" stroke-width="1.6"/><path d="M5 15V6a1 1 0 0 1 1-1h9" stroke="#5B6470" stroke-width="1.6" stroke-linecap="round"/></svg>
                             </button>
-                            <span class="copy-status" data-copy-status>РЎРєРѕРїРёСЂРѕРІР°РЅРѕ</span>
+                            <span class="copy-status" data-copy-status>Скопировано</span>
                         </div>
                         @if ($showStock)
                             <span class="stock-label">{{ $product->stockLabel() }}</span>
@@ -769,18 +769,18 @@
                         <div class="product-actions-row">
                             @if ($showCart)
                         <div class="qty-box">
-                            <button type="button" class="qty-button" aria-label="РњРµРЅСЊС€Рµ" data-qty-dec>в€’</button>
+                            <button type="button" class="qty-button" aria-label="Меньше" data-qty-dec>−</button>
                             <span class="qty-value" data-qty-value>1</span>
-                            <button type="button" class="qty-button" aria-label="Р‘РѕР»СЊС€Рµ" data-qty-inc>+</button>
+                            <button type="button" class="qty-button" aria-label="Больше" data-qty-inc>+</button>
                         </div>
 
-                        <a href="{{ url('/#lead-form-section') }}" class="buy-button">РџРѕР»СѓС‡РёС‚СЊ РїСЂРµРґР»РѕР¶РµРЅРёРµ</a>
+                        <a href="{{ url('/#lead-form-section') }}" class="buy-button">Получить предложение</a>
 
                             @endif
                             @if ($showWish)
                         <form action="{{ route('favorites.toggle', $product) }}" method="post" class="favorite-form">
                             @csrf
-                            <button type="submit" class="favorite-button {{ $isFavorite ? 'favorite-button--active' : '' }}" aria-label="{{ $isFavorite ? 'РЈР±СЂР°С‚СЊ РёР· РёР·Р±СЂР°РЅРЅРѕРіРѕ' : 'Р”РѕР±Р°РІРёС‚СЊ РІ РёР·Р±СЂР°РЅРЅРѕРµ' }}">
+                            <button type="submit" class="favorite-button {{ $isFavorite ? 'favorite-button--active' : '' }}" aria-label="{{ $isFavorite ? 'Убрать из избранного' : 'Добавить в избранное' }}">
                                 <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4c2-.3 4 .8 6.5 3.3C14.5 4.8 16.5 3.7 18.5 4 22 4.5 23 8 21.5 11 19 15.6 12 20 12 20Z"></path></svg>
                             </button>
                         </form>
@@ -790,24 +790,24 @@
 
                     <div class="spec-list">
                         <div class="spec-row">
-                            <span class="spec-name">РќР°РёРјРµРЅРѕРІР°РЅРёРµ</span>
+                            <span class="spec-name">Наименование</span>
                             <span class="spec-fill"></span>
                             <span class="spec-value">{{ $product->name }}</span>
                         </div>
                         <div class="spec-row">
-                            <span class="spec-name">РђСЂС‚РёРєСѓР»</span>
+                            <span class="spec-name">Артикул</span>
                             <span class="spec-fill"></span>
                             <span class="spec-value">{{ $product->sku }}</span>
                         </div>
                         <div class="spec-row">
-                            <span class="spec-name">РљР°С‚РµРіРѕСЂРёСЏ</span>
+                            <span class="spec-name">Категория</span>
                             <span class="spec-fill"></span>
-                            <span class="spec-value">{{ $product->category?->name ?? 'Р‘РµР· РєР°С‚РµРіРѕСЂРёРё' }}</span>
+                            <span class="spec-value">{{ $product->category?->name ?? 'Без категории' }}</span>
                         </div>
                         <div class="spec-row">
-                            <span class="spec-name">Р¦РµРЅР°</span>
+                            <span class="spec-name">Цена</span>
                             <span class="spec-fill"></span>
-                            <span class="spec-value">{{ number_format($product->price, 0, ',', ' ') }} в‚Ѕ / {{ $product->unitShortLabel() }}</span>
+                            <span class="spec-value">{{ number_format($product->price, 0, ',', ' ') }} ₽ / {{ $product->unitShortLabel() }}</span>
                         </div>
                         <div class="spec-row">
                             <span class="spec-name">Единица измерения</span>
@@ -822,7 +822,7 @@
                             </div>
                         @endif
                         <div class="spec-row">
-                            <span class="spec-name">РќР°Р»РёС‡РёРµ</span>
+                            <span class="spec-name">Наличие</span>
                             <span class="spec-fill"></span>
                             <span class="spec-value">{{ $product->stockLabel() }}</span>
                         </div>
@@ -843,12 +843,12 @@
 
             @if ($showAnalogs && $analogProducts->isNotEmpty())
                 <section class="container analogs-section">
-                    <h2 class="section-title">РђРЅР°Р»РѕРіРё/Р±РµСЂСѓС‚ РІ С‚РѕРј С‡РёСЃР»Рµ</h2>
+                    <h2 class="section-title">Аналоги/берут в том числе</h2>
                     <div class="analogs-shell">
-                        <button type="button" class="analog-arrow analog-arrow--prev" aria-label="РќР°Р·Р°Рґ" data-analog-prev>
+                        <button type="button" class="analog-arrow analog-arrow--prev" aria-label="Назад" data-analog-prev>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#14161A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
-                        <button type="button" class="analog-arrow analog-arrow--next" aria-label="Р’РїРµСЂС‘Рґ" data-analog-next>
+                        <button type="button" class="analog-arrow analog-arrow--next" aria-label="Вперёд" data-analog-next>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#14161A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
 
@@ -863,9 +863,9 @@
                                             <div class="analog-placeholder">{{ $analogProduct->name }}</div>
                                         @endif
                                     </div>
-                                    <div class="analog-sku">РђСЂС‚: {{ $analogProduct->sku }}</div>
+                                    <div class="analog-sku">Арт: {{ $analogProduct->sku }}</div>
                                     <div class="analog-title">{{ $analogProduct->name }}</div>
-                                    <div class="analog-stock">РЎРєР»Р°Рґ: {{ $analogProduct->stockLabel() }}</div>
+                                    <div class="analog-stock">Склад: {{ $analogProduct->stockLabel() }}</div>
                                 </a>
                             @endforeach
                         </div>
@@ -876,10 +876,10 @@
             <section class="cta-strip">
                 <div class="container cta-inner">
                     <div>
-                        <h2 class="cta-title">РќСѓР¶РµРЅ Р°РЅР°Р»РѕРі РёР»Рё РґСЂСѓРіР°СЏ РїР°СЂС‚РёСЏ?</h2>
-                        <p class="cta-text">РџСЂРёС€Р»РёС‚Рµ Р°СЂС‚РёРєСѓР», Рё РјС‹ РїРѕРґР±РµСЂС‘Рј Р·Р°РјРµРЅСѓ Рё РїРѕРґРіРѕС‚РѕРІРёРј РєРѕРјРјРµСЂС‡РµСЃРєРѕРµ РїСЂРµРґР»РѕР¶РµРЅРёРµ РІ С‚РѕС‚ Р¶Рµ РґРµРЅСЊ.</p>
+                        <h2 class="cta-title">Нужен аналог или другая партия?</h2>
+                        <p class="cta-text">Пришлите артикул, и мы подберём замену и подготовим коммерческое предложение в тот же день.</p>
                     </div>
-                    <a href="{{ url('/#lead-form-section') }}" class="cta-button">РџРѕР»СѓС‡РёС‚СЊ РїСЂРµРґР»РѕР¶РµРЅРёРµ</a>
+                    <a href="{{ url('/#lead-form-section') }}" class="cta-button">Получить предложение</a>
                 </div>
             </section>
         </main>
@@ -889,8 +889,8 @@
         <footer class="site-footer" id="footer">
             <div class="container footer-grid">
                 <div>
-                    <div class="footer-brand">РђР™РўР•Р РћРЎРЎ</div>
-                    <p class="footer-text">РџРѕСЃС‚Р°РІРєР° С‚РІРµСЂРґРѕСЃРїР»Р°РІРЅРѕРіРѕ РёРЅСЃС‚СЂСѓРјРµРЅС‚Р° РґР»СЏ РјРµС‚Р°Р»Р»РѕРѕР±СЂР°Р±РѕС‚РєРё. Р Р°Р±РѕС‚Р°РµРј СЃ СЋСЂРёРґРёС‡РµСЃРєРёРјРё Р»РёС†Р°РјРё РїРѕ РІСЃРµР№ Р РѕСЃСЃРёРё.</p>
+                    <div class="footer-brand">АЙТЕРОСС</div>
+                    <p class="footer-text">Поставка твердосплавного инструмента для металлообработки. Работаем с юридическими лицами по всей России.</p>
                     <div class="social-row">
                         <a href="#" aria-label="Telegram" class="social-circle">
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
@@ -902,26 +902,26 @@
                 </div>
 
                 <div>
-                    <div class="footer-caption">РќРђР’РР“РђР¦РРЇ</div>
+                    <div class="footer-caption">НАВИГАЦИЯ</div>
                     <div class="footer-links">
-                        <a href="{{ route('catalog.index') }}" class="footer-link">РљР°С‚Р°Р»РѕРі</a>
-                        <a href="{{ url('/#about') }}" class="footer-link">Рћ РєРѕРјРїР°РЅРёРё</a>
-                        <a href="{{ route('delivery') }}" class="footer-link">Р”РѕСЃС‚Р°РІРєР°</a>
-                        <a href="{{ url('/#footer') }}" class="footer-link">РљРѕРЅС‚Р°РєС‚С‹</a>
+                        <a href="{{ route('catalog.index') }}" class="footer-link">Каталог</a>
+                        <a href="{{ url('/#about') }}" class="footer-link">О компании</a>
+                        <a href="{{ route('delivery') }}" class="footer-link">Доставка</a>
+                        <a href="{{ url('/#footer') }}" class="footer-link">Контакты</a>
                     </div>
                 </div>
 
                 <div>
-                    <div class="footer-caption">РљРћРќРўРђРљРўР«</div>
+                    <div class="footer-caption">КОНТАКТЫ</div>
                     <div class="footer-contact">
                         <a href="tel:+74951234567">+7 (495) 123-45-67</a>
                         <a href="mailto:info@iteross.ru">info@iteross.ru</a>
-                        <div>Рі. РњРѕСЃРєРІР°, Р”РµСЂР±РµРЅРµРІСЃРєР°СЏ СѓР»., 12, СЃС‚СЂ. 3</div>
-                        <div style="color: rgba(255,255,255,0.5); font-size: 13.5px;">РџРЅ-РџС‚, 9:00-18:00</div>
+                        <div>г. Москва, Дербеневская ул., 12, стр. 3</div>
+                        <div style="color: rgba(255,255,255,0.5); font-size: 13.5px;">Пн-Пт, 9:00-18:00</div>
                     </div>
                 </div>
             </div>
-            <div class="container footer-meta">В© {{ now()->year }} РђР™РўР•Р РћРЎРЎ. Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹.</div>
+            <div class="container footer-meta">© {{ now()->year }} АЙТЕРОСС. Все права защищены.</div>
         </footer>
         --}}
     </div>
@@ -961,55 +961,55 @@
             const rows = productPageSettings.rows || {};
 
             if (blocks.show_stock === false) {
-                hideSpecRowByName((label) => label === 'РЅР°Р»РёС‡РёРµ');
+                hideSpecRowByName((label) => label === 'наличие');
             }
 
             if (rows.brand === false) {
-                hideSpecRowByName((label) => label.includes('Р±СЂРµРЅРґ'));
+                hideSpecRowByName((label) => label.includes('бренд'));
             }
 
             if (rows.geometry === false) {
-                hideSpecRowByName((label) => label.includes('РіРµРѕРјРµС‚СЂ'));
+                hideSpecRowByName((label) => label.includes('геометр'));
             }
 
             if (rows.shape === false) {
-                hideSpecRowByName((label) => label.includes('С„РѕСЂРјР°'));
+                hideSpecRowByName((label) => label.includes('форма'));
             }
 
             if (rows.size === false) {
-                hideSpecRowByName((label) => label === 'СЂР°Р·РјРµСЂ' || label.includes('СЂР°Р·РјРµСЂ'));
+                hideSpecRowByName((label) => label === 'размер' || label.includes('размер'));
             }
 
             if (rows.radius === false) {
-                hideSpecRowByName((label) => label.includes('СЂР°РґРёСѓСЃ'));
+                hideSpecRowByName((label) => label.includes('радиус'));
             }
 
             if (rows.back_angle === false) {
-                hideSpecRowByName((label) => label.includes('Р·Р°РґРЅ') || label.includes('СѓРіРѕР»'));
+                hideSpecRowByName((label) => label.includes('задн') || label.includes('угол'));
             }
 
             if (rows.construction === false) {
-                hideSpecRowByName((label) => label.includes('РєРѕРЅСЃС‚СЂСѓРє'));
+                hideSpecRowByName((label) => label.includes('конструк'));
             }
 
             if (rows.plate_material === false) {
-                hideSpecRowByName((label) => label.includes('РјР°С‚РµСЂРёР°Р» РїР»Р°СЃС‚РёРЅС‹'));
+                hideSpecRowByName((label) => label.includes('материал пластины'));
             }
 
             if (rows.alloy === false) {
-                hideSpecRowByName((label) => label.includes('СЃРїР»Р°РІ'));
+                hideSpecRowByName((label) => label.includes('сплав'));
             }
 
             if (rows.chipbreaker === false) {
-                hideSpecRowByName((label) => label.includes('СЃС‚СЂСѓР¶Рє'));
+                hideSpecRowByName((label) => label.includes('стружк'));
             }
 
             if (blocks.show_materials === false) {
-                hideSpecRowByName((label) => label.includes('iso') || label.includes('РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј') || label.includes('РјР°С‚РµСЂРёР°Р»'));
+                hideSpecRowByName((label) => label.includes('iso') || label.includes('обрабатываем') || label.includes('материал'));
             }
 
             if (blocks.show_processing_types === false) {
-                hideSpecRowByName((label) => label.includes('С‚РёРї РѕР±СЂР°Р±РѕС‚РєРё') || label.includes('РѕР±СЂР°Р±РѕС‚РєР°'));
+                hideSpecRowByName((label) => label.includes('тип обработки') || label.includes('обработка'));
             }
 
             if (qtyValue && decButton && incButton) {
@@ -1036,10 +1036,10 @@
                         copyStatus.classList.add('is-visible');
                         window.setTimeout(() => copyStatus.classList.remove('is-visible'), 1600);
                     } catch (error) {
-                        copyStatus.textContent = 'РќРµ СѓРґР°Р»РѕСЃСЊ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ';
+                        copyStatus.textContent = 'Не удалось скопировать';
                         copyStatus.classList.add('is-visible');
                         window.setTimeout(() => {
-                            copyStatus.textContent = 'РЎРєРѕРїРёСЂРѕРІР°РЅРѕ';
+                            copyStatus.textContent = 'Скопировано';
                             copyStatus.classList.remove('is-visible');
                         }, 1600);
                     }

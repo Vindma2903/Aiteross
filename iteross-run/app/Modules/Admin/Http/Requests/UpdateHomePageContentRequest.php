@@ -18,7 +18,7 @@ class UpdateHomePageContentRequest extends FormRequest
                 'phone'              => ['required', 'string', 'max:30'],
                 'email'              => ['required', 'email', 'max:200'],
                 'socials'            => ['required', 'array', 'size:3'],
-                'socials.*.type'     => ['required', 'string', 'in:whatsapp,telegram,viber'],
+                'socials.*.type'     => ['required', 'string', 'in:telegram,max,vichat'],
                 'socials.*.href'     => ['required', 'string', 'max:500'],
                 'socials.*.enabled'  => ['required', 'boolean'],
             ];

@@ -28,11 +28,11 @@
             $siteEmail = data_get($siteHeaderData, 'email', 'info@iteross.ru');
             $siteSocials = data_get($siteHeaderData, 'socials', []);
             $siteSocialSvgs = [
-                'whatsapp' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" stroke="#5B6470" stroke-width="1.6"/><path d="M8.5 8.8c.3-.6.6-.6.9-.6h.6c.2 0 .5 0 .7.5.2.6.7 1.8.8 2 .1.2.1.4 0 .6-.1.2-.2.3-.4.5-.2.2-.4.4-.2.7.3.5 1.1 1.4 2.3 2 .3.2.5.1.7-.1.2-.2.7-.7.9-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.4.4 0 .2 0 1-.4 1.4-.4.5-1.4.8-2.4.5-1.6-.4-3.1-1.3-4.3-2.5-1-1-1.7-2-2.1-3-.2-.5-.1-1 .1-1.4Z" fill="#5B6470"/></svg>',
                 'telegram' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 4.5 3 11.3c-.5.2-.5.9 0 1.1l4.4 1.5 1.7 5.3c.2.5.8.6 1.1.2l2.4-2.6 4.5 3.3c.5.4 1.2.1 1.3-.5l3-13.6c.1-.6-.5-1.1-1-.8Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/></svg>',
-                'viber'    => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3.5c4.7 0 8.5 3.3 8.5 7.5 0 4.7-4 8.5-8.9 8.5-.7 0-1.5-.1-2.2-.3L5 20.5l1.4-3.6C4.9 15.6 3.5 13.4 3.5 11c0-4.2 3.8-7.5 8.5-7.5Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.4 8.7c.2-.4.5-.5.8-.5h.5c.2 0 .4 0 .6.4.2.5.6 1.6.7 1.7.1.2.1.4 0 .5-.1.2-.2.3-.4.4-.2.2-.3.3-.2.6.2.4.9 1.1 1.9 1.6.2.1.4.1.6-.1.2-.2.5-.6.7-.8.1-.2.3-.2.5-.1.2.1 1.2.6 1.4.7.2.1.3.2.3.4 0 .2 0 .8-.3 1.2-.3.4-1.1.6-1.9.4-1.3-.3-2.5-1.1-3.5-2.1-.8-.8-1.4-1.6-1.7-2.5-.2-.4-.1-.8 0-1.1Z" fill="#5B6470"/></svg>',
+                'max'      => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#5B6470" stroke-width="1.6"/><path d="M7 17V7l5 5 5-5v10" stroke="#5B6470" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+                'vichat'   => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3C7 3 3 6.6 3 11c0 2.4 1.2 4.5 3 6l-.8 2.8L8 18.6c1.2.5 2.6.9 4 .9 5 0 9-3.6 9-8s-4-8.5-9-8.5Z" stroke="#5B6470" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" stroke="#5B6470" stroke-width="2" stroke-linecap="round"/></svg>',
             ];
-            $siteSocialLabels = ['whatsapp' => 'WhatsApp', 'telegram' => 'Telegram', 'viber' => 'Viber'];
+            $siteSocialLabels = ['telegram' => 'Телеграм', 'max' => 'Max', 'vichat' => 'Вичат'];
         @endphp
         <a href="tel:{{ preg_replace('/[^+\d]/', '', $sitePhone) }}" class="topbar-phone">{{ $sitePhone }}</a>
         <a href="mailto:{{ $siteEmail }}" class="topbar-email">{{ $siteEmail }}</a>
