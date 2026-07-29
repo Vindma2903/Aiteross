@@ -1,12 +1,10 @@
 @php
     use App\Modules\Admin\Application\UseCases\GetHeaderContent;
-    use App\Modules\Admin\Application\UseCases\GetHomePageContent;
     use App\Modules\Favorites\Application\UseCases\GetFavoriteProductIdsForRequest;
     use App\Modules\Identity\Infrastructure\Persistence\Eloquent\User;
 
-    $siteHeaderContent = app(GetHomePageContent::class)->handle();
-    $siteHeaderNav = data_get($siteHeaderContent, 'header_nav', []);
     $siteHeaderData = app(GetHeaderContent::class)->handle();
+    $siteHeaderNav = data_get($siteHeaderData, 'header_nav', []);
     $siteFavoriteCount = count(app(GetFavoriteProductIdsForRequest::class)->handle(request()));
     $siteUser = auth()->user();
     $siteAccountUrl = $siteUser?->role === User::ROLE_ADMIN ? route('admin.dashboard') : route('account');
@@ -42,7 +40,13 @@
         <div class="social-row">
             @foreach ($siteSocials as $social)
                 @if (!empty($social['enabled']))
-                    <a href="{{ $social['href'] ?? '#' }}" class="social-circle" aria-label="{{ $siteSocialLabels[$social['type']] ?? $social['type'] }}">{!! $siteSocialSvgs[$social['type']] ?? '' !!}</a>
+                    <a href="{{ $social['href'] ?? '#' }}" class="social-circle" aria-label="{{ $siteSocialLabels[$social['type']] ?? $social['type'] }}">
+                        @if (!empty($social['icon']))
+                            <img src="{{ $social['icon'] }}" alt="{{ $siteSocialLabels[$social['type']] ?? $social['type'] }}">
+                        @else
+                            {!! $siteSocialSvgs[$social['type']] ?? '' !!}
+                        @endif
+                    </a>
                 @endif
             @endforeach
         </div>

@@ -987,27 +987,70 @@
                     <section class="panel">
                         <h2>Иконки социальных сетей</h2>
                         @php($socialLabels = ['telegram' => 'Телеграм', 'max' => 'Max', 'vichat' => 'Вичат'])
+                        <div class="repeater" data-repeater="header-nav" style="margin-bottom: 18px;">
+                            @foreach (old('header_nav', data_get($hdr, 'header_nav', [])) as $index => $item)
+                                <div class="repeater-item" data-repeater-item>
+                                    <div class="repeater-head">
+                                        <div class="repeater-title">Пункт {{ $index + 1 }}</div>
+                                        <button type="button" class="button-danger" data-remove-item>Удалить</button>
+                                    </div>
+                                    <div class="field-grid">
+                                        <div class="field">
+                                            <label>Название</label>
+                                            <input type="text" name="header_nav[{{ $index }}][label]" value="{{ $item['label'] ?? '' }}">
+                                        </div>
+                                        <div class="field">
+                                            <label>Ссылка</label>
+                                            <input type="text" name="header_nav[{{ $index }}][href]" value="{{ $item['href'] ?? '' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="button-row" style="margin-top: 0; margin-bottom: 18px;">
+                            <button type="button" class="button-secondary" data-add-item="header-nav">Добавить пункт</button>
+                        </div>
                         @php
                             $rawSocials = data_get($hdr, 'socials', []);
                             $socials = [
-                                ['type' => 'telegram', 'href' => $rawSocials[0]['href'] ?? '#', 'enabled' => $rawSocials[0]['enabled'] ?? true],
-                                ['type' => 'max',      'href' => $rawSocials[1]['href'] ?? '#', 'enabled' => $rawSocials[1]['enabled'] ?? true],
-                                ['type' => 'vichat',   'href' => $rawSocials[2]['href'] ?? '#', 'enabled' => $rawSocials[2]['enabled'] ?? true],
+                                ['type' => 'telegram', 'href' => $rawSocials[0]['href'] ?? '#', 'icon' => $rawSocials[0]['icon'] ?? '', 'enabled' => $rawSocials[0]['enabled'] ?? true],
+                                ['type' => 'max',      'href' => $rawSocials[1]['href'] ?? '#', 'icon' => $rawSocials[1]['icon'] ?? '', 'enabled' => $rawSocials[1]['enabled'] ?? true],
+                                ['type' => 'vichat',   'href' => $rawSocials[2]['href'] ?? '#', 'icon' => $rawSocials[2]['icon'] ?? '', 'enabled' => $rawSocials[2]['enabled'] ?? true],
                             ];
                         @endphp
                         <div class="switch-list">
                             @foreach ($socials as $i => $social)
                                 @php($label = $socialLabels[$social['type']] ?? $social['type'])
-                                <div class="switch-row" style="flex-wrap:wrap; gap:8px; align-items:center;">
+                                <div class="switch-row" style="flex-wrap:wrap; gap:16px; align-items:flex-start;">
                                     <div class="switch-copy" style="min-width:120px;">
                                         <strong>{{ $label }}</strong>
                                     </div>
-                                    <div class="field" style="flex:1; min-width:200px; margin:0;">
+                                    <div class="field" style="flex:1; min-width:220px; margin:0;">
                                         <input type="hidden" name="socials[{{ $i }}][type]" value="{{ $social['type'] }}">
+                                        <label>Ссылка</label>
                                         <input type="text" name="socials[{{ $i }}][href]"
-                                               placeholder="https://wa.me/7..."
+                                               placeholder="https://t.me/..."
                                                value="{{ old("socials.$i.href", $social['href'] ?? '#') }}"
                                                style="width:100%;">
+                                    </div>
+                                    <div class="field" style="flex:1; min-width:260px; margin:0;">
+                                        <label>Иконка</label>
+                                        <div class="img-upload-wrap" data-img-field>
+                                            <div class="img-preview" data-img-preview>
+                                                @if (old("socials.$i.icon", $social['icon'] ?? ''))
+                                                    <img src="{{ old("socials.$i.icon", $social['icon'] ?? '') }}" alt="">
+                                                @else
+                                                    <div class="img-preview-empty">Нет изображения</div>
+                                                @endif
+                                            </div>
+                                            <div class="img-upload-row">
+                                                <input type="text" name="socials[{{ $i }}][icon]" value="{{ old("socials.$i.icon", $social['icon'] ?? '') }}" placeholder="/home-media/social-icon.png" data-img-url>
+                                                <button type="button" class="img-upload-btn" data-img-pick>
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                                    Загрузить
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <label class="switch-control" style="margin-left:8px;">
                                         <input type="hidden" name="socials[{{ $i }}][enabled]" value="0">

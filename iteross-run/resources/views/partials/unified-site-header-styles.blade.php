@@ -69,6 +69,12 @@
         flex: none;
         transition: background 0.15s ease;
     }
+    .social-circle img {
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+        display: block;
+    }
     .social-circle:hover {
         background: #E3E6EA;
     }
