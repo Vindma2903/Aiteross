@@ -989,11 +989,11 @@
                         @php($socialLabels = ['telegram' => 'Телеграм', 'max' => 'Max', 'vichat' => 'Вичат'])
                         @php
                             $rawSocials = data_get($hdr, 'socials', []);
-                            $newTypes = ['telegram', 'max', 'vichat'];
-                            $socials = array_map(function ($type, $i) use ($rawSocials) {
-                                $old = $rawSocials[$i] ?? [];
-                                return ['type' => $type, 'href' => $old['href'] ?? '#', 'enabled' => $old['enabled'] ?? true];
-                            }, $newTypes, array_keys($newTypes));
+                            $socials = [
+                                ['type' => 'telegram', 'href' => $rawSocials[0]['href'] ?? '#', 'enabled' => $rawSocials[0]['enabled'] ?? true],
+                                ['type' => 'max',      'href' => $rawSocials[1]['href'] ?? '#', 'enabled' => $rawSocials[1]['enabled'] ?? true],
+                                ['type' => 'vichat',   'href' => $rawSocials[2]['href'] ?? '#', 'enabled' => $rawSocials[2]['enabled'] ?? true],
+                            ];
                         @endphp
                         <div class="switch-list">
                             @foreach ($socials as $i => $social)
