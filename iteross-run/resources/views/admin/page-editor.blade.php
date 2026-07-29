@@ -820,7 +820,6 @@
                 </div>
             </form>
         @elseif ($selectedEditor === 'catalog')
-            @php($isCatalogEditor = true)
             <form action="{{ route('admin.catalog.categories.update') }}" method="post">
                 @csrf
                 <div class="panel-list">
