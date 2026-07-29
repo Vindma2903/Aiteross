@@ -107,9 +107,6 @@ class UpdateHomePageContentRequest extends FormRequest
             'about.description' => ['required', 'string'],
             'about.text' => ['required', 'string'],
             'about.image' => ['nullable', 'string', 'max:1000'],
-            'about.stats' => ['required', 'array', 'min:1'],
-            'about.stats.*.value' => ['required', 'string', 'max:80'],
-            'about.stats.*.label' => ['required', 'string', 'max:255'],
 
             'faq.title' => ['required', 'string', 'max:255'],
             'faq.description' => ['required', 'string'],

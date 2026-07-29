@@ -710,8 +710,7 @@
                     <section class="panel panel--home">
                         <div class="panel-marker">Блок 4</div>
                         <h2>Блок компании</h2>
-                        <p>Заголовок, тексты, фотография и статистические показатели компании.</p>
-                        <div class="panel-subnote">Это раздел «О компании»: основной текст, фото и цифры вроде «300+ позиций в каталоге».</div>
+                        <p>Заголовок, тексты и фотография раздела «О компании».</p>
                         <div class="field-grid">
                             <div class="field">
                                 <label>Заголовок</label>
@@ -745,30 +744,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="repeater" data-repeater="about-stats" style="margin-top: 18px;">
-                            @foreach (old('about.stats', $homePageContent['about']['stats']) as $index => $item)
-                                <div class="repeater-item" data-repeater-item>
-                                    <div class="repeater-head">
-                                        <div class="repeater-title">Показатель {{ $index + 1 }}</div>
-                                        <button type="button" class="button-danger" data-remove-item>Удалить</button>
-                                    </div>
-                                    <div class="field-grid">
-                                        <div class="field">
-                                            <label>Значение</label>
-                                            <input type="text" name="about[stats][{{ $index }}][value]" value="{{ $item['value'] }}">
-                                        </div>
-                                        <div class="field">
-                                            <label>Подпись</label>
-                                            <input type="text" name="about[stats][{{ $index }}][label]" value="{{ $item['label'] }}">
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="button-row">
-                            <button type="button" class="button-secondary" data-add-item="about-stats">Добавить показатель</button>
                         </div>
                     </section>
 
@@ -1243,24 +1218,6 @@
     </div>
 </template>
 
-<template id="tpl-about-stats">
-    <div class="repeater-item" data-repeater-item>
-        <div class="repeater-head">
-            <div class="repeater-title">Новый показатель</div>
-            <button type="button" class="button-danger" data-remove-item>Удалить</button>
-        </div>
-        <div class="field-grid">
-            <div class="field">
-                <label>Значение</label>
-                <input type="text" data-name-template="about[stats][__INDEX__][value]" value="">
-            </div>
-            <div class="field">
-                <label>Подпись</label>
-                <input type="text" data-name-template="about[stats][__INDEX__][label]" value="">
-            </div>
-        </div>
-    </div>
-</template>
 
 <template id="tpl-faq-items">
     <div class="repeater-item" data-repeater-item>
@@ -1286,8 +1243,7 @@
         'header-nav': { templateId: 'tpl-header-nav', selector: '[data-repeater="header-nav"]' },
         'hero-benefits': { templateId: 'tpl-hero-benefits', selector: '[data-repeater="hero-benefits"]' },
         'advantages-items': { templateId: 'tpl-advantages-items', selector: '[data-repeater="advantages-items"]' },
-        'about-stats': { templateId: 'tpl-about-stats', selector: '[data-repeater="about-stats"]' },
-        'faq-items': { templateId: 'tpl-faq-items', selector: '[data-repeater="faq-items"]' },
+'faq-items': { templateId: 'tpl-faq-items', selector: '[data-repeater="faq-items"]' },
     };
 
     function bindRemoveButtons(root = document) {

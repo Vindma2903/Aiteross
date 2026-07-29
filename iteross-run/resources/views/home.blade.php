@@ -685,30 +685,7 @@
             color: #5B6470;
             line-height: 1.75;
         }
-        .about-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-top: 28px;
-        }
-        .about-stat {
-            background: #EEF1FA;
-            border-radius: 16px;
-            padding: 20px 18px;
-        }
-        .about-stat-value {
-            color: #0B2545;
-            font-size: 32px;
-            font-weight: 700;
-            line-height: 1;
-        }
-        .about-stat-label {
-            margin-top: 8px;
-            color: #5B6470;
-            font-size: 14px;
-            line-height: 1.55;
-        }
-        .about-visual img {
+.about-visual img {
             width: 100%;
             min-height: 420px;
             object-fit: cover;
@@ -1113,8 +1090,7 @@
             .hero-title {
                 font-size: 40px;
             }
-            .lead-meta,
-            .about-stats {
+            .lead-meta {
                 grid-template-columns: 1fr 1fr;
             }
         }
@@ -1130,7 +1106,6 @@
             .benefits-grid,
             .catalog-grid,
             .advantage-grid,
-            .about-stats,
             .footer-grid {
                 grid-template-columns: 1fr;
             }
@@ -1408,15 +1383,6 @@
                     <h2 class="section-title">{{ $about['title'] ?? 'О компании' }}</h2>
                     <p>{{ $about['description'] ?? '' }}</p>
                     <p>{{ $about['text'] ?? '' }}</p>
-
-                    <div class="about-stats">
-                        @foreach (($about['stats'] ?? []) as $item)
-                            <div class="about-stat">
-                                <div class="about-stat-value">{{ $item['value'] ?? '' }}</div>
-                                <div class="about-stat-label">{{ $item['label'] ?? '' }}</div>
-                            </div>
-                        @endforeach
-                    </div>
                 </div>
 
                 <div class="about-visual">
