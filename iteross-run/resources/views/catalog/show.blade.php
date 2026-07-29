@@ -960,55 +960,55 @@
             const blocks = productPageSettings.blocks || {};
             const rows = productPageSettings.rows || {};
 
-            if (blocks.show_stock === false) {
+            if (!blocks.show_stock) {
                 hideSpecRowByName((label) => label === 'наличие');
             }
 
-            if (rows.brand === false) {
+            if (!rows.brand) {
                 hideSpecRowByName((label) => label.includes('бренд'));
             }
 
-            if (rows.geometry === false) {
+            if (!rows.geometry) {
                 hideSpecRowByName((label) => label.includes('геометр'));
             }
 
-            if (rows.shape === false) {
+            if (!rows.shape) {
                 hideSpecRowByName((label) => label.includes('форма'));
             }
 
-            if (rows.size === false) {
+            if (!rows.size) {
                 hideSpecRowByName((label) => label === 'размер' || label.includes('размер'));
             }
 
-            if (rows.radius === false) {
+            if (!rows.radius) {
                 hideSpecRowByName((label) => label.includes('радиус'));
             }
 
-            if (rows.back_angle === false) {
+            if (!rows.back_angle) {
                 hideSpecRowByName((label) => label.includes('задн') || label.includes('угол'));
             }
 
-            if (rows.construction === false) {
+            if (!rows.construction) {
                 hideSpecRowByName((label) => label.includes('конструк'));
             }
 
-            if (rows.plate_material === false) {
+            if (!rows.plate_material) {
                 hideSpecRowByName((label) => label.includes('материал пластины'));
             }
 
-            if (rows.alloy === false) {
+            if (!rows.alloy) {
                 hideSpecRowByName((label) => label.includes('сплав'));
             }
 
-            if (rows.chipbreaker === false) {
+            if (!rows.chipbreaker) {
                 hideSpecRowByName((label) => label.includes('стружк'));
             }
 
-            if (blocks.show_materials === false) {
+            if (!blocks.show_materials) {
                 hideSpecRowByName((label) => label.includes('iso') || label.includes('обрабатываем') || label.includes('материал'));
             }
 
-            if (blocks.show_processing_types === false) {
+            if (!blocks.show_processing_types) {
                 hideSpecRowByName((label) => label.includes('тип обработки') || label.includes('обработка'));
             }
 
