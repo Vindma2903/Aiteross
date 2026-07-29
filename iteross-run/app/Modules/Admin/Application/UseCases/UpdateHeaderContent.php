@@ -13,6 +13,7 @@ final class UpdateHeaderContent
 
     public function handle(array $data): void
     {
+        $data['header_nav'] = array_values($data['header_nav'] ?? []);
         $this->repository->save($data);
     }
 }

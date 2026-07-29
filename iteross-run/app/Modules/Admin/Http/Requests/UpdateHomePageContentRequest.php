@@ -17,7 +17,7 @@ class UpdateHomePageContentRequest extends FormRequest
             return [
                 'phone'              => ['required', 'string', 'max:30'],
                 'email'              => ['required', 'email', 'max:200'],
-                'header_nav'         => ['required', 'array', 'min:1'],
+                'header_nav'         => ['nullable', 'array'],
                 'header_nav.*.label' => ['required', 'string', 'max:120'],
                 'header_nav.*.href'  => ['required', 'string', 'max:255'],
                 'socials'            => ['required', 'array', 'size:3'],
