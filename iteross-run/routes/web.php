@@ -3,6 +3,7 @@
 use App\Modules\Admin\Http\Controllers\AdminCatalogController;
 use App\Modules\Admin\Http\Controllers\AdminImageController;
 use App\Modules\Admin\Http\Controllers\AdminDashboardController;
+use App\Modules\Admin\Http\Controllers\AdminMailSettingsController;
 use App\Modules\Admin\Http\Controllers\AdminPageController;
 use App\Modules\Admin\Http\Controllers\AdminProductController;
 use App\Modules\Catalog\Http\Controllers\CatalogController;
@@ -78,6 +79,9 @@ Route::middleware(['auth', 'role:admin', '2fa'])->group(function () {
     Route::get('/admin/static-resource/{path}', [AdminPageController::class, 'resource'])
         ->where('path', '.*')
         ->name('admin.static.resource');
+    Route::get('/admin/mail-server', [AdminMailSettingsController::class, 'index'])->name('admin.mail-server');
+    Route::post('/admin/mail-server', [AdminMailSettingsController::class, 'update'])->name('admin.mail-server.update');
+    Route::post('/admin/mail-server/test', [AdminMailSettingsController::class, 'test'])->name('admin.mail-server.test');
     Route::get('/admin/security', [AdminSecurityController::class, 'index'])->name('admin.security');
     Route::post('/admin/security/2fa/setup', [AdminSecurityController::class, 'setup'])->name('admin.security.2fa.setup');
     Route::post('/admin/security/2fa/confirm', [AdminSecurityController::class, 'confirm'])->name('admin.security.2fa.confirm');

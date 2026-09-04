@@ -326,6 +326,9 @@
                 <a href="{{ route('admin.pages.editor', ['page' => 'delivery']) }}" class="nav-link">Доставка</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'product']) }}" class="nav-link">Карточка товара</a>
 
+                <div class="nav-title">НАСТРОЙКИ</div>
+                <a href="{{ route('admin.mail-server') }}" class="nav-link">Почтовый сервер</a>
+
                 <div class="nav-title">АККАУНТ</div>
                 <a href="{{ route('admin.security') }}" class="nav-link nav-link--active">Безопасность</a>
             </nav>

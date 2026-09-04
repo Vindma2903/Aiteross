@@ -1438,6 +1438,9 @@
                 <a href="{{ route('admin.pages.editor', ['page' => 'delivery']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'delivery' ? ' nav-link--active' : '' }}">Доставка</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'product']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'product' ? ' nav-link--active' : '' }}">Карточка товара</a>
 
+                <div class="nav-title">НАСТРОЙКИ</div>
+                <a href="{{ route('admin.mail-server') }}" class="nav-link{{ request()->routeIs('admin.mail-server') ? ' nav-link--active' : '' }}">Почтовый сервер</a>
+
                 <div class="nav-title">АККАУНТ</div>
                 <a href="{{ route('admin.security') }}" class="nav-link">Безопасность</a>
             </nav>
