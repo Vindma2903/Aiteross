@@ -31,6 +31,16 @@ class CartOrderSubmissionTest extends TestCase
             ->assertSessionHas('status', 'Заявка отправлена. Менеджер свяжется с вами для подтверждения и счёта.')
             ->assertSessionHas('cart_submitted', true);
 
+        $this->assertDatabaseHas('cart_order_requests', [
+            'name' => 'Иван Иванов, ООО «Компания»',
+            'phone' => '+7 (999) 123-45-67',
+            'email' => 'sales@example.com',
+            'total_quantity' => 30,
+            'total_price' => 23800,
+            'has_unknown_price' => true,
+            'status' => 'new',
+        ]);
+
         Mail::assertSent(
             CartOrderSubmittedMail::class,
             function ($mail): bool {
@@ -85,6 +95,7 @@ class CartOrderSubmissionTest extends TestCase
             ->assertRedirect(route('cart.index'))
             ->assertSessionHasErrors(['name', 'phone', 'items']);
 
+        $this->assertDatabaseCount('cart_order_requests', 0);
         Mail::assertNothingSent();
     }
 }

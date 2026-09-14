@@ -6,6 +6,7 @@ use App\Modules\Admin\Http\Controllers\AdminDashboardController;
 use App\Modules\Admin\Http\Controllers\AdminMailSettingsController;
 use App\Modules\Admin\Http\Controllers\AdminPageController;
 use App\Modules\Admin\Http\Controllers\AdminProductController;
+use App\Modules\Cart\Http\Controllers\AdminCartOrderController;
 use App\Modules\Cart\Http\Controllers\CartOrderController;
 use App\Modules\Catalog\Http\Controllers\CatalogController;
 use App\Modules\Catalog\Http\Controllers\DeliveryController;
@@ -81,6 +82,8 @@ Route::middleware(['auth', 'role:admin', '2fa'])->group(function () {
     Route::get('/admin/static-resource/{path}', [AdminPageController::class, 'resource'])
         ->where('path', '.*')
         ->name('admin.static.resource');
+    Route::get('/admin/cart-orders', [AdminCartOrderController::class, 'index'])->name('admin.cart-orders');
+    Route::patch('/admin/cart-orders/{cartOrderRequest}/toggle-status', [AdminCartOrderController::class, 'toggleStatus'])->name('admin.cart-orders.toggle-status');
     Route::get('/admin/mail-server', [AdminMailSettingsController::class, 'index'])->name('admin.mail-server');
     Route::post('/admin/mail-server', [AdminMailSettingsController::class, 'update'])->name('admin.mail-server.update');
     Route::post('/admin/mail-server/test', [AdminMailSettingsController::class, 'test'])->name('admin.mail-server.test');

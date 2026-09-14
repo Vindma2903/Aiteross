@@ -1431,6 +1431,7 @@
 
                 <div class="nav-title">УПРАВЛЕНИЕ</div>
                 <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link{{ $selectedSection === 'orders' ? ' nav-link--active' : '' }}">Заявки</a>
+                <a href="{{ route('admin.cart-orders') }}" class="nav-link{{ request()->routeIs('admin.cart-orders') ? ' nav-link--active' : '' }}">Заявки из корзины</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'catalog' ? ' nav-link--active' : '' }}">Категории</a>
                 <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link{{ $selectedSection === 'products' ? ' nav-link--active' : '' }}">Товары</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'header']) }}" class="nav-link{{ request()->routeIs('admin.pages.editor') && request()->route('page') === 'header' ? ' nav-link--active' : '' }}">Шапка</a>

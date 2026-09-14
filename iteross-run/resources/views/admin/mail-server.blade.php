@@ -285,6 +285,7 @@
             <nav class="nav">
                 <div class="nav-title">УПРАВЛЕНИЕ</div>
                 <a href="{{ route('admin.dashboard', ['section' => 'orders']) }}" class="nav-link">Заявки</a>
+                <a href="{{ route('admin.cart-orders') }}" class="nav-link">Заявки из корзины</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'catalog']) }}" class="nav-link">Категории</a>
                 <a href="{{ route('admin.dashboard', ['section' => 'products']) }}" class="nav-link">Товары</a>
                 <a href="{{ route('admin.pages.editor', ['page' => 'header']) }}" class="nav-link">Шапка</a>
