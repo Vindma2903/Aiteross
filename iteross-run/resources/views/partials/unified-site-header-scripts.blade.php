@@ -1,4 +1,73 @@
 <script>
+    window.AiterossCart = (function () {
+        var KEY = 'aiteross_cart';
+
+        function readCart() {
+            try {
+                var raw = window.localStorage.getItem(KEY);
+                var parsed = raw ? JSON.parse(raw) : [];
+
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function updateBadges(items) {
+            var total = (items || readCart()).reduce(function (sum, item) {
+                return sum + Number(item.qty || 0);
+            }, 0);
+
+            document.querySelectorAll('[data-cart-count]').forEach(function (el) {
+                el.textContent = String(total);
+                el.hidden = total <= 0;
+            });
+        }
+
+        function writeCart(items) {
+            try {
+                window.localStorage.setItem(KEY, JSON.stringify(items));
+            } catch (error) {
+                // Ignore storage errors (e.g. private browsing quota).
+            }
+
+            updateBadges(items);
+
+            return items;
+        }
+
+        function addItem(item, qty) {
+            var items = readCart();
+            var addQty = Math.max(1, Number(qty || item.qty || 1));
+            var existing = item.product_id
+                ? items.find(function (entry) { return entry.product_id === item.product_id; })
+                : null;
+
+            if (existing) {
+                existing.qty = Number(existing.qty || 0) + addQty;
+            } else {
+                items.push(Object.assign({}, item, { qty: addQty }));
+            }
+
+            return writeCart(items);
+        }
+
+        function clearCart() {
+            return writeCart([]);
+        }
+
+        updateBadges();
+
+        return {
+            key: KEY,
+            read: readCart,
+            write: writeCart,
+            add: addItem,
+            clear: clearCart,
+            updateBadges: updateBadges,
+        };
+    })();
+
     (function () {
         var menu = document.querySelector('[data-account-menu]');
         var trigger = document.querySelector('[data-account-menu-trigger]');

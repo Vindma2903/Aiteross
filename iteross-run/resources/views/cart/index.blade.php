@@ -444,6 +444,65 @@
             font-size: 12.5px;
             line-height: 1.6;
         }
+        .checkout-field {
+            margin-bottom: 14px;
+        }
+        .checkout-field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #8891a0;
+            letter-spacing: 0.3px;
+            margin-bottom: 6px;
+        }
+        .checkout-field input,
+        .checkout-field textarea {
+            width: 100%;
+            min-height: 44px;
+            padding: 0 14px;
+            border: 1.5px solid #d6dae0;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 14.5px;
+            color: var(--text);
+            background: #fff;
+        }
+        .checkout-field textarea {
+            min-height: 70px;
+            padding: 10px 14px;
+            resize: vertical;
+        }
+        .checkout-field input:focus,
+        .checkout-field textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+        .checkout-field .field-error {
+            margin-top: 5px;
+            font-size: 12.5px;
+            color: #c0392b;
+        }
+        .primary-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .alert {
+            max-width: 1360px;
+            margin: 0 auto 20px;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14.5px;
+        }
+        .alert-success {
+            background: #e6f9f0;
+            color: #1a7a4a;
+            border: 1px solid #a7dfc2;
+        }
+        .alert-error {
+            background: #fff1f2;
+            color: #9f1239;
+            border: 1px solid #fda4af;
+        }
 
         .empty-state {
             max-width: 700px;
@@ -587,7 +646,7 @@
     @include('partials.unified-site-header-styles')
     @include('partials.unified-site-footer-styles')
 </head>
-<body>
+<body data-cart-submitted="{{ session('cart_submitted') ? '1' : '0' }}">
     @include('partials.unified-site-header')
     {{--
     <header class="site-header">
@@ -668,12 +727,20 @@
             <p>Минимальная партия — 10 шт. по каждой позиции. Оплата на сайте не производится: заказ оформляется заявкой, менеджер свяжется для подтверждения и счёта.</p>
         </section>
 
+        @if (session('status'))
+            <div class="alert alert-success">{{ session('status') }}</div>
+        @endif
+
+        @if ($errors->has('items'))
+            <div class="alert alert-error">{{ $errors->first('items') }}</div>
+        @endif
+
         <section class="empty-state" data-empty-state hidden>
             <div class="empty-state__icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M4 5h2l1.6 10.2a2 2 0 0 0 2 1.8h7.8a2 2 0 0 0 2-1.6L20.4 8H6.5" stroke="#8891A0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20.5" r="1.4" fill="#8891A0"/><circle cx="17" cy="20.5" r="1.4" fill="#8891A0"/></svg>
             </div>
-            <h2>Корзина пуста</h2>
-            <p>Добавьте пластины из каталога, чтобы сформировать заявку на поставку.</p>
+            <h2 data-empty-title>Корзина пуста</h2>
+            <p data-empty-text>Добавьте пластины из каталога, чтобы сформировать заявку на поставку.</p>
             <a href="{{ route('catalog.index') }}" class="primary-button" style="width:auto; padding: 0 28px;">Перейти в каталог</a>
         </section>
 
@@ -707,7 +774,41 @@
                     <strong data-total-label>0 ₽</strong>
                 </div>
 
-                <a href="/#lead-form-section" class="primary-button">Оформить заявку</a>
+                <form action="{{ route('cart-order-requests.store') }}" method="post" data-checkout-form>
+                    @csrf
+                    <input type="hidden" name="items" data-cart-items-input>
+
+                    <div class="checkout-field">
+                        <label for="checkout-name">Имя / компания</label>
+                        <input id="checkout-name" name="name" type="text" value="{{ old('name') }}" required>
+                        @error('name')
+                            <div class="field-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="checkout-field">
+                        <label for="checkout-phone">Телефон</label>
+                        <input id="checkout-phone" name="phone" type="tel" value="{{ old('phone') }}" required>
+                        @error('phone')
+                            <div class="field-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="checkout-field">
+                        <label for="checkout-email">Email (необязательно)</label>
+                        <input id="checkout-email" name="email" type="email" value="{{ old('email') }}">
+                        @error('email')
+                            <div class="field-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="checkout-field">
+                        <label for="checkout-comment">Комментарий (необязательно)</label>
+                        <textarea id="checkout-comment" name="comment">{{ old('comment') }}</textarea>
+                    </div>
+
+                    <button type="submit" class="primary-button">Оформить заявку</button>
+                </form>
                 <a href="{{ route('catalog.index') }}" class="secondary-button">Продолжить выбор товаров</a>
 
                 <p class="summary-note">Цены по позициям без указанной стоимости уточняются менеджером при обработке заявки. Оплата производится по счёту после согласования.</p>
@@ -786,14 +887,14 @@
         </div>
     </template>
 
+@include('partials.unified-site-header-scripts')
     <script>
         (() => {
-            const CART_KEY = 'aiteross_cart';
-            const DEFAULT_ITEMS = [
-                { sku: 'CNMG120408-GM', material: 'Сталь, нержавеющая сталь', price: 1190, qty: 20, url: '{{ route('catalog.index') }}' },
-                { sku: 'APMT1604PDER-M2', material: 'Чугун, алюминий', price: 1640, qty: 10, url: '{{ route('catalog.index') }}' },
-                { sku: 'MGMN300-M-GM', material: 'Сталь, жаропрочные сплавы', price: null, qty: 10, url: '{{ route('catalog.products.show', ['slug' => 'mgmn-300']) }}' },
-            ];
+            const cart = window.AiterossCart;
+
+            if (document.body.dataset.cartSubmitted === '1' && cart) {
+                cart.clear();
+            }
 
             const emptyState = document.querySelector('[data-empty-state]');
             const cartLayout = document.querySelector('[data-cart-layout]');
@@ -802,43 +903,41 @@
             const itemsCountNode = document.querySelector('[data-items-count]');
             const totalQtyNode = document.querySelector('[data-total-qty]');
             const totalLabelNode = document.querySelector('[data-total-label]');
+            const itemsInput = document.querySelector('[data-cart-items-input]');
+            const checkoutForm = document.querySelector('[data-checkout-form]');
 
             const formatCurrency = (value) => `${value.toLocaleString('ru-RU')} ₽`;
 
-            const readCart = () => {
-                try {
-                    const raw = window.localStorage.getItem(CART_KEY);
-
-                    if (!raw) {
-                        window.localStorage.setItem(CART_KEY, JSON.stringify(DEFAULT_ITEMS));
-
-                        return [...DEFAULT_ITEMS];
-                    }
-
-                    const parsed = JSON.parse(raw);
-
-                    return Array.isArray(parsed) ? parsed : [...DEFAULT_ITEMS];
-                } catch (error) {
-                    return [...DEFAULT_ITEMS];
-                }
-            };
-
-            let items = readCart();
+            let items = cart ? cart.read() : [];
 
             const persist = () => {
-                window.localStorage.setItem(CART_KEY, JSON.stringify(items));
+                if (cart) {
+                    cart.write(items);
+                }
             };
 
             const renderSummary = () => {
                 const totalQty = items.reduce((sum, item) => sum + Number(item.qty || 0), 0);
                 const totalPrice = items.reduce((sum, item) => sum + (item.price ? item.price * item.qty : 0), 0);
-                const hasUnknownPrice = items.some((item) => item.price === null || item.price === undefined);
+                const hasUnknownPrice = items.some((item) => !item.price);
 
                 itemsCountNode.textContent = String(items.length);
                 totalQtyNode.textContent = String(totalQty);
                 totalLabelNode.textContent = totalPrice > 0
                     ? (hasUnknownPrice ? `${formatCurrency(totalPrice)}+` : formatCurrency(totalPrice))
                     : 'По запросу';
+
+                if (itemsInput) {
+                    itemsInput.value = JSON.stringify(items);
+                }
+
+                if (checkoutForm) {
+                    const submitButton = checkoutForm.querySelector('[type="submit"]');
+
+                    if (submitButton) {
+                        submitButton.disabled = items.length === 0;
+                    }
+                }
             };
 
             const render = () => {
@@ -868,14 +967,17 @@
                     const inc = fragment.querySelector('[data-item-inc]');
                     const remove = fragment.querySelector('[data-item-remove]');
 
+                    const title = item.name || item.sku || 'Товар';
+                    const subtitle = [item.sku, item.material].filter(Boolean).join(' · ');
+
                     link.href = item.url || '{{ route('catalog.index') }}';
                     titleLink.href = item.url || '{{ route('catalog.index') }}';
-                    titleLink.textContent = item.sku || 'Товар';
-                    material.textContent = item.material || '';
+                    titleLink.textContent = title;
+                    material.textContent = subtitle;
 
                     if (item.image) {
                         image.src = item.image;
-                        image.alt = item.sku || 'Товар';
+                        image.alt = title;
                         image.hidden = false;
                         placeholder.hidden = true;
                     }
@@ -916,9 +1018,21 @@
                 renderSummary();
             };
 
+            if (checkoutForm) {
+                checkoutForm.addEventListener('submit', (event) => {
+                    if (items.length === 0) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    if (itemsInput) {
+                        itemsInput.value = JSON.stringify(items);
+                    }
+                });
+            }
+
             render();
         })();
     </script>
-@include('partials.unified-site-header-scripts')
 </body>
 </html>

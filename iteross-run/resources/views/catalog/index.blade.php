@@ -654,22 +654,45 @@
 
         .product-actions {
             padding: 0 22px 22px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .secondary-button,
+        .cart-add-button {
+            flex: 1;
+            min-width: 0;
+            min-height: 46px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
         }
 
         .secondary-button {
-            width: 100%;
-            min-height: 46px;
-            border-radius: 8px;
             border: 1.5px solid var(--blue);
             background: #fff;
             color: var(--blue);
-            font-size: 14.5px;
-            font-weight: 600;
         }
 
         .secondary-button:hover {
             background: var(--blue);
             color: #fff;
+        }
+
+        .cart-add-button {
+            border: none;
+            background: var(--blue);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .cart-add-button:hover {
+            background: var(--blue-dark);
+        }
+
+        .cart-add-button.is-added {
+            background: #1a7a4a;
         }
 
         .empty-state {
@@ -1066,6 +1089,17 @@
 
                                 <div class="product-actions">
                                     <a href="{{ route('catalog.products.show', ['slug' => $product->slug]) }}" class="secondary-button">Подробнее</a>
+                                    <button
+                                        type="button"
+                                        class="cart-add-button"
+                                        data-add-to-cart
+                                        data-product-id="{{ $product->id }}"
+                                        data-sku="{{ $product->sku }}"
+                                        data-name="{{ $product->name }}"
+                                        data-price="{{ $product->price }}"
+                                        data-material="{{ $product->category?->name }}"
+                                        data-url="{{ route('catalog.products.show', ['slug' => $product->slug]) }}"
+                                    >В корзину</button>
                                 </div>
                             </article>
                         @endforeach
@@ -1190,6 +1224,36 @@
                 form.addEventListener('submit', function (event) {
                     event.preventDefault();
                     handleFavoriteSubmit(form);
+                });
+            });
+        })();
+
+        (function () {
+            document.querySelectorAll('[data-add-to-cart]').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    if (!window.AiterossCart) {
+                        return;
+                    }
+
+                    var price = parseFloat(button.getAttribute('data-price'));
+
+                    window.AiterossCart.add({
+                        product_id: Number(button.getAttribute('data-product-id')) || null,
+                        sku: button.getAttribute('data-sku') || '',
+                        name: button.getAttribute('data-name') || '',
+                        material: button.getAttribute('data-material') || '',
+                        price: Number.isFinite(price) ? price : null,
+                        url: button.getAttribute('data-url') || '',
+                    }, 1);
+
+                    var originalText = button.textContent;
+                    button.classList.add('is-added');
+                    button.textContent = 'Добавлено ✓';
+
+                    window.setTimeout(function () {
+                        button.classList.remove('is-added');
+                        button.textContent = originalText;
+                    }, 1500);
                 });
             });
         })();

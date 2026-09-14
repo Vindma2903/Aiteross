@@ -774,7 +774,18 @@
                             <button type="button" class="qty-button" aria-label="Больше" data-qty-inc>+</button>
                         </div>
 
-                        <a href="{{ url('/#lead-form-section') }}" class="buy-button">Получить предложение</a>
+                        <button
+                            type="button"
+                            class="buy-button"
+                            data-add-to-cart
+                            data-product-id="{{ $product->id }}"
+                            data-sku="{{ $product->sku }}"
+                            data-name="{{ $product->name }}"
+                            data-price="{{ $product->price }}"
+                            data-material="{{ $product->category?->name }}"
+                            data-url="{{ route('catalog.products.show', ['slug' => $product->slug]) }}"
+                            data-image="{{ $imageUrl }}"
+                        >В корзину</button>
 
                             @endif
                             @if ($showWish)
@@ -1026,6 +1037,36 @@
                 incButton.addEventListener('click', () => {
                     qty += 1;
                     renderQty();
+                });
+            }
+
+            const addToCartButton = document.querySelector('[data-add-to-cart]');
+
+            if (addToCartButton) {
+                addToCartButton.addEventListener('click', () => {
+                    if (!window.AiterossCart) {
+                        return;
+                    }
+
+                    const price = parseFloat(addToCartButton.getAttribute('data-price'));
+                    const qty = Math.max(1, parseInt(qtyValue ? qtyValue.textContent : '1', 10) || 1);
+
+                    window.AiterossCart.add({
+                        product_id: Number(addToCartButton.getAttribute('data-product-id')) || null,
+                        sku: addToCartButton.getAttribute('data-sku') || '',
+                        name: addToCartButton.getAttribute('data-name') || '',
+                        material: addToCartButton.getAttribute('data-material') || '',
+                        price: Number.isFinite(price) ? price : null,
+                        url: addToCartButton.getAttribute('data-url') || '',
+                        image: addToCartButton.getAttribute('data-image') || '',
+                    }, qty);
+
+                    const originalText = addToCartButton.textContent;
+                    addToCartButton.textContent = 'Добавлено ✓';
+
+                    window.setTimeout(() => {
+                        addToCartButton.textContent = originalText;
+                    }, 1500);
                 });
             }
 

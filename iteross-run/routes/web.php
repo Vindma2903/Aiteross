@@ -6,6 +6,7 @@ use App\Modules\Admin\Http\Controllers\AdminDashboardController;
 use App\Modules\Admin\Http\Controllers\AdminMailSettingsController;
 use App\Modules\Admin\Http\Controllers\AdminPageController;
 use App\Modules\Admin\Http\Controllers\AdminProductController;
+use App\Modules\Cart\Http\Controllers\CartOrderController;
 use App\Modules\Catalog\Http\Controllers\CatalogController;
 use App\Modules\Catalog\Http\Controllers\DeliveryController;
 use App\Modules\Catalog\Http\Controllers\HomeController;
@@ -28,6 +29,7 @@ Route::post('/callback-requests', [CallbackRequestController::class, 'store'])->
 Route::post('/lead-requests', [LeadRequestController::class, 'store'])->name('lead-requests.store');
 Route::get('/delivery', DeliveryController::class)->name('delivery');
 Route::view('/cart', 'cart.index')->name('cart.index');
+Route::post('/cart-order-requests', [CartOrderController::class, 'store'])->name('cart-order-requests.store');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('catalog.products.show');
 Route::get('/catalog/{categorySlug?}', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
