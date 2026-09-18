@@ -8,7 +8,6 @@ use App\Modules\Catalog\Infrastructure\Persistence\Eloquent\Product;
 use App\Modules\Favorites\Application\UseCases\GetFavoriteProductIdsForRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ProductController extends Controller
@@ -27,13 +26,7 @@ class ProductController extends Controller
 
         $productPageSettings = $getProductPageSettings->handle();
         $favoriteProductIds = $getFavoriteProductIdsForRequest->handle($request);
-        $imageUrl = null;
-
-        if ($product->image) {
-            $imageUrl = Str::startsWith($product->image, ['http://', 'https://', '/storage/'])
-                ? $product->image
-                : asset('storage/'.$product->image);
-        }
+        $imageUrl = $product->image_url;
 
         $analogProductsQuery = $product->analog_mode === Product::ANALOG_MODE_MANUAL
             ? $product->manualAnalogs()
@@ -53,20 +46,10 @@ class ProductController extends Controller
         $analogProducts = $analogProductsQuery
             ->limit($product->analog_mode === Product::ANALOG_MODE_MANUAL ? 10 : 6)
             ->get()
-            ->map(function (Product $analogProduct) {
-                $analogImageUrl = null;
-
-                if ($analogProduct->image) {
-                    $analogImageUrl = Str::startsWith($analogProduct->image, ['http://', 'https://', '/storage/'])
-                        ? $analogProduct->image
-                        : asset('storage/'.$analogProduct->image);
-                }
-
-                return [
-                    'product' => $analogProduct,
-                    'imageUrl' => $analogImageUrl,
-                ];
-            });
+            ->map(fn (Product $analogProduct) => [
+                'product' => $analogProduct,
+                'imageUrl' => $analogProduct->image_url,
+            ]);
 
         $visibleFilterSpecs = $product->filterOptions
             ->groupBy('group.name')

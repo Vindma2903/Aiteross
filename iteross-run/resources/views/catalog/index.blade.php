@@ -588,6 +588,12 @@
             padding: 28px;
         }
 
+        .product-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         .product-media__shape {
             width: min(200px, 100%);
             aspect-ratio: 1 / 1;
@@ -1069,7 +1075,11 @@
 
                                 <a href="{{ route('catalog.products.show', ['slug' => $product->slug]) }}" class="product-link">
                                     <div class="product-media">
-                                        <div class="product-media__shape"></div>
+                                        @if ($product->image_url)
+                                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
+                                        @else
+                                            <div class="product-media__shape"></div>
+                                        @endif
                                     </div>
                                     <div class="product-body">
                                         <div class="product-sku">{{ $product->sku }}</div>
