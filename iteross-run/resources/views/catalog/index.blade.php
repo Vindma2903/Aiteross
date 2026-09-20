@@ -884,6 +884,7 @@
     </style>
     @include('partials.unified-site-header-styles')
     @include('partials.unified-site-footer-styles')
+    @include('partials.callback-modal-styles')
 </head>
 <body>
     @include('partials.unified-site-header')
@@ -1129,11 +1130,13 @@
                 <h2>Не нашли нужную позицию?</h2>
                 <p>Пришлите артикул аналога, и мы подберем замену и рассчитаем стоимость партии от 10 шт.</p>
             </div>
-            <a href="/#lead-form-section" class="primary-button">Получить предложение</a>
+            <a href="/#lead-form-section" class="primary-button" data-open-proposal-modal>Получить предложение</a>
         </div>
     </section>
 
     @include('partials.unified-site-footer')
+
+    @include('partials.callback-modal')
     {{--
     <footer id="footer" class="site-footer">
         <div class="footer-top">
@@ -1269,6 +1272,7 @@
         })();
     </script>
 @include('partials.unified-site-header-scripts')
+@include('partials.callback-modal-scripts')
 <script>
 (function () {
     var input = document.getElementById('catalog-search-input');

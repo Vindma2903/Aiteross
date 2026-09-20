@@ -411,113 +411,6 @@
             color: rgba(255,255,255,0.4);
             font-size: 12.5px;
         }
-        .proposal-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 500;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            background: rgba(11, 37, 69, 0.46);
-        }
-        .proposal-modal.is-open {
-            display: flex;
-        }
-        .proposal-modal-card {
-            width: min(100%, 560px);
-            border-radius: 22px;
-            background: #FFFFFF;
-            box-shadow: 0 32px 80px rgba(11, 37, 69, 0.24);
-            overflow: hidden;
-        }
-        .proposal-modal-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 16px;
-            padding: 28px 28px 0;
-        }
-        .proposal-modal-header h3 {
-            margin: 0 0 8px;
-            color: #0B2545;
-            font-size: 28px;
-            line-height: 1.1;
-        }
-        .proposal-modal-header p {
-            margin: 0;
-            color: #5B6470;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-        .proposal-modal-close {
-            width: 42px;
-            height: 42px;
-            border: 1px solid #D8DEE6;
-            border-radius: 50%;
-            background: #FFFFFF;
-            color: #3A4048;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex: none;
-        }
-        .proposal-modal-close:hover {
-            background: #F5F7FB;
-        }
-        .proposal-modal-form {
-            display: grid;
-            gap: 16px;
-            padding: 24px 28px 28px;
-        }
-        .proposal-modal-field {
-            display: grid;
-            gap: 8px;
-        }
-        .proposal-modal-field label {
-            color: #6A7381;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.2px;
-        }
-        .proposal-modal-field input,
-        .proposal-modal-field textarea {
-            width: 100%;
-            border: 1.5px solid #D6DAE0;
-            border-radius: 12px;
-            background: #FFFFFF;
-            padding: 14px 16px;
-            color: #14161A;
-            font-size: 15px;
-            font-family: inherit;
-            outline: none;
-        }
-        .proposal-modal-field textarea {
-            min-height: 132px;
-            resize: vertical;
-        }
-        .proposal-modal-field input:focus,
-        .proposal-modal-field textarea:focus {
-            border-color: #1657C4;
-            box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
-        }
-        .proposal-modal-field input.is-invalid,
-        .proposal-modal-field textarea.is-invalid {
-            border-color: #D05353;
-            box-shadow: 0 0 0 4px rgba(208, 83, 83, 0.12);
-        }
-        .proposal-modal-submit {
-            min-height: 52px;
-            border-radius: 14px;
-            background: #1657C4;
-            color: #FFFFFF;
-            font-size: 15px;
-            font-weight: 700;
-        }
-        .proposal-modal-submit:hover {
-            background: #123F94;
-        }
         .benefits {
             border-bottom: 1px solid #E3E6EA;
             background: #FFFFFF;
@@ -813,26 +706,6 @@
             display: grid;
             gap: 14px;
         }
-        .lead-form-feedback {
-            border-radius: 12px;
-            padding: 14px 16px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        .lead-form-feedback--success {
-            background: #EAF7EE;
-            border: 1px solid #B7DFC0;
-            color: #1F6B33;
-        }
-        .lead-form-feedback--error {
-            background: #FFF3F3;
-            border: 1px solid #F2CACA;
-            color: #A33A3A;
-        }
-        .lead-form-feedback ul {
-            margin: 0;
-            padding-left: 18px;
-        }
         .field label {
             display: block;
             margin-bottom: 8px;
@@ -864,63 +737,6 @@
         }
         .field input.is-invalid,
         .field textarea.is-invalid {
-            border-color: #D05353;
-            box-shadow: 0 0 0 4px rgba(208, 83, 83, 0.12);
-        }
-        .field-error {
-            margin-top: 8px;
-            color: #B03D3D;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-        .file-box {
-            border: 1.5px dashed #C9D3E0;
-            border-radius: 12px;
-            background: #FFFFFF;
-            padding: 18px 16px;
-            color: #5B6470;
-            font-size: 14px;
-            line-height: 1.6;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
-        }
-        .file-box:hover {
-            border-color: #1657C4;
-            background: #F8FBFF;
-        }
-        .file-box:focus-within {
-            border-color: #1657C4;
-            box-shadow: 0 0 0 4px rgba(22, 87, 196, 0.12);
-        }
-        .file-box input {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-        .file-box strong {
-            display: block;
-            color: #1657C4;
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-        .file-box span {
-            display: block;
-        }
-        .file-box-name {
-            margin-top: 10px;
-            color: #14161A;
-            font-weight: 600;
-            line-height: 1.5;
-        }
-        .file-box.is-invalid {
             border-color: #D05353;
             box-shadow: 0 0 0 4px rgba(208, 83, 83, 0.12);
         }
@@ -1137,17 +953,6 @@
                 padding-bottom: 24px;
                 padding-left: 16px;
             }
-            .proposal-modal {
-                padding: 16px;
-            }
-            .proposal-modal-header,
-            .proposal-modal-form {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-            .proposal-modal-header h3 {
-                font-size: 24px;
-            }
             .lead-copy,
             .lead-form-panel {
                 padding: 24px 20px;
@@ -1164,6 +969,7 @@
             }
         }
     </style>
+    @include('partials.callback-modal-styles')
     @include('partials.unified-site-header-styles')
     @include('partials.unified-site-footer-styles')
 </head>
@@ -1579,96 +1385,7 @@
     </footer>
     --}}
 
-    <div class="proposal-modal" data-proposal-modal aria-hidden="true">
-        <div class="proposal-modal-card" role="dialog" aria-modal="true" aria-labelledby="proposal-modal-title">
-            <div class="proposal-modal-header">
-                <div>
-                    <h3 id="proposal-modal-title">Получить предложение</h3>
-                    <p>Оставьте контакты, и мы свяжемся с вами, чтобы обсудить задачу и подготовить предложение.</p>
-                </div>
-                <button type="button" class="proposal-modal-close" data-close-proposal-modal aria-label="Закрыть окно">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                    </svg>
-                </button>
-            </div>
-
-            <form class="proposal-modal-form" method="POST" action="{{ route('callback-requests.store') }}" enctype="multipart/form-data">
-                @csrf
-                @if (session('callback_status'))
-                    <div class="lead-form-feedback lead-form-feedback--success">{{ session('callback_status') }}</div>
-                @endif
-
-                @if ($errors->callbackRequest->any())
-                    <div class="lead-form-feedback lead-form-feedback--error">
-                        <ul>
-                            @foreach ($errors->callbackRequest->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <div class="proposal-modal-field">
-                    <label for="proposal-name">Имя</label>
-                    <input
-                        id="proposal-name"
-                        type="text"
-                        name="name"
-                        value="{{ old('name') }}"
-                        placeholder="Иван Иванов"
-                        required
-                        class="@if($errors->callbackRequest->has('name')) is-invalid @endif"
-                    >
-                    @if ($errors->callbackRequest->has('name'))
-                        <div class="field-error">{{ $errors->callbackRequest->first('name') }}</div>
-                    @endif
-                </div>
-
-                <div class="proposal-modal-field">
-                    <label for="proposal-phone">Номер телефона</label>
-                    <input
-                        id="proposal-phone"
-                        type="tel"
-                        name="phone"
-                        value="{{ old('phone') }}"
-                        placeholder="+7 (___) ___-__-__"
-                        required
-                        class="@if($errors->callbackRequest->has('phone')) is-invalid @endif"
-                    >
-                    @if ($errors->callbackRequest->has('phone'))
-                        <div class="field-error">{{ $errors->callbackRequest->first('phone') }}</div>
-                    @endif
-                </div>
-
-                <div class="proposal-modal-field">
-                    <label for="proposal-description">Описание задачи</label>
-                    <textarea
-                        id="proposal-description"
-                        name="description"
-                        placeholder="Опишите задачу, если хотите"
-                        class="@if($errors->callbackRequest->has('description')) is-invalid @endif"
-                    >{{ old('description') }}</textarea>
-                    @if ($errors->callbackRequest->has('description'))
-                        <div class="field-error">{{ $errors->callbackRequest->first('description') }}</div>
-                    @endif
-                </div>
-
-                @php
-                    $callbackAttachmentErrors = collect([$errors->callbackRequest->get('attachments'), $errors->callbackRequest->get('attachments.*')])->flatten()->unique()->values();
-                @endphp
-                <label class="file-box @if($callbackAttachmentErrors->isNotEmpty()) is-invalid @endif">
-                    <input type="file" name="attachments[]" multiple data-max-files="10" data-max-total-mb="20" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                    <strong>Прикрепите файлы</strong>
-                    <span>PDF, DOC, JPG, PNG — до 10 файлов, всего до 20 МБ</span>
-                    <span class="file-box-name" data-file-name>Файлы не выбраны</span>
-                </label>
-                <div class="field-error" data-file-error @if($callbackAttachmentErrors->isEmpty()) hidden @endif>@foreach ($callbackAttachmentErrors as $attachmentError){{ $attachmentError }}@if(! $loop->last)<br>@endif @endforeach</div>
-
-                <button type="submit" class="proposal-modal-submit">Заказать звонок</button>
-            </form>
-        </div>
-    </div>
+    @include('partials.callback-modal')
 
     <div class="cookie-banner" data-cookie-banner hidden>
         <p>Мы используем cookie для корректной работы сайта. Подробнее — в <a href="#">Политике конфиденциальности</a>.</p>
@@ -1704,118 +1421,9 @@
         window.addEventListener('load', scrollToFeedback);
     })();
 
-    (function () {
-        function formatSize(bytes) {
-            return bytes >= 1048576
-                ? (bytes / 1048576).toFixed(1).replace('.', ',') + ' МБ'
-                : Math.max(1, Math.round(bytes / 1024)) + ' КБ';
-        }
-
-        document.querySelectorAll('.file-box input[type="file"]').forEach(function (input) {
-            var box = input.closest('.file-box');
-            var fileNameElement = box ? box.querySelector('[data-file-name]') : null;
-            var errorElement = box ? box.nextElementSibling : null;
-            if (errorElement && !errorElement.hasAttribute('data-file-error')) {
-                errorElement = null;
-            }
-
-            var maxFiles = parseInt(input.dataset.maxFiles || '10', 10);
-            var maxTotalBytes = parseFloat(input.dataset.maxTotalMb || '20') * 1048576;
-
-            function showError(message) {
-                if (!errorElement) {
-                    return;
-                }
-                errorElement.textContent = message;
-                errorElement.hidden = message === '';
-                box.classList.toggle('is-invalid', message !== '');
-            }
-
-            input.addEventListener('change', function () {
-                if (!fileNameElement) {
-                    return;
-                }
-
-                var files = Array.prototype.slice.call(input.files || []);
-                var totalBytes = files.reduce(function (sum, file) { return sum + file.size; }, 0);
-
-                if (files.length > maxFiles) {
-                    input.value = '';
-                    fileNameElement.textContent = 'Файлы не выбраны';
-                    showError('Можно прикрепить не более ' + maxFiles + ' файлов.');
-                    return;
-                }
-
-                if (totalBytes > maxTotalBytes) {
-                    input.value = '';
-                    fileNameElement.textContent = 'Файлы не выбраны';
-                    showError('Общий размер файлов не должен превышать ' + (maxTotalBytes / 1048576) + ' МБ.');
-                    return;
-                }
-
-                showError('');
-
-                if (files.length === 0) {
-                    fileNameElement.textContent = 'Файлы не выбраны';
-                    return;
-                }
-
-                fileNameElement.innerHTML = '';
-                files.forEach(function (file) {
-                    var line = document.createElement('div');
-                    line.textContent = file.name + ' (' + formatSize(file.size) + ')';
-                    fileNameElement.appendChild(line);
-                });
-            });
-        });
-    })();
-
-    (function () {
-        var modal = document.querySelector('[data-proposal-modal]');
-        var openButton = document.querySelector('[data-open-proposal-modal]');
-        var closeButton = document.querySelector('[data-close-proposal-modal]');
-        var shouldOpenModal = @json(session('open_callback_modal') || $errors->callbackRequest->any());
-
-        if (!modal || !openButton || !closeButton) {
-            return;
-        }
-
-        function openModal() {
-            modal.classList.add('is-open');
-            modal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modal.classList.remove('is-open');
-            modal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-        }
-
-        openButton.addEventListener('click', function () {
-            openModal();
-        });
-
-        closeButton.addEventListener('click', function () {
-            closeModal();
-        });
-
-        modal.addEventListener('click', function (event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape' && modal.classList.contains('is-open')) {
-                closeModal();
-            }
-        });
-
-        if (shouldOpenModal) {
-            openModal();
-        }
-    })();
+</script>
+@include('partials.callback-modal-scripts')
+<script>
 
     (function () {
         var banner = document.querySelector('[data-cookie-banner]');

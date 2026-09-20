@@ -21,8 +21,11 @@ class CallbackRequestController extends Controller
             attachments: array_values($request->file('attachments', [])),
         ));
 
+        // The popup is available on several pages (home, catalog), so return to the one it was sent from.
+        $back = redirect()->back(fallback: '/');
+
         if (! $delivered) {
-            return redirect('/')
+            return $back
                 ->withInput()
                 ->withErrors(
                     ['delivery' => 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или позвоните нам.'],
@@ -30,7 +33,7 @@ class CallbackRequestController extends Controller
                 );
         }
 
-        return redirect('/')
+        return $back
             ->with('callback_status', 'Заявка отправлена. Мы перезвоним вам в течение рабочего дня.')
             ->with('open_callback_modal', true);
     }

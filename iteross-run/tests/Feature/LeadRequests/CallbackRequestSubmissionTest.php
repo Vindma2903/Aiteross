@@ -148,4 +148,16 @@ class CallbackRequestSubmissionTest extends TestCase
 
         return $expected === $actual;
     }
+
+    public function test_callback_request_returns_to_the_page_it_was_sent_from(): void
+    {
+        Mail::fake();
+
+        $this->from('/catalog?search=plate')->post(route('callback-requests.store'), [
+            'name' => 'Иван Иванов',
+            'phone' => '+7 (999) 123-45-67',
+        ])
+            ->assertRedirect('/catalog?search=plate')
+            ->assertSessionHas('open_callback_modal', true);
+    }
 }
