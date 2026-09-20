@@ -18,7 +18,7 @@ class CallbackRequestController extends Controller
             name: $request->string('name')->toString(),
             phone: $request->string('phone')->toString(),
             description: $request->string('description')->toString(),
-            attachment: $request->file('attachment'),
+            attachments: array_values($request->file('attachments', [])),
         ));
 
         if (! $delivered) {

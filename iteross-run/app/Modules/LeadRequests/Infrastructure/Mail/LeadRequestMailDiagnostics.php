@@ -10,7 +10,7 @@ use Throwable;
  */
 final class LeadRequestMailDiagnostics
 {
-    public static function context(string $form, Throwable $exception, bool $hasAttachment): array
+    public static function context(string $form, Throwable $exception, int $attachmentsCount): array
     {
         $mailer = (string) config('mail.default');
 
@@ -19,7 +19,7 @@ final class LeadRequestMailDiagnostics
             'exception' => $exception::class,
             'message' => $exception->getMessage(),
             'file' => $exception->getFile().':'.$exception->getLine(),
-            'has_attachment' => $hasAttachment,
+            'attachments_count' => $attachmentsCount,
             'mailer' => $mailer,
             'smtp_host' => config('mail.mailers.smtp.host'),
             'smtp_port' => config('mail.mailers.smtp.port'),

@@ -13,9 +13,12 @@ class LeadRequestSubmittedMail extends Mailable
 {
     use Queueable;
 
+    /**
+     * @param  list<array{disk: string, path: string, original_name: string}>  $storedAttachments
+     */
     public function __construct(
         public LeadRequestData $data,
-        public ?array $storedAttachment,
+        public array $storedAttachments = [],
     ) {}
 
     public function envelope(): Envelope
@@ -32,22 +35,17 @@ class LeadRequestSubmittedMail extends Mailable
             view: 'mail.lead-request-submitted',
             with: [
                 'data' => $this->data,
-                'storedAttachment' => $this->storedAttachment,
+                'storedAttachments' => $this->storedAttachments,
             ],
         );
     }
 
     public function attachments(): array
     {
-        if ($this->storedAttachment === null) {
-            return [];
-        }
-
-        return [
-            Attachment::fromStorageDisk(
-                $this->storedAttachment['disk'],
-                $this->storedAttachment['path'],
-            )->as($this->storedAttachment['original_name']),
-        ];
+        return array_map(
+            fn (array $file): Attachment => Attachment::fromStorageDisk($file['disk'], $file['path'])
+                ->as($file['original_name']),
+            $this->storedAttachments,
+        );
     }
 }

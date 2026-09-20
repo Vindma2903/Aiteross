@@ -14,7 +14,7 @@ class CallbackRequestSubmissionTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_submit_callback_request_with_attachment(): void
+    public function test_guest_can_submit_callback_request_with_several_attachments(): void
     {
         Mail::fake();
         Storage::fake('local');
@@ -23,7 +23,11 @@ class CallbackRequestSubmissionTest extends TestCase
             'name' => 'Иван Иванов',
             'phone' => '+7 (999) 123-45-67',
             'description' => 'Перезвоните по вопросу поставки.',
-            'attachment' => UploadedFile::fake()->create('brief.pdf', 256, 'application/pdf'),
+            'attachments' => [
+                UploadedFile::fake()->create('brief.pdf', 256, 'application/pdf'),
+                UploadedFile::fake()->create('scheme.png', 128, 'image/png'),
+                UploadedFile::fake()->create('spec.docx', 64, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'),
+            ],
         ]);
 
         $response
@@ -32,15 +36,17 @@ class CallbackRequestSubmissionTest extends TestCase
             ->assertSessionHas('open_callback_modal', true);
 
         $storedFiles = Storage::disk('local')->files('lead-requests');
-        $this->assertCount(1, $storedFiles);
+        $this->assertCount(3, $storedFiles);
 
         Mail::assertSent(
             CallbackRequestSubmittedMail::class,
             function ($mail) use ($storedFiles): bool {
                 return $mail->hasTo((string) config('services.lead_requests.recipient'))
                     && $mail->data->name === 'Иван Иванов'
-                    && $mail->storedAttachment !== null
-                    && $mail->storedAttachment['path'] === $storedFiles[0];
+                    && count($mail->storedAttachments) === 3
+                    && array_column($mail->storedAttachments, 'original_name') === ['brief.pdf', 'scheme.png', 'spec.docx']
+                    && $this->sameValues(array_column($mail->storedAttachments, 'path'), $storedFiles)
+                    && count($mail->attachments()) === 3;
             }
         );
     }
@@ -89,5 +95,57 @@ class CallbackRequestSubmissionTest extends TestCase
             ->once()
             ->withArgs(fn (string $message, array $context): bool => $message === 'Callback request was not delivered.'
                 && $context['message'] === '535 5.7.8 Authentication failed');
+    }
+
+    public function test_callback_request_works_without_attachments(): void
+    {
+        Mail::fake();
+        Storage::fake('local');
+
+        $this->post(route('callback-requests.store'), [
+            'name' => 'Иван Иванов',
+            'phone' => '+7 (999) 123-45-67',
+        ])->assertSessionHas('callback_status');
+
+        Mail::assertSent(
+            CallbackRequestSubmittedMail::class,
+            fn ($mail): bool => $mail->storedAttachments === [] && $mail->attachments() === []
+        );
+    }
+
+    public function test_callback_request_rejects_too_many_or_unsupported_or_oversized_attachments(): void
+    {
+        Mail::fake();
+        Storage::fake('local');
+
+        $base = ['name' => 'Иван Иванов', 'phone' => '+7 (999) 123-45-67'];
+
+        $tooMany = array_map(
+            fn (int $i) => UploadedFile::fake()->create("file-$i.pdf", 10, 'application/pdf'),
+            range(1, 11),
+        );
+
+        $this->from('/')->post(route('callback-requests.store'), $base + ['attachments' => $tooMany])
+            ->assertSessionHasErrors('attachments', errorBag: 'callbackRequest');
+
+        $this->from('/')->post(route('callback-requests.store'), $base + ['attachments' => [
+            UploadedFile::fake()->create('virus.exe', 10, 'application/x-msdownload'),
+        ]])->assertSessionHasErrors('attachments.0', errorBag: 'callbackRequest');
+
+        $this->from('/')->post(route('callback-requests.store'), $base + ['attachments' => [
+            UploadedFile::fake()->create('a.pdf', 12000, 'application/pdf'),
+            UploadedFile::fake()->create('b.pdf', 12000, 'application/pdf'),
+        ]])->assertSessionHasErrors('attachments', errorBag: 'callbackRequest');
+
+        Storage::disk('local')->assertMissing('lead-requests');
+        Mail::assertNothingSent();
+    }
+
+    private function sameValues(array $expected, array $actual): bool
+    {
+        sort($expected);
+        sort($actual);
+
+        return $expected === $actual;
     }
 }

@@ -19,7 +19,7 @@ class LeadRequestController extends Controller
             phone: $request->string('phone')->toString(),
             email: $request->string('email')->toString(),
             taskDescription: $request->string('task_description')->toString(),
-            attachment: $request->file('attachment'),
+            attachments: array_values($request->file('attachments', [])),
         ));
 
         $redirect = redirect()->to(rtrim(url('/'), '/').'/#lead-form-section');

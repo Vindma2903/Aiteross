@@ -14,7 +14,7 @@ class LeadRequestSubmissionTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_submit_lead_request_with_attachment(): void
+    public function test_guest_can_submit_lead_request_with_several_attachments(): void
     {
         Mail::fake();
         Storage::fake('local');
@@ -24,7 +24,10 @@ class LeadRequestSubmissionTest extends TestCase
             'phone' => '+7 (999) 123-45-67',
             'email' => 'sales@example.com',
             'task_description' => 'Нужны пластины для тестовой партии.',
-            'attachment' => UploadedFile::fake()->create('brief.pdf', 256, 'application/pdf'),
+            'attachments' => [
+                UploadedFile::fake()->create('brief.pdf', 256, 'application/pdf'),
+                UploadedFile::fake()->create('scheme.jpg', 128, 'image/jpeg'),
+            ],
         ]);
 
         $response
@@ -32,15 +35,16 @@ class LeadRequestSubmissionTest extends TestCase
             ->assertSessionHas('status', 'Заявка отправлена. Мы свяжемся с вами в течение рабочего дня.');
 
         $storedFiles = Storage::disk('local')->files('lead-requests');
-        $this->assertCount(1, $storedFiles);
+        $this->assertCount(2, $storedFiles);
 
         Mail::assertSent(
             LeadRequestSubmittedMail::class,
             function ($mail) use ($storedFiles): bool {
                 return $mail->hasTo((string) config('services.lead_requests.recipient'))
                     && $mail->data->companyName === 'Иван Иванов, ООО «Компания»'
-                    && $mail->storedAttachment !== null
-                    && $mail->storedAttachment['path'] === $storedFiles[0];
+                    && array_column($mail->storedAttachments, 'original_name') === ['brief.pdf', 'scheme.jpg']
+                    && $this->sameValues(array_column($mail->storedAttachments, 'path'), $storedFiles)
+                    && count($mail->attachments()) === 2;
             }
         );
     }
@@ -50,7 +54,8 @@ class LeadRequestSubmissionTest extends TestCase
         Mail::fake();
         Storage::fake('local');
 
-        $response = $this->from('/#lead-form-section')->post(route('lead-requests.store'), [
+        // The browser sends the page without #fragment as Referer, so the redirect must add the anchor itself.
+        $response = $this->from('/')->post(route('lead-requests.store'), [
             'company_name' => '',
             'phone' => '',
             'email' => 'bad-email',
@@ -93,5 +98,46 @@ class LeadRequestSubmissionTest extends TestCase
             ->withArgs(fn (string $message, array $context): bool => $message === 'Lead request was not delivered.'
                 && $context['message'] === '535 5.7.8 Authentication failed'
                 && ! array_key_exists('smtp_password', $context));
+    }
+
+    public function test_lead_request_rejects_too_many_or_unsupported_or_oversized_attachments(): void
+    {
+        Mail::fake();
+        Storage::fake('local');
+
+        $base = [
+            'company_name' => 'Иван Иванов',
+            'phone' => '+7 (999) 123-45-67',
+            'email' => 'sales@example.com',
+            'task_description' => 'Нужны пластины.',
+        ];
+
+        $tooMany = array_map(
+            fn (int $i) => UploadedFile::fake()->create("file-$i.pdf", 10, 'application/pdf'),
+            range(1, 11),
+        );
+
+        $this->from('/')->post(route('lead-requests.store'), $base + ['attachments' => $tooMany])
+            ->assertSessionHasErrors('attachments');
+
+        $this->from('/')->post(route('lead-requests.store'), $base + ['attachments' => [
+            UploadedFile::fake()->create('virus.exe', 10, 'application/x-msdownload'),
+        ]])->assertSessionHasErrors('attachments.0');
+
+        $this->from('/')->post(route('lead-requests.store'), $base + ['attachments' => [
+            UploadedFile::fake()->create('a.pdf', 12000, 'application/pdf'),
+            UploadedFile::fake()->create('b.pdf', 12000, 'application/pdf'),
+        ]])->assertSessionHasErrors('attachments');
+
+        Storage::disk('local')->assertMissing('lead-requests');
+        Mail::assertNothingSent();
+    }
+
+    private function sameValues(array $expected, array $actual): bool
+    {
+        sort($expected);
+        sort($actual);
+
+        return $expected === $actual;
     }
 }

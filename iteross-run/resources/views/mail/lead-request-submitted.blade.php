@@ -4,8 +4,13 @@
 <p><strong>Email:</strong> {{ $data->email }}</p>
 <p><strong>Описание задачи:</strong></p>
 <p>{!! nl2br(e($data->taskDescription)) !!}</p>
-@if ($storedAttachment)
-    <p><strong>Вложение:</strong> {{ $storedAttachment['original_name'] }}</p>
+@if (count($storedAttachments) > 0)
+    <p><strong>Вложения ({{ count($storedAttachments) }}):</strong></p>
+    <ul>
+        @foreach ($storedAttachments as $attachment)
+            <li>{{ $attachment['original_name'] }}</li>
+        @endforeach
+    </ul>
 @else
-    <p><strong>Вложение:</strong> не приложено</p>
+    <p><strong>Вложения:</strong> не приложены</p>
 @endif

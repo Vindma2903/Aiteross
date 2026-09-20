@@ -1505,15 +1505,16 @@
                                 <div class="field-error">{{ $message }}</div>
                             @enderror
                         </div>
-                        <label class="file-box @error('attachment') is-invalid @enderror">
-                            <input type="file" name="attachment" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                            <strong>Прикрепите файл</strong>
-                            <span>PDF, DOC, JPG — до 20 МБ</span>
-                            <span class="file-box-name" data-file-name>Файл не выбран</span>
+                        @php
+                            $leadAttachmentErrors = collect([$errors->get('attachments'), $errors->get('attachments.*')])->flatten()->unique()->values();
+                        @endphp
+                        <label class="file-box @if($leadAttachmentErrors->isNotEmpty()) is-invalid @endif">
+                            <input type="file" name="attachments[]" multiple data-max-files="10" data-max-total-mb="20" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                            <strong>Прикрепите файлы</strong>
+                            <span>PDF, DOC, JPG, PNG — до 10 файлов, всего до 20 МБ</span>
+                            <span class="file-box-name" data-file-name>Файлы не выбраны</span>
                         </label>
-                        @error('attachment')
-                            <div class="field-error">{{ $message }}</div>
-                        @enderror
+                        <div class="field-error" data-file-error @if($leadAttachmentErrors->isEmpty()) hidden @endif>@foreach ($leadAttachmentErrors as $attachmentError){{ $attachmentError }}@if(! $loop->last)<br>@endif @endforeach</div>
                         <button type="submit" class="lead-submit">Получить предложение</button>
                         <p class="lead-disclaimer">Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</p>
                     </form>
@@ -1653,15 +1654,16 @@
                     @endif
                 </div>
 
-                <label class="file-box @if($errors->callbackRequest->has('attachment')) is-invalid @endif">
-                    <input type="file" name="attachment" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                    <strong>Прикрепите файл</strong>
-                    <span>PDF, DOC, JPG — до 20 МБ</span>
-                    <span class="file-box-name" data-file-name>Файл не выбран</span>
+                @php
+                    $callbackAttachmentErrors = collect([$errors->callbackRequest->get('attachments'), $errors->callbackRequest->get('attachments.*')])->flatten()->unique()->values();
+                @endphp
+                <label class="file-box @if($callbackAttachmentErrors->isNotEmpty()) is-invalid @endif">
+                    <input type="file" name="attachments[]" multiple data-max-files="10" data-max-total-mb="20" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                    <strong>Прикрепите файлы</strong>
+                    <span>PDF, DOC, JPG, PNG — до 10 файлов, всего до 20 МБ</span>
+                    <span class="file-box-name" data-file-name>Файлы не выбраны</span>
                 </label>
-                @if ($errors->callbackRequest->has('attachment'))
-                    <div class="field-error">{{ $errors->callbackRequest->first('attachment') }}</div>
-                @endif
+                <div class="field-error" data-file-error @if($callbackAttachmentErrors->isEmpty()) hidden @endif>@foreach ($callbackAttachmentErrors as $attachmentError){{ $attachmentError }}@if(! $loop->last)<br>@endif @endforeach</div>
 
                 <button type="submit" class="proposal-modal-submit">Заказать звонок</button>
             </form>
@@ -1677,16 +1679,93 @@
 <script>
 
     (function () {
+        // After the lead form is submitted the page reloads; keep the visitor at the form
+        // (success message or errors) instead of letting the browser stay at the top.
+        var feedback = document.querySelector('#lead-form-section .lead-form-feedback');
+        if (!feedback) {
+            return;
+        }
+
+        var userScrolled = false;
+        ['wheel', 'touchmove', 'keydown', 'mousedown'].forEach(function (eventName) {
+            window.addEventListener(eventName, function () { userScrolled = true; }, { passive: true, once: true });
+        });
+
+        function scrollToFeedback() {
+            if (userScrolled) {
+                return;
+            }
+
+            var top = feedback.getBoundingClientRect().top + window.pageYOffset - window.innerHeight / 3;
+            window.scrollTo({ top: Math.max(0, top), left: 0, behavior: 'instant' });
+        }
+
+        scrollToFeedback();
+        window.addEventListener('load', scrollToFeedback);
+    })();
+
+    (function () {
+        function formatSize(bytes) {
+            return bytes >= 1048576
+                ? (bytes / 1048576).toFixed(1).replace('.', ',') + ' МБ'
+                : Math.max(1, Math.round(bytes / 1024)) + ' КБ';
+        }
+
         document.querySelectorAll('.file-box input[type="file"]').forEach(function (input) {
+            var box = input.closest('.file-box');
+            var fileNameElement = box ? box.querySelector('[data-file-name]') : null;
+            var errorElement = box ? box.nextElementSibling : null;
+            if (errorElement && !errorElement.hasAttribute('data-file-error')) {
+                errorElement = null;
+            }
+
+            var maxFiles = parseInt(input.dataset.maxFiles || '10', 10);
+            var maxTotalBytes = parseFloat(input.dataset.maxTotalMb || '20') * 1048576;
+
+            function showError(message) {
+                if (!errorElement) {
+                    return;
+                }
+                errorElement.textContent = message;
+                errorElement.hidden = message === '';
+                box.classList.toggle('is-invalid', message !== '');
+            }
+
             input.addEventListener('change', function () {
-                var fileNameElement = input.closest('.file-box')?.querySelector('[data-file-name]');
                 if (!fileNameElement) {
                     return;
                 }
 
-                fileNameElement.textContent = input.files && input.files[0]
-                    ? input.files[0].name
-                    : 'Файл не выбран';
+                var files = Array.prototype.slice.call(input.files || []);
+                var totalBytes = files.reduce(function (sum, file) { return sum + file.size; }, 0);
+
+                if (files.length > maxFiles) {
+                    input.value = '';
+                    fileNameElement.textContent = 'Файлы не выбраны';
+                    showError('Можно прикрепить не более ' + maxFiles + ' файлов.');
+                    return;
+                }
+
+                if (totalBytes > maxTotalBytes) {
+                    input.value = '';
+                    fileNameElement.textContent = 'Файлы не выбраны';
+                    showError('Общий размер файлов не должен превышать ' + (maxTotalBytes / 1048576) + ' МБ.');
+                    return;
+                }
+
+                showError('');
+
+                if (files.length === 0) {
+                    fileNameElement.textContent = 'Файлы не выбраны';
+                    return;
+                }
+
+                fileNameElement.innerHTML = '';
+                files.forEach(function (file) {
+                    var line = document.createElement('div');
+                    line.textContent = file.name + ' (' + formatSize(file.size) + ')';
+                    fileNameElement.appendChild(line);
+                });
             });
         });
     })();

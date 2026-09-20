@@ -6,10 +6,13 @@ use Illuminate\Http\UploadedFile;
 
 final readonly class CallbackRequestData
 {
+    /**
+     * @param  list<UploadedFile>  $attachments
+     */
     public function __construct(
         public string $name,
         public string $phone,
         public string $description,
-        public ?UploadedFile $attachment,
+        public array $attachments = [],
     ) {}
 }
