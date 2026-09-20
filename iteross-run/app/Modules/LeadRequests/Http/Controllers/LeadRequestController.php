@@ -14,7 +14,7 @@ class LeadRequestController extends Controller
         StoreLeadRequestRequest $request,
         SubmitLeadRequest $submitLeadRequest,
     ): RedirectResponse {
-        $submitLeadRequest->handle(new LeadRequestData(
+        $delivered = $submitLeadRequest->handle(new LeadRequestData(
             companyName: $request->string('company_name')->toString(),
             phone: $request->string('phone')->toString(),
             email: $request->string('email')->toString(),
@@ -22,7 +22,15 @@ class LeadRequestController extends Controller
             attachment: $request->file('attachment'),
         ));
 
-        return redirect()->to(rtrim(url('/'), '/').'/#lead-form-section')
-            ->with('status', 'Заявка отправлена. Мы свяжемся с вами в течение рабочего дня.');
+        $redirect = redirect()->to(rtrim(url('/'), '/').'/#lead-form-section');
+
+        if (! $delivered) {
+            return $redirect
+                ->withInput()
+                ->withErrors(['delivery' => 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или позвоните нам.']);
+        }
+
+        return $redirect
+            ->with('status','Заявка отправлена. Мы свяжемся с вами в течение рабочего дня.');
     }
 }

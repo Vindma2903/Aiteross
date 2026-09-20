@@ -5,6 +5,7 @@ namespace Tests\Feature\LeadRequests;
 use App\Modules\LeadRequests\Infrastructure\Mail\CallbackRequestSubmittedMail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -65,5 +66,28 @@ class CallbackRequestSubmissionTest extends TestCase
 
         Storage::disk('local')->assertMissing('lead-requests');
         Mail::assertNothingSent();
+    }
+
+    public function test_mail_failure_is_logged_and_shown_to_the_user_instead_of_a_500(): void
+    {
+        Storage::fake('local');
+        Mail::shouldReceive('to')->once()->andThrow(new \RuntimeException('535 5.7.8 Authentication failed'));
+        Log::spy();
+
+        $response = $this->from('/')->post(route('callback-requests.store'), [
+            'name' => 'Иван Иванов',
+            'phone' => '+7 (999) 123-45-67',
+            'description' => 'Перезвоните по вопросу поставки.',
+        ]);
+
+        $response
+            ->assertRedirect('/')
+            ->assertSessionHasErrors('delivery', null, 'callbackRequest')
+            ->assertSessionMissing('callback_status');
+
+        Log::shouldHaveReceived('error')
+            ->once()
+            ->withArgs(fn (string $message, array $context): bool => $message === 'Callback request was not delivered.'
+                && $context['message'] === '535 5.7.8 Authentication failed');
     }
 }

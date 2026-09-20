@@ -5,6 +5,7 @@ namespace Tests\Feature\LeadRequests;
 use App\Modules\LeadRequests\Infrastructure\Mail\LeadRequestSubmittedMail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -67,5 +68,30 @@ class LeadRequestSubmissionTest extends TestCase
 
         Storage::disk('local')->assertMissing('lead-requests');
         Mail::assertNothingSent();
+    }
+
+    public function test_mail_failure_is_logged_and_shown_to_the_user_instead_of_a_500(): void
+    {
+        Storage::fake('local');
+        Mail::shouldReceive('to')->once()->andThrow(new \RuntimeException('535 5.7.8 Authentication failed'));
+        Log::spy();
+
+        $response = $this->from('/')->post(route('lead-requests.store'), [
+            'company_name' => 'Иван Иванов, ООО «Компания»',
+            'phone' => '+7 (999) 123-45-67',
+            'email' => 'sales@example.com',
+            'task_description' => 'Нужны пластины для тестовой партии.',
+        ]);
+
+        $response
+            ->assertRedirect('/#lead-form-section')
+            ->assertSessionHasErrors('delivery')
+            ->assertSessionMissing('status');
+
+        Log::shouldHaveReceived('error')
+            ->once()
+            ->withArgs(fn (string $message, array $context): bool => $message === 'Lead request was not delivered.'
+                && $context['message'] === '535 5.7.8 Authentication failed'
+                && ! array_key_exists('smtp_password', $context));
     }
 }

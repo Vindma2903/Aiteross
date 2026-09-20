@@ -14,12 +14,21 @@ class CallbackRequestController extends Controller
         StoreCallbackRequestRequest $request,
         SubmitCallbackRequest $submitCallbackRequest,
     ): RedirectResponse {
-        $submitCallbackRequest->handle(new CallbackRequestData(
+        $delivered = $submitCallbackRequest->handle(new CallbackRequestData(
             name: $request->string('name')->toString(),
             phone: $request->string('phone')->toString(),
             description: $request->string('description')->toString(),
             attachment: $request->file('attachment'),
         ));
+
+        if (! $delivered) {
+            return redirect('/')
+                ->withInput()
+                ->withErrors(
+                    ['delivery' => 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или позвоните нам.'],
+                    'callbackRequest',
+                );
+        }
 
         return redirect('/')
             ->with('callback_status', 'Заявка отправлена. Мы перезвоним вам в течение рабочего дня.')
