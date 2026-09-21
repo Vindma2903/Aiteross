@@ -983,6 +983,13 @@
     $workTypeItems = data_get($workTypes, 'items', []);
     $about = data_get($page, 'about', []);
     $faq = data_get($page, 'faq', []);
+    $contacts = data_get($page, 'contacts', []);
+    $contactPhone = trim((string) ($contacts['phone'] ?? ''));
+    $contactPhoneHref = preg_replace('/[^\d+]/', '', $contactPhone);
+    $contactEmail = trim((string) ($contacts['email'] ?? ''));
+    $contactAddress = trim((string) ($contacts['address'] ?? ''));
+    $contactRequisitesName = trim((string) ($contacts['requisites_name'] ?? ''));
+    $contactRequisitesDetails = trim((string) ($contacts['requisites_details'] ?? ''));
 
     $footerNavItems = [
         ['label' => 'О компании', 'href' => url('/#about')],
@@ -1221,25 +1228,41 @@
                     <div class="lead-copy-accent"></div>
 
                     <div class="lead-meta">
-                        <div class="lead-meta-item">
-                            <div class="lead-meta-label">Телефон</div>
-                            <div class="lead-meta-value"><a href="tel:+74951234567" style="color: inherit; text-decoration: none;">+7 (495) 123-45-67</a></div>
-                            <div class="lead-meta-subtext">Пн–Пт: 9:00 – 18:00 (МСК)</div>
-                        </div>
-                        <div class="lead-meta-item">
-                            <div class="lead-meta-label">Email</div>
-                            <div class="lead-meta-value"><a href="mailto:info@iteross.ru" style="color: inherit; text-decoration: none;">info@iteross.ru</a></div>
-                            <div class="lead-meta-subtext">Ответ в течение рабочего дня</div>
-                        </div>
-                        <div class="lead-meta-item">
-                            <div class="lead-meta-label">Адрес</div>
-                            <div class="lead-meta-value">г. Москва, Дербеневская ул., 12, стр. 3</div>
-                        </div>
-                        <div class="lead-meta-item">
-                            <div class="lead-meta-label">Реквизиты</div>
-                            <div class="lead-meta-value">ООО «АЙТЕРОСС»</div>
-                            <div class="lead-meta-subtext">ИНН 7700000000 · ОГРН 1157700000000</div>
-                        </div>
+                        @if ($contactPhone !== '')
+                            <div class="lead-meta-item">
+                                <div class="lead-meta-label">Телефон</div>
+                                <div class="lead-meta-value"><a href="tel:{{ $contactPhoneHref }}" style="color: inherit; text-decoration: none;">{{ $contactPhone }}</a></div>
+                                @if (filled($contacts['phone_note'] ?? null))
+                                    <div class="lead-meta-subtext">{{ $contacts['phone_note'] }}</div>
+                                @endif
+                            </div>
+                        @endif
+                        @if ($contactEmail !== '')
+                            <div class="lead-meta-item">
+                                <div class="lead-meta-label">Email</div>
+                                <div class="lead-meta-value"><a href="mailto:{{ $contactEmail }}" style="color: inherit; text-decoration: none;">{{ $contactEmail }}</a></div>
+                                @if (filled($contacts['email_note'] ?? null))
+                                    <div class="lead-meta-subtext">{{ $contacts['email_note'] }}</div>
+                                @endif
+                            </div>
+                        @endif
+                        @if ($contactAddress !== '')
+                            <div class="lead-meta-item">
+                                <div class="lead-meta-label">Адрес</div>
+                                <div class="lead-meta-value">{{ $contactAddress }}</div>
+                            </div>
+                        @endif
+                        @if ($contactRequisitesName !== '' || $contactRequisitesDetails !== '')
+                            <div class="lead-meta-item">
+                                <div class="lead-meta-label">Реквизиты</div>
+                                @if ($contactRequisitesName !== '')
+                                    <div class="lead-meta-value">{{ $contactRequisitesName }}</div>
+                                @endif
+                                @if ($contactRequisitesDetails !== '')
+                                    <div class="lead-meta-subtext">{{ $contactRequisitesDetails }}</div>
+                                @endif
+                            </div>
+                        @endif
                     </div>
 
                 </div>

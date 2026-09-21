@@ -11,6 +11,14 @@ class UpdateHomePageContentRequest extends FormRequest
         return true;
     }
 
+    public function messages(): array
+    {
+        return [
+            'contacts.email.email' => 'Введите корректный email, например info@iteross.ru.',
+            'contacts.*.max' => 'Слишком длинное значение, сократите текст.',
+        ];
+    }
+
     public function rules(): array
     {
         if ($this->route('page') === 'header') {
@@ -113,6 +121,16 @@ class UpdateHomePageContentRequest extends FormRequest
             'faq.items' => ['required', 'array', 'min:1'],
             'faq.items.*.question' => ['required', 'string', 'max:255'],
             'faq.items.*.answer' => ['required', 'string'],
+
+            // Contacts next to the lead form; an empty field hides that item on the site.
+            'contacts' => ['nullable', 'array'],
+            'contacts.phone' => ['nullable', 'string', 'max:50'],
+            'contacts.phone_note' => ['nullable', 'string', 'max:255'],
+            'contacts.email' => ['nullable', 'email', 'max:200'],
+            'contacts.email_note' => ['nullable', 'string', 'max:255'],
+            'contacts.address' => ['nullable', 'string', 'max:500'],
+            'contacts.requisites_name' => ['nullable', 'string', 'max:255'],
+            'contacts.requisites_details' => ['nullable', 'string', 'max:500'],
         ];
     }
 }

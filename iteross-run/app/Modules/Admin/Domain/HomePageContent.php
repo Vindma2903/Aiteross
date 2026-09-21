@@ -150,6 +150,15 @@ final class HomePageContent
                     ],
                 ],
             ],
+            'contacts' => [
+                'phone' => '+7 (495) 123-45-67',
+                'phone_note' => 'Пн–Пт: 9:00 – 18:00 (МСК)',
+                'email' => 'info@iteross.ru',
+                'email_note' => 'Ответ в течение рабочего дня',
+                'address' => 'г. Москва, Дербеневская ул., 12, стр. 3',
+                'requisites_name' => 'ООО «АЙТЕРОСС»',
+                'requisites_details' => 'ИНН 7700000000 · ОГРН 1157700000000',
+            ],
         ];
     }
 }

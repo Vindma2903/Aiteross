@@ -215,6 +215,7 @@
         .field { display: flex; flex-direction: column; gap: 8px; }
         .field--full { grid-column: 1 / -1; }
         .field label { font-size: 13px; font-weight: 700; color: #778191; text-transform: uppercase; letter-spacing: .04em; }
+        .field-error { margin-top: 6px; color: #b03d3d; font-size: 13px; line-height: 1.4; }
         .field input, .field textarea, .field select { width: 100%; padding: 12px 14px; border: 1.5px solid #d6dae0; border-radius: 10px; font: inherit; color: var(--text); background: #fff; }
         .field textarea { min-height: 108px; resize: vertical; }
         .repeater { display: grid; gap: 14px; }
@@ -788,6 +789,51 @@
                         </div>
                         <div class="button-row">
                             <button type="button" class="button-secondary" data-add-item="faq-items">Добавить вопрос</button>
+                        </div>
+                    </section>
+
+                    @php $homeContacts = $homePageContent['contacts'] ?? []; @endphp
+                    <section class="panel panel--home">
+                        <div class="panel-marker">Блок 6</div>
+                        <h2>Контакты рядом с формой заявки</h2>
+                        <p>Телефон, email, адрес и реквизиты слева от формы «Отправьте заявку на коммерческое предложение» внизу главной страницы.</p>
+                        <div class="panel-subnote">Если поле оставить пустым, эта строка не будет показана на сайте.</div>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label>Телефон</label>
+                                <input type="text" name="contacts[phone]" value="{{ old('contacts.phone', $homeContacts['phone'] ?? '') }}" placeholder="+7 (495) 123-45-67">
+                                @error('contacts.phone')<div class="field-error">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="field">
+                                <label>Подпись под телефоном</label>
+                                <input type="text" name="contacts[phone_note]" value="{{ old('contacts.phone_note', $homeContacts['phone_note'] ?? '') }}" placeholder="Пн–Пт: 9:00 – 18:00 (МСК)">
+                                @error('contacts.phone_note')<div class="field-error">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="field">
+                                <label>Email</label>
+                                <input type="text" name="contacts[email]" value="{{ old('contacts.email', $homeContacts['email'] ?? '') }}" placeholder="info@iteross.ru">
+                                @error('contacts.email')<div class="field-error">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="field">
+                                <label>Подпись под email</label>
+                                <input type="text" name="contacts[email_note]" value="{{ old('contacts.email_note', $homeContacts['email_note'] ?? '') }}" placeholder="Ответ в течение рабочего дня">
+                                @error('contacts.email_note')<div class="field-error">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="field field--full">
+                                <label>Адрес</label>
+                                <input type="text" name="contacts[address]" value="{{ old('contacts.address', $homeContacts['address'] ?? '') }}" placeholder="г. Москва, Дербеневская ул., 12, стр. 3">
+                                @error('contacts.address')<div class="field-error">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="field">
+                                <label>Реквизиты: название организации</label>
+                                <input type="text" name="contacts[requisites_name]" value="{{ old('contacts.requisites_name', $homeContacts['requisites_name'] ?? '') }}" placeholder="ООО «АЙТЕРОСС»">
+                                @error('contacts.requisites_name')<div class="field-error">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="field">
+                                <label>Реквизиты: ИНН, ОГРН и другое</label>
+                                <input type="text" name="contacts[requisites_details]" value="{{ old('contacts.requisites_details', $homeContacts['requisites_details'] ?? '') }}" placeholder="ИНН 7700000000 · ОГРН 1157700000000">
+                                @error('contacts.requisites_details')<div class="field-error">{{ $message }}</div>@enderror
+                            </div>
                         </div>
                     </section>
 
