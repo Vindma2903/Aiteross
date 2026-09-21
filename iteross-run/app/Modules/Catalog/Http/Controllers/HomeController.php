@@ -4,6 +4,7 @@ namespace App\Modules\Catalog\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Admin\Application\UseCases\GetHomePageContent;
+use App\Modules\Admin\Infrastructure\Persistence\HomePageDiagnostics;
 use App\Modules\Catalog\Application\UseCases\GetCatalogCategories;
 use App\Modules\Favorites\Application\UseCases\GetFavoriteProductIdsForRequest;
 use Illuminate\Http\Request;
@@ -16,9 +17,11 @@ class HomeController extends Controller
         GetCatalogCategories $getCatalogCategories,
         GetFavoriteProductIdsForRequest $getFavoriteProductIdsForRequest,
         GetHomePageContent $getHomePageContent,
+        HomePageDiagnostics $homePageDiagnostics,
     ): View {
         $categories = $getCatalogCategories->handle();
         $page = $getHomePageContent->handle();
+        $homePageDiagnostics->logRender($page);
         $user = $request->user();
 
         return view('home', [
