@@ -2,14 +2,13 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Modules\Identity\Infrastructure\Persistence\Eloquent\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class HomeContactsTest extends TestCase
 {
+    use HomeEditorFixtures;
     use RefreshDatabase;
 
     public function test_home_page_shows_default_contacts_until_they_are_edited(): void
@@ -121,63 +120,5 @@ class HomeContactsTest extends TestCase
         $this->assertNotFalse($end);
 
         return substr($html, $start, $end - $start);
-    }
-
-    private function admin(): User
-    {
-        return User::query()->create([
-            'name' => 'Admin',
-            'first_name' => 'Admin',
-            'last_name' => 'User',
-            'company' => 'Iteross',
-            'phone' => '+7 (999) 000-00-00',
-            'role' => User::ROLE_ADMIN,
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
-        ]);
-    }
-
-    /**
-     * @param  array<string, string>  $contacts
-     */
-    private function homePayload(array $contacts): array
-    {
-        return [
-            'header_nav' => [['label' => 'О компании', 'href' => '/#about']],
-            'hero' => [
-                'title' => 'Заголовок',
-                'description' => 'Описание',
-                'cta_text' => 'Оставить заявку',
-                'background_image' => '',
-            ],
-            'hero_benefits' => [['icon' => 'layers', 'text' => 'Преимущество']],
-            'advantages' => [
-                'title' => 'Преимущества',
-                'description' => 'Описание преимуществ',
-                'items' => [['icon' => 'doc', 'title' => 'Карточка', 'text' => 'Текст']],
-            ],
-            'work_types' => [
-                'title' => 'Виды работ',
-                'description' => 'Описание видов работ',
-                'items' => [[
-                    'slug' => 'tokarnye-plastiny',
-                    'icon' => 'turn',
-                    'image' => '',
-                    'description' => 'Описание',
-                ]],
-            ],
-            'about' => [
-                'title' => 'О компании',
-                'description' => 'Коротко',
-                'text' => 'Текст',
-                'image' => '',
-            ],
-            'faq' => [
-                'title' => 'Вопросы',
-                'description' => 'Описание',
-                'items' => [['question' => 'Вопрос?', 'answer' => 'Ответ.']],
-            ],
-            'contacts' => $contacts,
-        ];
     }
 }

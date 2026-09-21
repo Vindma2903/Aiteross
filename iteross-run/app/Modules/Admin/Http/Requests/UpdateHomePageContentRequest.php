@@ -2,7 +2,9 @@
 
 namespace App\Modules\Admin\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class UpdateHomePageContentRequest extends FormRequest
 {
@@ -14,9 +16,56 @@ class UpdateHomePageContentRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'required' => 'Поле «:attribute» нужно заполнить.',
+            'max' => 'Значение поля «:attribute» слишком большое (максимум: :max).',
+            'min' => 'Поле «:attribute» заполнено неверно (минимум: :min).',
+            'email' => 'Поле «:attribute» должно содержать корректный email.',
             'contacts.email.email' => 'Введите корректный email, например info@iteross.ru.',
             'contacts.*.max' => 'Слишком длинное значение, сократите текст.',
         ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'header_nav.*.label' => 'Меню: название пункта',
+            'header_nav.*.href' => 'Меню: ссылка',
+            'hero.title' => 'Первый экран: заголовок',
+            'hero.description' => 'Первый экран: описание',
+            'hero.cta_text' => 'Первый экран: текст кнопки',
+            'hero_benefits.*.text' => 'Первый экран: преимущество',
+            'advantages.title' => 'Преимущества: заголовок',
+            'advantages.description' => 'Преимущества: описание',
+            'advantages.items.*.title' => 'Преимущества: заголовок карточки',
+            'advantages.items.*.text' => 'Преимущества: текст карточки',
+            'work_types.title' => 'Виды работ: заголовок',
+            'work_types.description' => 'Виды работ: описание блока',
+            'work_types.items.*.description' => 'Виды работ: описание категории',
+            'about.title' => 'О компании: заголовок',
+            'about.description' => 'О компании: подзаголовок',
+            'about.text' => 'О компании: основной текст',
+            'faq.title' => 'Вопросы: заголовок',
+            'faq.description' => 'Вопросы: описание',
+            'faq.items.*.question' => 'Вопросы: вопрос',
+            'faq.items.*.answer' => 'Вопросы: ответ',
+            'contacts.phone' => 'Контакты: телефон',
+            'contacts.email' => 'Контакты: email',
+            'contacts.address' => 'Контакты: адрес',
+        ];
+    }
+
+    /**
+     * A rejected form used to fail silently: the page reloaded with the typed values and
+     * nothing was saved. Record what was rejected so it can be found in the log.
+     */
+    protected function failedValidation(Validator $validator): void
+    {
+        Log::warning('Admin page update was rejected by validation, nothing was saved.', [
+            'page' => $this->route('page'),
+            'errors' => $validator->errors()->toArray(),
+        ]);
+
+        parent::failedValidation($validator);
     }
 
     public function rules(): array
@@ -109,7 +158,7 @@ class UpdateHomePageContentRequest extends FormRequest
             'work_types.items.*.slug' => ['required', 'string', 'max:255'],
             'work_types.items.*.icon' => ['required', 'string', 'max:60'],
             'work_types.items.*.image' => ['nullable', 'string', 'max:1000'],
-            'work_types.items.*.description' => ['required', 'string'],
+            'work_types.items.*.description' => ['nullable', 'string'],
 
             'about.title' => ['required', 'string', 'max:255'],
             'about.description' => ['required', 'string'],

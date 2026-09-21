@@ -216,6 +216,9 @@
         .field--full { grid-column: 1 / -1; }
         .field label { font-size: 13px; font-weight: 700; color: #778191; text-transform: uppercase; letter-spacing: .04em; }
         .field-error { margin-top: 6px; color: #b03d3d; font-size: 13px; line-height: 1.4; }
+        .form-errors { margin-bottom: 20px; padding: 16px 18px; border: 1px solid #f2caca; border-radius: 12px; background: #fff3f3; color: #a33a3a; font-size: 14px; line-height: 1.5; }
+        .form-errors strong { display: block; margin-bottom: 6px; font-size: 15px; }
+        .form-errors ul { margin: 0; padding-left: 20px; }
         .field input, .field textarea, .field select { width: 100%; padding: 12px 14px; border: 1.5px solid #d6dae0; border-radius: 10px; font: inherit; color: var(--text); background: #fff; }
         .field textarea { min-height: 108px; resize: vertical; }
         .repeater { display: grid; gap: 14px; }
@@ -487,6 +490,17 @@
     </section>
 
     <section class="card">
+        @if ($errors->any())
+            <div class="form-errors" role="alert">
+                <strong>Изменения не сохранены. Исправьте поля ниже и нажмите «Сохранить» ещё раз:</strong>
+                <ul>
+                    @foreach (collect($errors->all())->unique() as $formError)
+                        <li>{{ $formError }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         @if ($selectedEditor === 'home')
             <form action="{{ route('admin.pages.update', ['page' => 'home']) }}" method="post">
                 @csrf
