@@ -1489,5 +1489,64 @@
         });
     });
 </script>
+<script>
+    // Saving reloads the page from the top. Remember where the admin was and return there,
+    // so a long editor does not jump away after every save.
+    (function () {
+        var storageKey = 'admin-editor-scroll:' + window.location.pathname;
+        var maxAgeMs = 30000;
+
+        function readSaved() {
+            try {
+                var raw = window.sessionStorage.getItem(storageKey);
+                window.sessionStorage.removeItem(storageKey);
+                var saved = raw ? JSON.parse(raw) : null;
+
+                return saved && Date.now() - saved.savedAt < maxAgeMs ? saved.top : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        document.querySelectorAll('form').forEach(function (form) {
+            form.addEventListener('submit', function () {
+                try {
+                    window.sessionStorage.setItem(storageKey, JSON.stringify({ top: window.scrollY, savedAt: Date.now() }));
+                } catch (error) {
+                    // Private mode or blocked storage: the page simply opens from the top.
+                }
+            });
+        });
+
+        var errorBox = document.querySelector('.form-errors');
+        var savedTop = readSaved();
+
+        if (errorBox) {
+            // A rejected form: show the message about what has to be fixed.
+            errorBox.scrollIntoView({ block: 'center' });
+
+            return;
+        }
+
+        if (savedTop === null) {
+            return;
+        }
+
+        var userScrolled = false;
+        ['wheel', 'touchmove', 'keydown', 'mousedown'].forEach(function (eventName) {
+            window.addEventListener(eventName, function () { userScrolled = true; }, { passive: true, once: true });
+        });
+
+        function restore() {
+            if (!userScrolled) {
+                window.scrollTo({ top: savedTop, left: 0, behavior: 'instant' });
+            }
+        }
+
+        restore();
+        // Images above the saved position may still be loading and push the page down.
+        window.addEventListener('load', restore);
+    })();
+</script>
 </body>
 </html>
