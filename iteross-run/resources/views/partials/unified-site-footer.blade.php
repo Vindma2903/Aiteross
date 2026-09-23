@@ -1,9 +1,21 @@
 @php
+    use App\Modules\Admin\Application\UseCases\GetHomePageContent;
+
     $siteFooterNavItems = [
         ['label' => 'Каталог', 'href' => route('catalog.index')],
         ['label' => 'О компании', 'href' => url('/#about')],
         ['label' => 'Контакты', 'href' => url('/#footer')],
     ];
+
+    // Same contacts as the "Блок 6" editor on the home page (Admin → Главная).
+    $siteFooterContacts = data_get(app(GetHomePageContent::class)->handle(), 'contacts', []);
+    $siteFooterPhone = trim((string) ($siteFooterContacts['phone'] ?? ''));
+    $siteFooterPhoneHref = preg_replace('/[^\d+]/', '', $siteFooterPhone);
+    $siteFooterEmail = trim((string) ($siteFooterContacts['email'] ?? ''));
+    $siteFooterAddress = trim((string) ($siteFooterContacts['address'] ?? ''));
+    $siteFooterHours = trim((string) ($siteFooterContacts['phone_note'] ?? ''));
+    $siteFooterRequisitesName = trim((string) ($siteFooterContacts['requisites_name'] ?? ''));
+    $siteFooterRequisitesDetails = trim((string) ($siteFooterContacts['requisites_details'] ?? ''));
 @endphp
 
 <footer class="unified-site-footer" id="footer">
@@ -34,25 +46,39 @@
                 </div>
             </div>
 
-            <div>
-                <div class="unified-site-footer__title">КОНТАКТЫ</div>
-                <div class="unified-site-footer__contact">
-                    <a href="tel:+74951234567">+7 (495) 123-45-67</a>
-                    <a href="mailto:info@iteross.ru">info@iteross.ru</a>
-                    <div>г. Москва, Дербеневская ул., 12, стр. 3</div>
-                    <div style="color: rgba(255,255,255,0.5); font-size: 13.5px;">Пн-Пт, 9:00-18:00</div>
+            @if ($siteFooterPhone !== '' || $siteFooterEmail !== '' || $siteFooterAddress !== '' || $siteFooterHours !== '')
+                <div>
+                    <div class="unified-site-footer__title">КОНТАКТЫ</div>
+                    <div class="unified-site-footer__contact">
+                        @if ($siteFooterPhone !== '')
+                            <a href="tel:{{ $siteFooterPhoneHref }}">{{ $siteFooterPhone }}</a>
+                        @endif
+                        @if ($siteFooterEmail !== '')
+                            <a href="mailto:{{ $siteFooterEmail }}">{{ $siteFooterEmail }}</a>
+                        @endif
+                        @if ($siteFooterAddress !== '')
+                            <div>{{ $siteFooterAddress }}</div>
+                        @endif
+                        @if ($siteFooterHours !== '')
+                            <div style="color: rgba(255,255,255,0.5); font-size: 13.5px;">{{ $siteFooterHours }}</div>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            @endif
 
-            <div>
-                <div class="unified-site-footer__title">РЕКВИЗИТЫ</div>
-                <div class="unified-site-footer__legal">
-                    <div>ООО «АЙТЕРОСС»</div>
-                    <div>ИНН 7700000000</div>
-                    <div>ОГРН 1157700000000</div>
-                    <div>КПП 770001001</div>
+            @if ($siteFooterRequisitesName !== '' || $siteFooterRequisitesDetails !== '')
+                <div>
+                    <div class="unified-site-footer__title">РЕКВИЗИТЫ</div>
+                    <div class="unified-site-footer__legal">
+                        @if ($siteFooterRequisitesName !== '')
+                            <div>{{ $siteFooterRequisitesName }}</div>
+                        @endif
+                        @if ($siteFooterRequisitesDetails !== '')
+                            <div>{!! nl2br(e($siteFooterRequisitesDetails)) !!}</div>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 

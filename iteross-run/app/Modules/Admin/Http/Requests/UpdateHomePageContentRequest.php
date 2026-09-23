@@ -171,7 +171,7 @@ class UpdateHomePageContentRequest extends FormRequest
             'faq.items.*.question' => ['required', 'string', 'max:255'],
             'faq.items.*.answer' => ['required', 'string'],
 
-            // Contacts next to the lead form; an empty field hides that item on the site.
+            // Contacts next to the lead form and in the site footer; an empty field hides that item.
             'contacts' => ['nullable', 'array'],
             'contacts.phone' => ['nullable', 'string', 'max:50'],
             'contacts.phone_note' => ['nullable', 'string', 'max:255'],
@@ -179,7 +179,7 @@ class UpdateHomePageContentRequest extends FormRequest
             'contacts.email_note' => ['nullable', 'string', 'max:255'],
             'contacts.address' => ['nullable', 'string', 'max:500'],
             'contacts.requisites_name' => ['nullable', 'string', 'max:255'],
-            'contacts.requisites_details' => ['nullable', 'string', 'max:500'],
+            'contacts.requisites_details' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }

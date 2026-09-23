@@ -1259,7 +1259,7 @@
                                     <div class="lead-meta-value">{{ $contactRequisitesName }}</div>
                                 @endif
                                 @if ($contactRequisitesDetails !== '')
-                                    <div class="lead-meta-subtext">{{ $contactRequisitesDetails }}</div>
+                                    <div class="lead-meta-subtext">{!! nl2br(e($contactRequisitesDetails)) !!}</div>
                                 @endif
                             </div>
                         @endif

@@ -157,7 +157,7 @@ final class HomePageContent
                 'email_note' => 'Ответ в течение рабочего дня',
                 'address' => 'г. Москва, Дербеневская ул., 12, стр. 3',
                 'requisites_name' => 'ООО «АЙТЕРОСС»',
-                'requisites_details' => 'ИНН 7700000000 · ОГРН 1157700000000',
+                'requisites_details' => "ИНН 7700000000\nОГРН 1157700000000\nКПП 770001001",
             ],
         ];
     }
